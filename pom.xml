@@ -33,4 +33,51 @@
       <version>1.7.3</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <get dest="src/main/resources" skipexisting="true">
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-token.bin" />
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-sent.bin" />
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-location.bin" />
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-date.bin" />
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-organization.bin" />
+                                    <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-person.bin" />
+                                </get>
+                                <get dest="src/main/resources/documents" skipexisting="true">
+                                    <url url="http://www.bbc.co.uk/news/world-europe-26222179" />
+                                    <url url="http://www.bbc.co.uk/news/uk-26170904" />
+                                    <url url="http://www.bbc.co.uk/news/uk-26222220" />
+                                    <url url="http://www.bbc.co.uk/news/entertainment-arts-26222202" />
+                                    <url url="http://www.bbc.co.uk/news/world-asia-26131403" />
+                                    <url url="http://www.bbc.co.uk/news/blogs-ouch-26193704" />
+                                    <url url="http://www.bbc.co.uk/news/technology-26131794" />
+                                    <url url="http://www.bbc.co.uk/news/uk-scotland-26195258" />
+                                    <url url="http://www.bbc.co.uk/news/uk-scotland-scotland-politics-26220638" />
+                                    <url url="http://www.bbc.co.uk/news/world-europe-26222674" />
+                                    <url url="http://www.bbc.co.uk/news/world-asia-china-19356685" />
+                                    <url url="http://www.bbc.co.uk/news/magazine-26036885" />
+                                    <url url="http://www.bbc.co.uk/news/business-26228635" />
+                                    <url url="http://www.bbc.co.uk/news/world-asia-26131403" />
+                                    <url url="http://www.bbc.co.uk/news/world-africa-26186194" />
+                                    <url url="http://uk.reuters.com/article/2014/02/18/uk-scotland-independence-devolution-idUKBREA1H1JM20140218" />
+                                </get>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
