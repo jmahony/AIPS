@@ -35,6 +35,12 @@ public class HTMLLine {
 
         line = _line;
 
+        textCount = countText();
+
+        tagsCount = countTags();
+
+        textTagRatio = textToTagRatio();
+
     }
 
     /**
