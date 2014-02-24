@@ -97,7 +97,17 @@ public class HTMLLine {
      */
     private double textToTagRatio() {
 
-        return 0d;
+        double ratio = 0;
+
+        if (textCount == 0) {
+            ratio = 0;
+        } else if (tagsCount == 0) {
+            ratio = 100;
+        } else {
+            ratio = (double) textCount / (double) tagsCount;
+        }
+
+        return ratio;
 
     }
 
