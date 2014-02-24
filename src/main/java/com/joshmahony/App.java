@@ -1,12 +1,17 @@
 package com.joshmahony;
 
+import opennlp.tools.namefind.NameFinderME;
+import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
+import opennlp.tools.util.InvalidFormatException;
+import opennlp.tools.util.Span;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -93,6 +98,57 @@ public class App
         }
 
         return new String[0];
+
+    }
+
+    private void namedEntityRecognitionExample(String[] sentences) {
+
+        InputStream modelIn = null;
+
+        try {
+
+            modelIn = getClass().getResourceAsStream("/en-ner-person.bin");
+
+            TokenNameFinderModel model = new TokenNameFinderModel(modelIn);
+
+            modelIn.close();
+
+            NameFinderME nameFinder = new NameFinderME(model);
+
+            for (String sentence : sentences) {
+
+                String[] tokens = tokenize(sentence);
+
+                Span[] namedEntities = nameFinder.find(tokens);
+
+                for (Span entity : namedEntities) {
+                    System.out.println("start: " + entity.getStart() + ". end: " + entity.getEnd());
+                    for (int i = entity.getStart(); i < entity.getEnd(); i++) {
+                        System.out.print(tokens[i] + " ");
+                    }
+                    System.out.println();
+                }
+
+            }
+
+            nameFinder.clearAdaptiveData();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (modelIn != null) {
+                try {
+                    modelIn.close();
+                }
+                catch (IOException e) {
+                }
+            }
+        }
 
     }
 }
