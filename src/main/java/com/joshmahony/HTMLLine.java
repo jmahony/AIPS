@@ -1,5 +1,8 @@
 package com.joshmahony;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by joshmahony on 24/02/2014.
  */
@@ -33,7 +36,7 @@ public class HTMLLine {
      */
     public HTMLLine(String _line) {
 
-        line = _line;
+        line = _line.trim();
 
         textCount = countText();
 
@@ -69,7 +72,19 @@ public class HTMLLine {
      */
     private int countTags() {
 
-        return 0;
+        Pattern pattern = Pattern.compile("<\\b[^>]*>");
+
+        Matcher matcher = pattern.matcher(line);
+
+        int i = 0;
+
+        while(matcher.find()) {
+
+            i++;
+
+        }
+
+        return i;
 
     }
 
