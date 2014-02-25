@@ -13,7 +13,8 @@ public class HTMLDocument {
      */
     public final String html;
 
-    public HTMLLine[] htmlLines;
+    public HTMLLine[] htmlBodyLines;
+
 
     /**
      * Takes the HTML line
@@ -24,7 +25,35 @@ public class HTMLDocument {
 
         html = _html.trim();
 
-        htmlLines = getLines();
+        htmlBodyLines = getLines(getBody());
+
+    }
+
+    /**
+     *
+     * Shortcut to strip the instances remarks
+     *
+     * @return
+     */
+    private String stripRemarks() {
+        
+        return HTMLDocument.stripRemarks(html);
+
+    }
+    
+    /**
+     * 
+     * Strip out HTML remarks
+     * 
+     * @param _html
+     * @return
+     */
+    public static String stripRemarks(String _html) {
+
+        // http://davidwalsh.name/remove-html-comments-php
+        String cleaned = _html.replaceAll("<!--(.|\\s)*?-->", "");
+
+        return cleaned.trim();
 
     }
 
