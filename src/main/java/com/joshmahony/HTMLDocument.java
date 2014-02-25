@@ -27,11 +27,11 @@ public class HTMLDocument {
 
     public HTMLLine[] getLines() {
 
-        return getLines(html);
+        return HTMLDocument.getLines(html);
 
     }
 
-    public HTMLLine[] getLines(String _html) {
+    public static HTMLLine[] getLines(String _html) {
 
         String lines[] = _html.split("\\r?\\n");
 
