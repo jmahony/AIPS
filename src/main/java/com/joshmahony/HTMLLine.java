@@ -54,7 +54,7 @@ public class HTMLLine {
      */
     private int countText() {
 
-        String strippedLine = line.replaceAll("<(.|\\n)*?>", "");
+        String strippedLine = line.replaceAll("\\<.*?>", "");
 
         if (strippedLine.equals("")) return 0;
 
