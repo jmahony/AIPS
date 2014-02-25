@@ -31,6 +31,33 @@ public class HTMLDocument {
 
     /**
      *
+     * Shortcut to strip the instances styles
+     *
+     * @return
+     */
+    private String stripStyles() {
+
+        return HTMLDocument.stripStyles(html);
+
+    }
+
+    /**
+     *
+     * Strip out HTML styles
+     *
+     * @param _html
+     * @return
+     */
+    public static String stripStyles(String _html) {
+
+        String cleaned = _html.replaceAll("<style\\b[^<]*(?:(?!<\\/style>)<[^<]*)*<\\/style>", "");
+
+        return cleaned.trim();
+
+    }
+    
+    /**
+     *
      * Shortcut to strip the instances remarks
      *
      * @return

@@ -42,7 +42,7 @@ public class HTMLDocumentTest extends TestCase {
 
         String simpleHTML = getResource("/simple.html");
 
-        int lines1 = 73;
+        int lines1 = 83;
 
         assertEquals(lines1, HTMLDocument.getLines(simpleHTML).length);
 
@@ -85,7 +85,7 @@ public class HTMLDocumentTest extends TestCase {
         assertEquals(complexHTMLBody.trim(), HTMLDocument.getBody(complexHTML));
 
     }
-
+    
     public void testSimpleStripRemarks() throws IOException {
 
         String simpleHTML = getResource("/simple.html");
@@ -123,6 +123,26 @@ public class HTMLDocumentTest extends TestCase {
         String complexHTMLScript = getResource("/world-europe-26333587Scripts.html");
 
         assertEquals(complexHTMLScript.trim(), HTMLDocument.stripScripts(complexHTML));
+
+    }
+
+    public void testSimpleStripStyles() throws IOException {
+
+        String simpleHTML = getResource("/simple.html");
+
+        String simpleHTMLStyles = getResource("/simpleStyles.html");
+
+        assertEquals(simpleHTMLStyles.trim(), HTMLDocument.stripStyles(simpleHTML));
+
+    }
+
+    public void testComplexStripStyles() throws IOException {
+
+        String complexHTML = getResource("/world-europe-26333587.html");
+
+        String complexHTMLStyles = getResource("/world-europe-26333587Styles.html");
+
+        assertEquals(complexHTMLStyles.trim(), HTMLDocument.stripStyles(complexHTML));
 
     }
 
