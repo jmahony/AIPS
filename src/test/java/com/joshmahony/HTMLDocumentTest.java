@@ -106,6 +106,26 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
+    public void testSimpleStripScripts() throws IOException {
+
+        String simpleHTML = getResource("/simple.html");
+
+        String simpleHTMLScript = getResource("/simpleScripts.html");
+
+        assertEquals(simpleHTMLScript.trim(), HTMLDocument.stripScripts(simpleHTML));
+
+    }
+
+    public void testComplexStripScripts() throws IOException {
+
+        String complexHTML = getResource("/world-europe-26333587.html");
+        
+        String complexHTMLScript = getResource("/world-europe-26333587Scripts.html");
+
+        assertEquals(complexHTMLScript.trim(), HTMLDocument.stripScripts(complexHTML));
+
+    }
+
     /**
      * Returns a resource as a string
      * @param resource

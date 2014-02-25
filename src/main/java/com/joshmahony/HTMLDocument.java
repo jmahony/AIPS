@@ -35,6 +35,28 @@ public class HTMLDocument {
      *
      * @return
      */
+    private String stripScripts() {
+
+        return HTMLDocument.stripScripts(html);
+
+    }
+
+    /**
+     *
+     * Strip out HTML remarks
+     *
+     * @param _html
+     * @return
+     */
+    public static String stripScripts(String _html) {
+
+        // https://github.com/jquery/jquery/blob/1.7.2/src/ajax.js#L14
+        String cleaned = _html.replaceAll("<script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script>", "");
+
+        return cleaned.trim();
+
+    }
+    
     private String stripRemarks() {
         
         return HTMLDocument.stripRemarks(html);
