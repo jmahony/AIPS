@@ -3,6 +3,9 @@ package com.joshmahony;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
 
 /**
  * Created by joshmahony on 25/02/2014.
@@ -25,17 +28,36 @@ public class HTMLDocumentTest extends TestCase {
      */
     public static Test suite() {
 
-        return new TestSuite( HTMLDocument.class );
+        return new TestSuite( HTMLDocumentTest.class );
 
     }
 
     /**
      * Test line count
      */
-    public void testLineCount() {
+    public void testGetLines() throws IOException {
 
+        String simpleHTML = IOUtils.toString(
+            this.getClass().getResourceAsStream("/simple.html"),
+            "UTF-8"
+        );
+
+        int lines1 = 64;
+
+        assertEquals(HTMLDocument.getLines(simpleHTML).length, lines1);
+
+        String complexHTML = IOUtils.toString(
+            this.getClass().getResourceAsStream("/world-europe-26333587.html"),
+            "UTF-8"
+        );
+
+        int lines2 = 2968;
+
+        assertEquals(HTMLDocument.getLines(complexHTML).length, lines2);
 
 
     }
+
+
 
 }
