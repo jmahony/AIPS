@@ -44,7 +44,7 @@ public class HTMLDocumentTest extends TestCase {
 
         int lines1 = 64;
 
-        assertEquals(HTMLDocument.getLines(simpleHTML).length, lines1);
+        assertEquals(lines1, HTMLDocument.getLines(simpleHTML).length);
 
         String complexHTML = IOUtils.toString(
             this.getClass().getResourceAsStream("/world-europe-26333587.html"),
@@ -53,8 +53,7 @@ public class HTMLDocumentTest extends TestCase {
 
         int lines2 = 2968;
 
-        assertEquals(HTMLDocument.getLines(complexHTML).length, lines2);
-
+        assertEquals(lines2, HTMLDocument.getLines(complexHTML).length);
 
     }
 
