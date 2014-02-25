@@ -43,15 +43,30 @@ public class HTMLDocument {
      */
     public static String getBody(String _html) {
 
-        // Get the index position of the last character of the <body> tag,
-        // There could be multiple opening body tags, we are looking for the first
-        // character of the first occurrence.
+        int firstPos = HTMLDocument.getStartBodyIndex(_html),
+            lastPos  = HTMLDocument.getEndBodyIndex(_html);
+
+        // Return the string between these two indices, and trim leading and trailing whitespace
+        return _html.substring(firstPos, lastPos).trim();
+
+    }
+
+    /**
+     *
+     * Get the index position of the last character of the <body> tag,
+     * There could be multiple opening body tags, we are looking for the first
+     * character of the first occurrence.
+     *
+     * @param _html
+     * @return
+     */
+    private static int getStartBodyIndex(String _html) {
+
         Pattern openingBody = Pattern.compile("<body.*>");
 
         Matcher openingBodyMatcher = openingBody.matcher(_html);
 
-        int firstPos = 0,
-            lastPos  = _html.length();
+        int firstPos = 0;
 
         while(openingBodyMatcher.find()) {
 
@@ -63,7 +78,19 @@ public class HTMLDocument {
 
         }
 
-        // Get the index position of the first character of the </body> tag
+        return firstPos;
+
+    }
+
+    /**
+     * Get the index position of the first character of the </body> tag
+     * @param _html
+     * @return
+     */
+    private static int getEndBodyIndex(String _html) {
+
+        int lastPos  = _html.length();
+
         Pattern closingBody = Pattern.compile("</body>");
 
         Matcher closingBodyMatcher = closingBody.matcher(_html);
@@ -78,8 +105,7 @@ public class HTMLDocument {
 
         }
 
-        // Return the string between these two indices, and trim leading and trailing whitespace
-        return _html.substring(firstPos, lastPos).trim();
+        return lastPos;
 
     }
 
