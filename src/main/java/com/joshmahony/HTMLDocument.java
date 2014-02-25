@@ -31,6 +31,37 @@ public class HTMLDocument {
 
     /**
      *
+     * Shortcut to strip whitespace
+     *
+     * @return
+     */
+    private String stripWhitespace() {
+
+        return HTMLDocument.stripWhitespace(html);
+
+    }
+
+    /**
+     *
+     * Strip out HTML whitespace
+     *
+     * @param _html
+     * @return
+     */
+    public static String stripWhitespace(String _html) {
+
+        Pattern whitespace = Pattern.compile("^\\s+", Pattern.MULTILINE);
+
+        Matcher matcher = whitespace.matcher(_html);
+
+        String cleaned = matcher.replaceAll("");
+
+        return cleaned.trim();
+
+    }
+    
+    /**
+     *
      * Shortcut to strip the instances styles
      *
      * @return

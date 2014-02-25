@@ -146,6 +146,26 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
+    public void testSimpleStripWhitespace() throws IOException {
+
+        String simpleHTML = getResource("/simple.html");
+
+        String simpleHTMLWhitespace = getResource("/simpleWhitespace.html");
+
+        assertEquals(simpleHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(simpleHTML));
+
+    }
+
+    public void testComplexStripWhitespace() throws IOException {
+
+        String complexHTML = getResource("/world-europe-26333587.html");
+
+        String complexHTMLWhitespace = getResource("/world-europe-26333587Whitespace.html");
+
+        assertEquals(complexHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(complexHTML));
+
+    }
+
     /**
      * Returns a resource as a string
      * @param resource
