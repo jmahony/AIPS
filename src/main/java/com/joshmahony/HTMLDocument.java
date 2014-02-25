@@ -28,6 +28,12 @@ public class HTMLDocument {
 
     }
 
+    /**
+     *
+     * Shortcut to get the instances body
+     *
+     * @return
+     */
     private String getBody() {
 
         return HTMLDocument.getBody(html);
@@ -109,12 +115,25 @@ public class HTMLDocument {
 
     }
 
+    /**
+     *
+     * Shortcut to get the instances lines
+     *
+     * @return
+     */
     public HTMLLine[] getLines() {
 
         return HTMLDocument.getLines(html);
 
     }
 
+    /**
+     *
+     * Separate out the given HTML into lines
+     *
+     * @param _html
+     * @return
+     */
     public static HTMLLine[] getLines(String _html) {
 
         String lines[] = _html.split("\\r?\\n");
