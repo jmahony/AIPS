@@ -25,8 +25,8 @@ public class HTMLDocument {
 
         html = _html.trim();
 
-        htmlBodyLines = getLines(getBody());
-
+        htmlBodyLines = getLines(stripWhitespace(stripScripts(stripRemarks(stripStyles(getBody())))));
+        
     }
 
     /**
