@@ -57,6 +57,12 @@ public class HTMLDocument {
 
     }
     
+    /**
+     *
+     * Shortcut to strip the instances remarks
+     *
+     * @return
+     */
     private String stripRemarks() {
         
         return HTMLDocument.stripRemarks(html);
