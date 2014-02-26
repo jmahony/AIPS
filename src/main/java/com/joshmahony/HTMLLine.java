@@ -29,6 +29,11 @@ public class HTMLLine {
     public double textTagRatio = 0;
 
     /**
+     * The text to tag ratio after smoothing has occurred
+     */
+    public double smoothedtTextTagRatio = 0;
+
+    /**
      *
      * Takes the HTML line
      *
@@ -54,7 +59,7 @@ public class HTMLLine {
      */
     private int countText() {
 
-        String strippedLine = line.replaceAll("<(.|\\n)*?>", "");
+        String strippedLine = line.replaceAll("\\<.*?>", "");
 
         if (strippedLine.equals("")) return 0;
 
@@ -93,7 +98,7 @@ public class HTMLLine {
      *
      * Gets the text to tags ratio
      *
-     * @return the text to tag ratio of the line
+     * @return text to tag ratio
      */
     private double textToTagRatio() {
 
