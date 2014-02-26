@@ -26,8 +26,7 @@ public class App
                 "UTF-8"
             );
             
-            HTMLDocument htmlDocument = new HTMLDocument(test);
-            
+
             System.out.println("done");
             
         } catch (IOException e) {
