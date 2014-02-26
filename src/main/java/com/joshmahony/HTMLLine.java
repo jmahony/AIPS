@@ -29,6 +29,11 @@ public class HTMLLine {
     public double textTagRatio = 0;
 
     /**
+     * The text to tag ratio after smoothing has occurred
+     */
+    public double smoothedtTextTagRatio = 0;
+
+    /**
      *
      * Takes the HTML line
      *

@@ -21,11 +21,12 @@ public class HTMLDocument {
      *
      * @param _html
      */
-    public HTMLDocument(String _html) {
+    public HTMLDocument(String _html, double[] kernel) throws Exception {
 
         html = _html.trim();
 
-        htmlBodyLines = getLines(stripWhitespace(stripScripts(stripRemarks(stripStyles(getBody())))));
+        // TODO: Clean me!!
+        htmlBodyLines = smooth(getLines(stripWhitespace(stripScripts(stripRemarks(stripStyles(getBody()))))), kernel);
 
     }
 
@@ -263,6 +264,45 @@ public class HTMLDocument {
         }
 
         return htmlLines;
+
+    }
+
+    /**
+     *
+     * Smooths an array of HTMLLine objects, needs a kernel for the smootching process.
+     *
+     * @param lines
+     * @param kernel
+     * @return an array of HTMLLine objects with the smoothed ratio populated
+     * @throws Exception
+     */
+    public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws Exception {
+
+        if (kernel.length % 2 == 0) throw new Exception("Kernel length must be odd");
+
+        int kernelOverlap = (int) Math.floor(kernel.length / 2);
+
+        for (int i = 0; i < lines.length; i++) {
+
+            double newRatio = 0;
+
+            for (int j = 0; j < kernel.length; j++) {
+
+                int lineIndex = i - kernelOverlap + j;
+
+                if (lineIndex >= 0 && lineIndex < lines.length) {
+
+                    newRatio += lines[lineIndex].textTagRatio * kernel[j];
+
+                }
+
+            }
+
+            lines[i].smoothedtTextTagRatio = newRatio;
+
+        }
+
+        return lines;
 
     }
 
