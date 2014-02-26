@@ -93,7 +93,7 @@ public class HTMLLine {
      *
      * Gets the text to tags ratio
      *
-     * @return
+     * @return the text to tag ratio of the line
      */
     private double textToTagRatio() {
 
