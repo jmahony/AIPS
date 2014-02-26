@@ -26,14 +26,14 @@ public class HTMLDocument {
         html = _html.trim();
 
         htmlBodyLines = getLines(stripWhitespace(stripScripts(stripRemarks(stripStyles(getBody())))));
-        
+
     }
 
     /**
      *
      * Shortcut to strip whitespace
      *
-     * @return
+     * @return HTML less any leading and newline whitespace
      */
     private String stripWhitespace() {
 
@@ -46,7 +46,7 @@ public class HTMLDocument {
      * Strip out HTML whitespace
      *
      * @param _html
-     * @return
+     * @return HTML less any leading and newline whitespace
      */
     public static String stripWhitespace(String _html) {
 
@@ -64,7 +64,7 @@ public class HTMLDocument {
      *
      * Shortcut to strip the instances styles
      *
-     * @return
+     * @return HTML less style tags
      */
     private String stripStyles() {
 
@@ -77,7 +77,7 @@ public class HTMLDocument {
      * Strip out HTML styles
      *
      * @param _html
-     * @return
+     * @return HTML less style tags
      */
     public static String stripStyles(String _html) {
 
@@ -91,7 +91,7 @@ public class HTMLDocument {
      *
      * Shortcut to strip the instances remarks
      *
-     * @return
+     * @return HTML less script tags
      */
     private String stripScripts() {
 
@@ -104,7 +104,7 @@ public class HTMLDocument {
      * Strip out HTML remarks
      *
      * @param _html
-     * @return
+     * @return HTML less script tags
      */
     public static String stripScripts(String _html) {
 
@@ -119,7 +119,7 @@ public class HTMLDocument {
      *
      * Shortcut to strip the instances remarks
      *
-     * @return
+     * @return HTML less remark tags
      */
     private String stripRemarks() {
         
@@ -132,7 +132,7 @@ public class HTMLDocument {
      * Strip out HTML remarks
      * 
      * @param _html
-     * @return
+     * @return HTML less remark tags
      */
     public static String stripRemarks(String _html) {
 
@@ -147,7 +147,7 @@ public class HTMLDocument {
      *
      * Shortcut to get the instances body
      *
-     * @return
+     * @return return body of HTML document
      */
     private String getBody() {
 
@@ -160,7 +160,7 @@ public class HTMLDocument {
      * Returns the HTML between <body> & </body>
      *
      * @param _html
-     * @return
+     * @return HTML between the two body tags
      */
     public static String getBody(String _html) {
 
@@ -179,7 +179,7 @@ public class HTMLDocument {
      * character of the first occurrence.
      *
      * @param _html
-     * @return
+     * @return first char index of first body tag
      */
     private static int getStartBodyIndex(String _html) {
 
@@ -205,8 +205,9 @@ public class HTMLDocument {
 
     /**
      * Get the index position of the first character of the </body> tag
+     *
      * @param _html
-     * @return
+     * @return last char index of last body tag
      */
     private static int getEndBodyIndex(String _html) {
 
@@ -234,7 +235,7 @@ public class HTMLDocument {
      *
      * Shortcut to get the instances lines
      *
-     * @return
+     * @return array of HTML lines
      */
     public HTMLLine[] getLines() {
 
@@ -247,7 +248,7 @@ public class HTMLDocument {
      * Separate out the given HTML into lines
      *
      * @param _html
-     * @return
+     * @return array of HTML lines
      */
     public static HTMLLine[] getLines(String _html) {
 
