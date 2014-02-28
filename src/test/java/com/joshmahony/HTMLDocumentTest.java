@@ -166,6 +166,15 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
+    public void testSmoothingKernelThree() throws IOException {
+
+        double[] kernelThree = new double[] {0.25, 0.5, 0.25};
+
+        //String htmlDocument = getResource();
+
+
+    }
+
     /**
      * Returns a resource as a string
      * @param resource
