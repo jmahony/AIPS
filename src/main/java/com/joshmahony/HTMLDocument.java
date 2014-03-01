@@ -1,5 +1,7 @@
 package com.joshmahony;
 
+import com.joshmahony.exceptions.InvalidKernelException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -269,16 +271,17 @@ public class HTMLDocument {
 
     /**
      *
-     * Smooths an array of HTMLLine objects, needs a kernel for the smootching process.
+     * Smooths an array of HTMLLine objects, needs a kernel for the smoothing process.
      *
      * @param lines
      * @param kernel
      * @return an array of HTMLLine objects with the smoothed ratio populated
      * @throws Exception
      */
-    public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws Exception {
+    public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws InvalidKernelException {
 
-        if (kernel.length % 2 == 0) throw new Exception("Kernel length must be odd");
+        if (kernel.length % 2 == 0) 
+            throw new InvalidKernelException("Kernel length must be odd");
 
         int kernelOverlap = (int) Math.floor(kernel.length / 2);
 
