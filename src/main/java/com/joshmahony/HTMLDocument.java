@@ -1,5 +1,7 @@
 package com.joshmahony;
 
+import com.joshmahony.exceptions.InvalidKernelException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +62,7 @@ public class HTMLDocument {
         return cleaned.trim();
 
     }
-    
+
     /**
      *
      * Shortcut to strip the instances styles
@@ -87,7 +89,7 @@ public class HTMLDocument {
         return cleaned.trim();
 
     }
-    
+
     /**
      *
      * Shortcut to strip the instances remarks
@@ -115,7 +117,7 @@ public class HTMLDocument {
         return cleaned.trim();
 
     }
-    
+
     /**
      *
      * Shortcut to strip the instances remarks
@@ -123,15 +125,15 @@ public class HTMLDocument {
      * @return HTML less remark tags
      */
     private String stripRemarks() {
-        
+
         return HTMLDocument.stripRemarks(html);
 
     }
-    
+
     /**
-     * 
+     *
      * Strip out HTML remarks
-     * 
+     *
      * @param _html
      * @return HTML less remark tags
      */
@@ -166,7 +168,7 @@ public class HTMLDocument {
     public static String getBody(String _html) {
 
         int firstPos = HTMLDocument.getStartBodyIndex(_html),
-            lastPos  = HTMLDocument.getEndBodyIndex(_html);
+                lastPos  = HTMLDocument.getEndBodyIndex(_html);
 
         // Return the string between these two indices, and trim leading and trailing whitespace
         return _html.substring(firstPos, lastPos).trim();
@@ -269,16 +271,17 @@ public class HTMLDocument {
 
     /**
      *
-     * Smooths an array of HTMLLine objects, needs a kernel for the smootching process.
+     * Smooths an array of HTMLLine objects, needs a kernel for the smoothing process.
      *
      * @param lines
      * @param kernel
      * @return an array of HTMLLine objects with the smoothed ratio populated
      * @throws Exception
      */
-    public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws Exception {
+    public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws InvalidKernelException {
 
-        if (kernel.length % 2 == 0) throw new Exception("Kernel length must be odd");
+        if (kernel.length % 2 == 0)
+            throw new InvalidKernelException("Kernel length must be odd");
 
         int kernelOverlap = (int) Math.floor(kernel.length / 2);
 
