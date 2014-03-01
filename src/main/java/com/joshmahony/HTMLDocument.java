@@ -280,7 +280,7 @@ public class HTMLDocument {
      */
     public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws InvalidKernelException {
 
-        if (kernel.length % 2 == 0)
+        if (kernel.length % 2 == 0) 
             throw new InvalidKernelException("Kernel length must be odd");
 
         int kernelOverlap = (int) Math.floor(kernel.length / 2);

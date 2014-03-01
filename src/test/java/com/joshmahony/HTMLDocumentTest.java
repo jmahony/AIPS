@@ -1,11 +1,13 @@
 package com.joshmahony;
 
+import com.joshmahony.exceptions.InvalidKernelException;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 /**
  * Created by joshmahony on 25/02/2014.
@@ -166,8 +168,96 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
+    public void testSmoothingKernelThree() throws Exception {
+        
+        String html = getResource("/simple.html");
+
+        String csv = getResource("/simpleSmoothedKernelThree_0-25_0-5_0-25.csv");
+
+        LinkedHashMap<Integer, String>[] knownValues = csvToTable(csv);
+        
+        HTMLLine[] lines = HTMLDocument.getLines(html);
+        
+        HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5, 0.25});
+
+        for (int i = 0; i < linesSmoothed.length; i++) {
+                        
+            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].smoothedtTextTagRatio);
+
+        }
+
+    }
+    
+    public void testSmoothingEvenKernel() throws IOException {
+
+        String html = getResource("/simple.html");
+
+        HTMLLine[] lines = HTMLDocument.getLines(html);
+        
+        try {
+            
+            HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5});
+            
+            assertTrue(false);
+            
+        } catch (InvalidKernelException e) {
+            
+            assertTrue(true);
+            
+        }
+
+    }
+
+    public void testSmoothingEmptyArray() throws InvalidKernelException {
+
+        HTMLLine[] lines = HTMLDocument.getLines("");
+
+        HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5, 0.25});
+
+        assertEquals(lines, linesSmoothed);
+
+    }
+
     /**
+     * 
+     * Returns a csv file as a hashmap
+     * 
+     * @param csv
+     * @return a hasmap of 
+     * @throws java.io.IOException
+     */
+    private LinkedHashMap[] csvToTable(String csv) throws IOException {
+        
+        String[] rows = csv.split("\n");
+
+        LinkedHashMap<Integer, String>[] table = new LinkedHashMap[rows.length];
+        
+        int rowIndex = 0;
+        
+        for (String row : rows) {
+
+            String[] columns = row.split(",");
+            
+            LinkedHashMap<Integer, String> newRow = new LinkedHashMap<Integer, String>();
+                        
+            for (int i = 0; i < columns.length; i++) {
+                
+                newRow.put(i, columns[i]);
+                
+            }
+            
+            table[rowIndex++] = newRow;
+            
+        }
+
+        return table;
+        
+    }
+
+    /**
+     * 
      * Returns a resource as a string
+     * 
      * @param resource
      * @return
      * @throws IOException
