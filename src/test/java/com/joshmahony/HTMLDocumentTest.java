@@ -1,9 +1,8 @@
 package com.joshmahony;
 
 import com.joshmahony.exceptions.InvalidKernelException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.*;
+import static org.junit.Assert.*;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -12,35 +11,14 @@ import java.util.LinkedHashMap;
 /**
  * Created by joshmahony on 25/02/2014.
  */
-public class HTMLDocumentTest extends TestCase {
-
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public HTMLDocumentTest( String testName ) {
-
-        super( testName );
-
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-
-        return new TestSuite( HTMLDocumentTest.class );
-
-    }
+public class HTMLDocumentTest {
 
     /**
      *
      * Make the right amount of lines are taken from the document, the test numbers are counted manually.
      *
-     * @throws IOException
      */
-    public void testGetLines() throws IOException {
+    @Test public void testGetLines() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -60,9 +38,8 @@ public class HTMLDocumentTest extends TestCase {
      *
      * Test the simple HTML document to see if the body is correctly extracted
      *
-     * @throws IOException
      */
-    public void testSimpleGetBody() throws IOException {
+    @Test public void testSimpleGetBody() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -76,9 +53,8 @@ public class HTMLDocumentTest extends TestCase {
      *
      * Test the complex HTML document to see if the body is correctly extracted
      *
-     * @throws IOException
      */
-    public void testComplexGetBody() throws IOException {
+    @Test public void testComplexGetBody() {
 
         String complexHTML = getResource("/world-europe-26333587.html");
 
@@ -87,8 +63,11 @@ public class HTMLDocumentTest extends TestCase {
         assertEquals(complexHTMLBody.trim(), HTMLDocument.getBody(complexHTML));
 
     }
-    
-    public void testSimpleStripRemarks() throws IOException {
+
+    /**
+     *
+     */
+    @Test public void testSimpleStripRemarks() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -98,7 +77,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testComplexStripRemarks() throws IOException {
+    /**
+     *
+     */
+    @Test public void testComplexStripRemarks() {
 
         String complexHTML = getResource("/world-europe-26333587.html");
 
@@ -108,7 +90,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testSimpleStripScripts() throws IOException {
+    /**
+     *
+     */
+    @Test public void testSimpleStripScripts() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -118,7 +103,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testComplexStripScripts() throws IOException {
+    /**
+     *
+     */
+    @Test public void testComplexStripScripts() {
 
         String complexHTML = getResource("/world-europe-26333587.html");
         
@@ -128,7 +116,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testSimpleStripStyles() throws IOException {
+    /**
+     *
+     */
+    @Test public void testSimpleStripStyles() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -138,7 +129,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testComplexStripStyles() throws IOException {
+    /**
+     *
+     */
+    @Test public void testComplexStripStyles() {
 
         String complexHTML = getResource("/world-europe-26333587.html");
 
@@ -148,7 +142,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testSimpleStripWhitespace() throws IOException {
+    /**
+     *
+     */
+    @Test public void testSimpleStripWhitespace() {
 
         String simpleHTML = getResource("/simple.html");
 
@@ -158,7 +155,10 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testComplexStripWhitespace() throws IOException {
+    /**
+     *
+     */
+    @Test public void testComplexStripWhitespace() {
 
         String complexHTML = getResource("/world-europe-26333587.html");
 
@@ -168,7 +168,11 @@ public class HTMLDocumentTest extends TestCase {
 
     }
 
-    public void testSmoothingKernelThree() throws Exception {
+    /**
+     *
+     * @throws Exception
+     */
+    @Test public void testSmoothingKernelThree() throws Exception {
         
         String html = getResource("/simple.html");
 
@@ -182,39 +186,36 @@ public class HTMLDocumentTest extends TestCase {
 
         for (int i = 0; i < linesSmoothed.length; i++) {
                         
-            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].smoothedtTextTagRatio);
+            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].smoothedtTextTagRatio, 0);
 
         }
 
     }
-    
-    public void testSmoothingEvenKernel() throws IOException {
+
+    /**
+     *
+     */
+    @Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() {
 
         String html = getResource("/simple.html");
 
         HTMLLine[] lines = HTMLDocument.getLines(html);
-        
-        try {
             
-            HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5});
-            
-            assertTrue(false);
-            
-        } catch (InvalidKernelException e) {
-            
-            assertTrue(true);
-            
-        }
+        HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[]{0.25, 0.5});
 
     }
 
-    public void testSmoothingEmptyArray() throws InvalidKernelException {
+    /**
+     *
+     * @throws InvalidKernelException
+     */
+    @Test public void testSmoothingEmptyArray() throws InvalidKernelException {
 
         HTMLLine[] lines = HTMLDocument.getLines("");
 
-        HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5, 0.25});
+        HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[]{0.25, 0.5, 0.25});
 
-        assertEquals(lines, linesSmoothed);
+        assertArrayEquals(lines, linesSmoothed);
 
     }
 
@@ -226,7 +227,7 @@ public class HTMLDocumentTest extends TestCase {
      * @return a hasmap of 
      * @throws java.io.IOException
      */
-    private LinkedHashMap[] csvToTable(String csv) throws IOException {
+    private LinkedHashMap[] csvToTable(String csv) {
         
         String[] rows = csv.split("\n");
 
@@ -262,12 +263,20 @@ public class HTMLDocumentTest extends TestCase {
      * @return
      * @throws IOException
      */
-    private String getResource(String resource) throws IOException {
+    private String getResource(String resource) {
 
-        return IOUtils.toString(
-            this.getClass().getResourceAsStream(resource),
-            "UTF-8"
-        );
+        try {
+
+            return IOUtils.toString(
+                    this.getClass().getResourceAsStream(resource),
+                    "UTF-8"
+            );
+
+        } catch (Exception e) {
+
+            return null;
+
+        }
 
     }
 

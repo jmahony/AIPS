@@ -1,38 +1,17 @@
 package com.joshmahony;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 /**
  * Created by joshmahony on 24/02/2014.
  */
-public class HTMLLineTest extends TestCase {
-
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public HTMLLineTest( String testName ) {
-
-        super( testName );
-
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-
-        return new TestSuite( HTMLLineTest.class );
-
-    }
+public class HTMLLineTest {
 
     /**
      * Test line count
      */
-    public void testLineCount() {
+    @Test public void testLineCount() {
 
         String s1 = "<p>The <a href=\"http://imberbus.wordpress.com/\" >23A service takes in other remote locations on the plain</a>, " +
                 "including New Zealand Farm Camp and Brazen Bottom and &quot;is a normal bus service and registered with the traffic commissioners&quot;, says Meilton.</p>";
