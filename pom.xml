@@ -64,7 +64,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <target>
-                                <get dest="src/main/resources" skipexisting="true">
+                                <get dest="src/main/resources/external/training" skipexisting="true">
                                     <url url="http://opennlp.sourceforge.net/models-1.5/en-token.bin" />
                                     <url url="http://opennlp.sourceforge.net/models-1.5/en-sent.bin" />
                                     <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-location.bin" />
@@ -72,7 +72,7 @@
                                     <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-organization.bin" />
                                     <url url="http://opennlp.sourceforge.net/models-1.5/en-ner-person.bin" />
                                 </get>
-                                <get dest="src/main/resources/documents" skipexisting="true">
+                                <get dest="src/main/resources/external/documents" skipexisting="true">
                                     <url url="http://www.bbc.co.uk/news/world-europe-26222179" />
                                     <url url="http://www.bbc.co.uk/news/uk-26170904" />
                                     <url url="http://www.bbc.co.uk/news/uk-26222220" />
