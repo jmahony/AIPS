@@ -1,15 +1,8 @@
 package com.joshmahony;
 
-import au.com.bytecode.opencsv.CSVWriter;
 import com.joshmahony.measures.RelevancyGenerator;
 import com.joshmahony.utility.CSV;
 import com.joshmahony.utility.ResourceLoader;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
