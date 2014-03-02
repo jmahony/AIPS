@@ -1,6 +1,8 @@
 package com.joshmahony;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.joshmahony.utility.CSV;
+import com.joshmahony.utility.ResourceLoader;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class App {
 
         try {
 
-            String html = getResource("/documents/blogs-ouch-26193704");
+            String html = ResourceLoader.asString(this, "/documents/blogs-ouch-26193704");
 
             LinkedHashMap<Integer, Integer> results = new LinkedHashMap<>();
 
@@ -40,9 +42,9 @@ public class App {
 
             }
 
-            String relevanceCSV = getResource("/relevance/blogs-ouch-26193704.csv");
+            String relevanceCSV = ResourceLoader.asString(this, "/relevance/blogs-ouch-26193704.csv");
 
-            LinkedHashMap<Integer, String>[] relevanceTable = csvToTable(relevanceCSV);
+            LinkedHashMap<Integer, String>[] relevanceTable = CSV.toTable(relevanceCSV);
 
             LinkedHashMap<Integer, Integer> relevance = new LinkedHashMap<>();
 
@@ -85,91 +87,5 @@ public class App {
 
     }
 
-    public void docToCSV() {
 
-        String html = getResource("/documents/blogs-ouch-26193704");
-
-        CSVWriter writer = null;
-
-        try {
-
-            HTMLDocument doc = new HTMLDocument(html, new double[] {0.25, 0.5, 0.25});
-
-
-            System.out.println(doc.htmlBodyLines.length);
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-    }
-
-    /**
-     *
-     * Returns a csv file as a hashmap
-     *
-     * @param csv
-     * @return a hasmap of
-     * @throws java.io.IOException
-     */
-    private LinkedHashMap[] csvToTable(String csvRaw) {
-
-        String csv = csvRaw.replaceAll("(\r|\n|\r\n)", "\n");
-
-        String[] rows = csv.split("\n");
-
-        LinkedHashMap<Integer, String>[] table = new LinkedHashMap[rows.length];
-
-        int rowIndex = 0;
-
-        for (String row : rows) {
-
-            String[] columns = row.split(",");
-
-            LinkedHashMap<Integer, String> newRow = new LinkedHashMap<Integer, String>();
-
-            for (int i = 0; i < columns.length; i++) {
-
-                newRow.put(i, columns[i].trim());
-
-            }
-
-            table[rowIndex++] = newRow;
-
-        }
-
-        return table;
-
-    }
-
-    /**
-     *
-     * Returns a resource as a string
-     *
-     * @param resource
-     * @return
-     * @throws IOException
-     */
-    private String getResource(String resource) {
-
-        try {
-
-            return IOUtils.toString(
-                    this.getClass().getResourceAsStream(resource),
-                    "UTF-8"
-            );
-
-        } catch (Exception e) {
-
-            return null;
-
-        }
-
-    }
 }

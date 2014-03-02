@@ -1,11 +1,11 @@
 package com.joshmahony;
 
 import com.joshmahony.exceptions.InvalidKernelException;
+import com.joshmahony.utility.CSV;
+import com.joshmahony.utility.ResourceLoader;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
 /**
@@ -20,13 +20,13 @@ public class HTMLDocumentTest {
      */
     @Test public void testGetLines() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
         int lines1 = 83;
 
         assertEquals(lines1, HTMLDocument.getLines(simpleHTML).length);
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
         int lines2 = 2968;
 
@@ -41,9 +41,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testSimpleGetBody() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
-        String simpleHTMLBody = getResource("/simpleBody.html");
+        String simpleHTMLBody = ResourceLoader.asString(this, "/simpleBody.html");
 
         assertEquals(simpleHTMLBody.trim(), HTMLDocument.getBody(simpleHTML));
 
@@ -56,9 +56,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testComplexGetBody() {
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
-        String complexHTMLBody = getResource("/world-europe-26333587Body.html");
+        String complexHTMLBody = ResourceLoader.asString(this, "/world-europe-26333587Body.html");
 
         assertEquals(complexHTMLBody.trim(), HTMLDocument.getBody(complexHTML));
 
@@ -69,9 +69,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testSimpleStripRemarks() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
-        String simpleHTMLRemark = getResource("/simpleRemarks.html");
+        String simpleHTMLRemark = ResourceLoader.asString(this, "/simpleRemarks.html");
 
         assertEquals(simpleHTMLRemark.trim(), HTMLDocument.stripRemarks(simpleHTML));
 
@@ -82,9 +82,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testComplexStripRemarks() {
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
-        String complexHTMLRemark = getResource("/world-europe-26333587Remarks.html");
+        String complexHTMLRemark = ResourceLoader.asString(this, "/world-europe-26333587Remarks.html");
 
         assertEquals(complexHTMLRemark.trim(), HTMLDocument.stripRemarks(complexHTML));
 
@@ -95,9 +95,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testSimpleStripScripts() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
-        String simpleHTMLScript = getResource("/simpleScripts.html");
+        String simpleHTMLScript = ResourceLoader.asString(this, "/simpleScripts.html");
 
         assertEquals(simpleHTMLScript.trim(), HTMLDocument.stripScripts(simpleHTML));
 
@@ -108,9 +108,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testComplexStripScripts() {
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
         
-        String complexHTMLScript = getResource("/world-europe-26333587Scripts.html");
+        String complexHTMLScript = ResourceLoader.asString(this, "/world-europe-26333587Scripts.html");
 
         assertEquals(complexHTMLScript.trim(), HTMLDocument.stripScripts(complexHTML));
 
@@ -121,9 +121,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testSimpleStripStyles() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
-        String simpleHTMLStyles = getResource("/simpleStyles.html");
+        String simpleHTMLStyles = ResourceLoader.asString(this, "/simpleStyles.html");
 
         assertEquals(simpleHTMLStyles.trim(), HTMLDocument.stripStyles(simpleHTML));
 
@@ -134,9 +134,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testComplexStripStyles() {
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
-        String complexHTMLStyles = getResource("/world-europe-26333587Styles.html");
+        String complexHTMLStyles = ResourceLoader.asString(this, "/world-europe-26333587Styles.html");
 
         assertEquals(complexHTMLStyles.trim(), HTMLDocument.stripStyles(complexHTML));
 
@@ -147,9 +147,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testSimpleStripWhitespace() {
 
-        String simpleHTML = getResource("/simple.html");
+        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
-        String simpleHTMLWhitespace = getResource("/simpleWhitespace.html");
+        String simpleHTMLWhitespace = ResourceLoader.asString(this, "/simpleWhitespace.html");
 
         assertEquals(simpleHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(simpleHTML));
 
@@ -160,9 +160,9 @@ public class HTMLDocumentTest {
      */
     @Test public void testComplexStripWhitespace() {
 
-        String complexHTML = getResource("/world-europe-26333587.html");
+        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
-        String complexHTMLWhitespace = getResource("/world-europe-26333587Whitespace.html");
+        String complexHTMLWhitespace = ResourceLoader.asString(this, "/world-europe-26333587Whitespace.html");
 
         assertEquals(complexHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(complexHTML));
 
@@ -174,11 +174,11 @@ public class HTMLDocumentTest {
      */
     @Test public void testSmoothingKernelThree() throws Exception {
         
-        String html = getResource("/simple.html");
+        String html = ResourceLoader.asString(this, "/simple.html");
 
-        String csv = getResource("/simpleSmoothedKernelThree_0-25_0-5_0-25.csv");
+        String csv = ResourceLoader.asString(this, "/simpleSmoothedKernelThree_0-25_0-5_0-25.csv");
 
-        LinkedHashMap<Integer, String>[] knownValues = csvToTable(csv);
+        LinkedHashMap<Integer, String>[] knownValues = CSV.toTable(csv);
         
         HTMLLine[] lines = HTMLDocument.getLines(html);
         
@@ -197,7 +197,7 @@ public class HTMLDocumentTest {
      */
     @Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() {
 
-        String html = getResource("/simple.html");
+        String html = ResourceLoader.asString(this, "/simple.html");
 
         HTMLLine[] lines = HTMLDocument.getLines(html);
             
@@ -216,67 +216,6 @@ public class HTMLDocumentTest {
         HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[]{0.25, 0.5, 0.25});
 
         assertArrayEquals(lines, linesSmoothed);
-
-    }
-
-    /**
-     * 
-     * Returns a csv file as a hashmap
-     * 
-     * @param csv
-     * @return a hasmap of 
-     * @throws java.io.IOException
-     */
-    private LinkedHashMap[] csvToTable(String csv) {
-        
-        String[] rows = csv.split("\n");
-
-        LinkedHashMap<Integer, String>[] table = new LinkedHashMap[rows.length];
-        
-        int rowIndex = 0;
-        
-        for (String row : rows) {
-
-            String[] columns = row.split(",");
-            
-            LinkedHashMap<Integer, String> newRow = new LinkedHashMap<Integer, String>();
-                        
-            for (int i = 0; i < columns.length; i++) {
-                
-                newRow.put(i, columns[i]);
-                
-            }
-            
-            table[rowIndex++] = newRow;
-            
-        }
-
-        return table;
-        
-    }
-
-    /**
-     * 
-     * Returns a resource as a string
-     * 
-     * @param resource
-     * @return
-     * @throws IOException
-     */
-    private String getResource(String resource) {
-
-        try {
-
-            return IOUtils.toString(
-                    this.getClass().getResourceAsStream(resource),
-                    "UTF-8"
-            );
-
-        } catch (Exception e) {
-
-            return null;
-
-        }
 
     }
 
