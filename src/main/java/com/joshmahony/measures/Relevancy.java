@@ -28,7 +28,7 @@ public class Relevancy {
             throw new InvalidParameterException("Neither recall or precision can be less negative");
         
         if (precision == 0 && recall == 0)
-            throw new InvalidParameterException("Either precision or recall need to be greater than 0");
+            return 0.00d;
         
         if (precision > 100.00d) 
             throw new InvalidParameterException("Precision cant be over 100");
