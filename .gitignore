@@ -40,5 +40,5 @@ Thumbs.db
 
 target/*
 */target/**
-**/main/resources/*
+**/main/resources/external/*
 .idea
