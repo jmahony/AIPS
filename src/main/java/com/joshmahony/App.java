@@ -30,7 +30,11 @@ public class App {
 
             RelevancyGenerator rg = new RelevancyGenerator(relevancySet, doc);
             
-            rg.generate(1, 50);
+            rg.generate(1.00d, 50.00d);
+
+            //rg.printResults();
+
+            CSV.docToCSV(ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218"));
 
         } catch (Exception e) {
             

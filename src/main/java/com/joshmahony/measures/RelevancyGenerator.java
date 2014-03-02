@@ -3,10 +3,7 @@ package com.joshmahony.measures;
 import com.joshmahony.HTMLDocument;
 import com.joshmahony.HTMLLine;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by josh on 02/03/14.
@@ -26,7 +23,7 @@ public class RelevancyGenerator {
     /**
      * 
      */
-    private Map<String, Double>[] results;
+    private Map<Double, Map<String, Double>> results;
 
     /**
      * 
@@ -46,24 +43,24 @@ public class RelevancyGenerator {
      * @param start
      * @param end
      */
-    public void generate(int start, int end) {
+    public void generate(double start, double end) {
         
         HTMLLine[] lines = document.htmlBodyLines;
 
-        results = new LinkedHashMap[end - start + 1];
-        
-        for (int i = start; i < end; i++) {
-            
-            Set<Integer> returnedLines = new HashSet<>();     
+        results = new LinkedHashMap<>();
+
+        for (double i = start; i < end; i++) {
+
+            Set<Integer> returnedLines = new HashSet<>();
 
             for (int lineNumber = 0; lineNumber < lines.length; lineNumber++) {
 
                 if (lines[lineNumber].smoothedtTextTagRatio >= i) {
 
                     returnedLines.add(lineNumber);
-                    
+
                 }
-                
+
             }
             
             double precision = Relevancy.precision(relevantLines, returnedLines);
@@ -71,15 +68,33 @@ public class RelevancyGenerator {
             double fm        = Relevancy.fMeasure(precision, recall);
             
             Map<String, Double> row = new LinkedHashMap<>();
-            
+
             row.put("precision", precision);
             row.put("recall",    recall);
             row.put("fm",        fm);
             
-            results[i] = row;
+            results.put(i, row);
             
         }
 
     }
-   
+
+    public void printResults() {
+
+        for (Map.Entry<Double, Map<String, Double>> entry : results.entrySet()) {
+
+            System.out.print(entry.getKey() + ", ");
+
+            for (Map.Entry<String, Double> entry2 : entry.getValue().entrySet()) {
+
+                System.out.print(entry2.getValue() + ", ");
+
+            }
+
+            System.out.println();
+
+        }
+
+    }
+
 }

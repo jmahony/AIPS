@@ -2,6 +2,7 @@ package com.joshmahony.utility;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.joshmahony.HTMLDocument;
+import com.joshmahony.HTMLLine;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -78,17 +79,19 @@ public class CSV {
         
     }
 
-    public void docToCSV(String path) {
-
-        String html = ResourceLoader.asString(this, path);
-
-        CSVWriter writer = null;
+    public static void docToCSV(String html) {
 
         try {
 
             HTMLDocument doc = new HTMLDocument(html, new double[] {0.25, 0.5, 0.25});
 
-            System.out.println(doc.htmlBodyLines.length);
+            int i = 0;
+
+            for (HTMLLine line : doc.htmlBodyLines) {
+
+                System.out.println(i++ + ", " + line.line);
+
+            }
 
         } catch (IOException e) {
 
