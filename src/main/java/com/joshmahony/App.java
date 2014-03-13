@@ -1,14 +1,9 @@
 package com.joshmahony;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.joshmahony.measures.RelevancyGenerator;
 import com.joshmahony.utility.CSV;
 import com.joshmahony.utility.ResourceLoader;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Hello world!
@@ -23,26 +18,23 @@ public class App {
     }
     
     public App() {
-
+        
         try {
 
-            String html = ResourceLoader.asString(this, "/documents/blogs-ouch-26193704");
-
-            LinkedHashMap<Integer, Integer> results = new LinkedHashMap<>();
-
+            String html = ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218");
+            String relevanceCSV = ResourceLoader.asString(this, "/local/relevance/uk-scotland-independence-devolution-idUKBREA1H1JM20140218.csv");
+            
             HTMLDocument doc = new HTMLDocument(html, new double[] {0.25, 0.5, 0.25});
 
-            for (int i = 0; i < doc.htmlBodyLines.length; i++) {
+            Set<Integer> relevancySet = CSV.toRelevancySet(relevanceCSV, 0, 1);
 
-                if (doc.htmlBodyLines[i].smoothedtTextTagRatio > 2) {
+            RelevancyGenerator rg = new RelevancyGenerator(relevancySet, doc);
+            
+            rg.generate(1.00d, 50.00d);
 
-                    results.put(i, 1);
+            rg.printResults();
 
-                }
-
-            }
-
-            String relevanceCSV = ResourceLoader.asString(this, "/relevance/blogs-ouch-26193704.csv");
+            //CSV.docToCSV(ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218"));
 
             LinkedHashMap<Integer, String>[] relevanceTable = CSV.toTable(relevanceCSV);
 
@@ -79,10 +71,11 @@ public class App {
             System.out.println("F Measure             : " + fm);
 
         } catch (Exception e) {
-
+            
             e.printStackTrace();
-
+            
         }
+
 
 
     }

@@ -97,13 +97,13 @@ public class RelevancyTest {
     /**
      * Test the f measure method with two 0s
      */
-    @Test(expected = InvalidParameterException.class) public void testFMeasureZeroes() {
+    @Test public void testFMeasureZeroes() {
 
         double precision = 0.00d;
 
         double recall = 0.00d;
 
-        Relevancy.fMeasure(precision, recall);
+        assertEquals(0.00d, Relevancy.fMeasure(precision, recall), C.DOUBLE_TEST_DELTA);
 
     }
 
