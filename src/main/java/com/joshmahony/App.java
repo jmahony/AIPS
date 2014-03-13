@@ -21,8 +21,8 @@ public class App {
         
         try {
 
-            String html = ResourceLoader.asString(this, "/external/documents/blogs-ouch-26193704");
-            String relevanceCSV = ResourceLoader.asString(this, "/local/relevance/blogs-ouch-26193704.csv");
+            String html = ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218");
+            String relevanceCSV = ResourceLoader.asString(this, "/local/relevance/uk-scotland-independence-devolution-idUKBREA1H1JM20140218.csv");
             
             HTMLDocument doc = new HTMLDocument(html, new double[] {0.25, 0.5, 0.25});
 
@@ -32,9 +32,9 @@ public class App {
             
             rg.generate(1.00d, 50.00d);
 
-            //rg.printResults();
+            rg.printResults();
 
-            CSV.docToCSV(ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218"));
+            //CSV.docToCSV(ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218"));
 
         } catch (Exception e) {
             
