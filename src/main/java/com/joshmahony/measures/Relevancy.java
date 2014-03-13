@@ -1,12 +1,8 @@
 package com.joshmahony.measures;
 
 import com.google.common.collect.Sets;
-import org.omg.CORBA.DynAnyPackage.Invalid;
-
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+
 import java.util.Set;
 
 /**
@@ -18,23 +14,22 @@ public class Relevancy {
      * 
      * Calculates F Measure / Score of the given precision and recall
      * 
-     * @param precision a percentage
-     * @param recall a percentage
-     * @return the f measure of the arguments
+     * @param precision 0.00 to 100.00
+     * @param recall 0.00 to 100.00
+     * @exception InvalidParameterException precision or recall less than 0.00
+     * @exception InvalidParameterException precision or recall greater than 100.00
+     * @return 0.00 to 100.00
      */
     public static double fMeasure(double precision, double recall) {
         
-        if (precision < 0 || recall < 0)
+        if (precision < 0.00d || recall < 0.00d)
             throw new InvalidParameterException("Neither recall or precision can be less negative");
-        
-        if (precision == 0 && recall == 0)
-            return 0.00d;
-        
-        if (precision > 100.00d) 
+
+        if (precision > 100.00d || recall > 100.00d)
             throw new InvalidParameterException("Precision cant be over 100");
 
-        if (recall > 100.00d)
-            throw new InvalidParameterException("Recall cant be over 100");
+        if (precision == 0.00d && recall == 0.00d)
+            return 0.00d;
         
         return 2 * ((precision * recall) / (precision + recall));
         
@@ -53,7 +48,7 @@ public class Relevancy {
      * @param relevant The set of correct results
      * @param returned The set of returned results
      * @param <T>
-     * @return The percentage precision of the two sets
+     * @return The percentage precision of the two sets (0.00 to 100.00)
      */
     public static <T> double precision(Set<T> relevant, Set<T> returned) {
         
@@ -87,7 +82,7 @@ public class Relevancy {
      * @param relevant The set of correct results
      * @param returned The set of returned results
      * @param <T>
-     * @return The percentage recall of the two sets
+     * @return The percentage recall of the two sets (0.00 to 100.00)
      */
     public static <T> double recall(Set<T> relevant, Set<T> returned) {
 
