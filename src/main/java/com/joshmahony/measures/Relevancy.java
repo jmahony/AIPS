@@ -1,8 +1,8 @@
 package com.joshmahony.measures;
 
 import com.google.common.collect.Sets;
-import java.security.InvalidParameterException;
 
+import java.security.InvalidParameterException;
 import java.util.Set;
 
 /**

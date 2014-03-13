@@ -3,7 +3,10 @@ package com.joshmahony.measures;
 import com.joshmahony.HTMLDocument;
 import com.joshmahony.HTMLLine;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by josh on 02/03/14.
