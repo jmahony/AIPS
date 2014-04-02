@@ -109,7 +109,7 @@ public class HTMLDocumentTest {
     @Test public void testComplexStripScripts() {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
-        
+
         String complexHTMLScript = ResourceLoader.asString(this, "/world-europe-26333587Scripts.html");
 
         assertEquals(complexHTMLScript.trim(), HTMLDocument.stripScripts(complexHTML));
@@ -173,20 +173,20 @@ public class HTMLDocumentTest {
      * @throws Exception
      */
     @Test public void testSmoothingKernelThree() throws Exception {
-        
+
         String html = ResourceLoader.asString(this, "/simple.html");
 
         String csv = ResourceLoader.asString(this, "/simpleSmoothedKernelThree_0-25_0-5_0-25.csv");
 
         LinkedHashMap<Integer, String>[] knownValues = CSV.toTable(csv);
-        
+
         HTMLLine[] lines = HTMLDocument.getLines(html);
-        
+
         HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[] {0.25, 0.5, 0.25});
 
         for (int i = 0; i < linesSmoothed.length; i++) {
-                        
-            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].smoothedtTextTagRatio, 0);
+
+            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].getSmoothedtTextTagRatio(), 0);
 
         }
 
@@ -200,7 +200,7 @@ public class HTMLDocumentTest {
         String html = ResourceLoader.asString(this, "/simple.html");
 
         HTMLLine[] lines = HTMLDocument.getLines(html);
-            
+
         HTMLLine[] linesSmoothed = HTMLDocument.smooth(lines, new double[]{0.25, 0.5});
 
     }

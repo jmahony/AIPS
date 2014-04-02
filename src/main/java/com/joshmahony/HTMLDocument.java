@@ -1,6 +1,7 @@
 package com.joshmahony;
 
 import com.joshmahony.exceptions.InvalidKernelException;
+import lombok.Getter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,9 +14,9 @@ public class HTMLDocument {
     /**
      * Original HTML line
      */
-    public final String html;
+    private @Getter final String html;
 
-    public HTMLLine[] htmlBodyLines;
+    private @Getter HTMLLine[] htmlBodyLines;
 
 
     /**
@@ -280,7 +281,7 @@ public class HTMLDocument {
      */
     public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws InvalidKernelException {
 
-        if (kernel.length % 2 == 0) 
+        if (kernel.length % 2 == 0)
             throw new InvalidKernelException("Kernel length must be odd");
 
         int kernelOverlap = (int) Math.floor(kernel.length / 2);
@@ -295,13 +296,13 @@ public class HTMLDocument {
 
                 if (lineIndex >= 0 && lineIndex < lines.length) {
 
-                    newRatio += lines[lineIndex].textTagRatio * kernel[j];
+                    newRatio += lines[lineIndex].getTextTagRatio() * kernel[j];
 
                 }
 
             }
 
-            lines[i].smoothedtTextTagRatio = newRatio;
+            lines[i].setSmoothedtTextTagRatio(newRatio);
 
         }
 

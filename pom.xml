@@ -49,6 +49,12 @@
             <artifactId>guava</artifactId>
             <version>r09</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.12.6</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <reporting>
         <plugins>

@@ -1,5 +1,7 @@
 package com.joshmahony;
 
+import lombok.*;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,27 +13,27 @@ public class HTMLLine {
     /**
      * Original HTML line
      */
-    public final String line;
+    private @Getter final String line;
 
     /**
      * Count of text on line
      */
-    public int textCount = 0;
+    private @Getter int textCount = 0;
 
     /**
      * Count of tags on line
      */
-    public int tagsCount = 0;
+    private @Getter int tagsCount = 0;
 
     /**
      * The text to tag ratio of the line
      */
-    public double textTagRatio = 0;
+    private @Getter double textTagRatio = 0;
 
     /**
      * The text to tag ratio after smoothing has occurred
      */
-    public double smoothedtTextTagRatio = 0;
+    private @Getter @Setter double smoothedtTextTagRatio = 0;
 
     /**
      *
