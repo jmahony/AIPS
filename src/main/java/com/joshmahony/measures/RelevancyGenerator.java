@@ -14,41 +14,41 @@ import java.util.Set;
 public class RelevancyGenerator {
 
     /**
-     * 
+     *
      */
     private final Set<Integer> relevantLines;
-    
+
     /**
-     * 
+     *
      */
     private final HTMLDocument document;
 
     /**
-     * 
+     *
      */
     private Map<Double, Map<String, Double>> results;
 
     /**
-     * 
+     *
      * @param _relevantLines
      * @param _document
      */
     public RelevancyGenerator(Set<Integer> _relevantLines, HTMLDocument _document) {
-        
+
         relevantLines = _relevantLines;
-        
+
         document = _document;
 
     }
 
     /**
-     * 
+     *
      * @param start
      * @param end
      */
     public void generate(double start, double end) {
-        
-        HTMLLine[] lines = document.htmlBodyLines;
+
+        HTMLLine[] lines = document.getHtmlBodyLines();
 
         results = new LinkedHashMap<>();
 
@@ -58,26 +58,26 @@ public class RelevancyGenerator {
 
             for (int lineNumber = 0; lineNumber < lines.length; lineNumber++) {
 
-                if (lines[lineNumber].smoothedtTextTagRatio >= i) {
+                if (lines[lineNumber].getSmoothedTextTagRatio() >= i) {
 
                     returnedLines.add(lineNumber);
 
                 }
 
             }
-            
+
             double precision = Relevancy.precision(relevantLines, returnedLines);
             double recall    = Relevancy.recall(relevantLines, returnedLines);
             double fm        = Relevancy.fMeasure(precision, recall);
-            
+
             Map<String, Double> row = new LinkedHashMap<>();
 
             row.put("precision", precision);
             row.put("recall",    recall);
             row.put("fm",        fm);
-            
+
             results.put(i, row);
-            
+
         }
 
     }

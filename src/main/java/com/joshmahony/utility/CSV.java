@@ -20,7 +20,7 @@ public class CSV {
      * Returns a csv file as a hashmap
      *
      * @param csvRaw
-     * @return a hasmap of 
+     * @return a hasmap of
      */
     public static LinkedHashMap[] toTable(String csvRaw) {
 
@@ -53,30 +53,30 @@ public class CSV {
     }
 
     /**
-     * 
+     *
      * @param csv
      * @param lineColumn
      * @param relevancyColumn
      * @return a set of integer that relate to lines that have been marked as relevant
      */
     public static Set<Integer> toRelevancySet(String csv, int lineColumn, int relevancyColumn) {
-        
+
         Map<Integer, String>[] table = toTable(csv);
-        
+
         Set<Integer> relevancySet = new HashSet<>();
-        
+
         for (Map<Integer, String> row : table) {
-            
+
             if (row.get(relevancyColumn).equals("1")) {
-                
+
                 relevancySet.add(Integer.parseInt(row.get(lineColumn), 10));
-                
+
             }
-            
+
         }
-        
+
         return relevancySet;
-        
+
     }
 
     public static void docToCSV(String html) {
@@ -89,9 +89,9 @@ public class CSV {
 
             int i = 0;
 
-            for (HTMLLine line : doc.htmlBodyLines) {
+            for (HTMLLine line : doc.getHtmlBodyLines()) {
 
-                System.out.println(i++ + ", " + line.line);
+                System.out.println(i++ + ", " + line.getLine());
 
             }
 
@@ -106,5 +106,5 @@ public class CSV {
         }
 
     }
-    
+
 }

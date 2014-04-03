@@ -32,8 +32,10 @@ public class HTMLLine {
 
     /**
      * The text to tag ratio after smoothing has occurred
+     *
      */
-    private @Getter @Setter double smoothedtTextTagRatio = 0;
+    @SuppressWarnings("unused")
+    private @Getter @Setter double smoothedTextTagRatio = 0;
 
     /**
      *

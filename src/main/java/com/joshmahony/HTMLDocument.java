@@ -1,7 +1,7 @@
 package com.joshmahony;
 
 import com.joshmahony.exceptions.InvalidKernelException;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,8 +16,11 @@ public class HTMLDocument {
      */
     private @Getter final String html;
 
+    /**
+     * The HTML document split up into individual HTMLLine objects
+     */
+    @SuppressWarnings("unuser")
     private @Getter HTMLLine[] htmlBodyLines;
-
 
     /**
      * Takes the HTML line
@@ -302,7 +305,7 @@ public class HTMLDocument {
 
             }
 
-            lines[i].setSmoothedtTextTagRatio(newRatio);
+            lines[i].setSmoothedTextTagRatio(newRatio);
 
         }
 

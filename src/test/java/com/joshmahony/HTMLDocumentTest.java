@@ -186,7 +186,7 @@ public class HTMLDocumentTest {
 
         for (int i = 0; i < linesSmoothed.length; i++) {
 
-            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].getSmoothedtTextTagRatio(), 0);
+            assertEquals(Double.parseDouble(knownValues[i].get(2)), linesSmoothed[i].getSmoothedTextTagRatio(), 0);
 
         }
 
