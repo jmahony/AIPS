@@ -1,8 +1,8 @@
-package com.joshmahony.utility;
+package com.cnewsbit.utility;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import com.joshmahony.HTMLDocument;
-import com.joshmahony.HTMLLine;
+import com.cnewsbit.HTMLDocument;
+import com.cnewsbit.HTMLLine;
 
 import java.io.IOException;
 import java.util.HashSet;

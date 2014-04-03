@@ -1,6 +1,6 @@
-package com.joshmahony;
+package com.cnewsbit;
 
-import com.joshmahony.exceptions.InvalidKernelException;
+import com.cnewsbit.exceptions.InvalidKernelException;
 import lombok.*;
 
 import java.util.regex.Matcher;

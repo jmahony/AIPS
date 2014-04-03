@@ -1,4 +1,4 @@
-package com.joshmahony.measures;
+package com.cnewsbit.measures;
 
 import com.google.common.collect.Sets;
 

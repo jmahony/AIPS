@@ -1,4 +1,4 @@
-package com.joshmahony;
+package com.cnewsbit;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by joshmahony on 24/02/2014.
+ * Created by cnewsbit on 24/02/2014.
  */
 public class HTMLLine {
 

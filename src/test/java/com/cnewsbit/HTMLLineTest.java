@@ -1,10 +1,10 @@
-package com.joshmahony;
+package com.cnewsbit;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
- * Created by joshmahony on 24/02/2014.
+ * Created by cnewsbit on 24/02/2014.
  */
 public class HTMLLineTest {
 

@@ -1,4 +1,4 @@
-package com.joshmahony.exceptions;
+package com.cnewsbit.exceptions;
 
 /**
  * Created by josh on 28/02/14.
@@ -6,9 +6,9 @@ package com.joshmahony.exceptions;
 public class InvalidKernelException extends IllegalArgumentException {
 
     public InvalidKernelException(String message) {
-        
+
         super(message);
-        
+
     }
-    
+
 }

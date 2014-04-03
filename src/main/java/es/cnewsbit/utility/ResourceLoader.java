@@ -1,4 +1,4 @@
-package com.joshmahony.utility;
+package com.cnewsbit.utility;
 
 import org.apache.commons.io.IOUtils;
 

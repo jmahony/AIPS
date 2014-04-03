@@ -1,15 +1,15 @@
-package com.joshmahony;
+package com.cnewsbit;
 
-import com.joshmahony.exceptions.InvalidKernelException;
-import com.joshmahony.utility.CSV;
-import com.joshmahony.utility.ResourceLoader;
+import com.cnewsbit.exceptions.InvalidKernelException;
+import com.cnewsbit.utility.CSV;
+import com.cnewsbit.utility.ResourceLoader;
 import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.util.LinkedHashMap;
 
 /**
- * Created by joshmahony on 25/02/2014.
+ * Created by cnewsbit on 25/02/2014.
  */
 public class HTMLDocumentTest {
 
