@@ -19,7 +19,6 @@ public class HTMLDocument {
     /**
      * The HTML document split up into individual HTMLLine objects
      */
-    @SuppressWarnings("unuser")
     private @Getter HTMLLine[] htmlBodyLines;
 
     /**
