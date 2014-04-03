@@ -1,7 +1,7 @@
-package com.cnewsbit.measures;
+package es.cnewsbit.measures;
 
-import com.cnewsbit.HTMLDocument;
-import com.cnewsbit.HTMLLine;
+import es.cnewsbit.HTMLDocument;
+import es.cnewsbit.HTMLLine;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
