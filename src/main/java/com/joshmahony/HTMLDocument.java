@@ -51,7 +51,7 @@ public class HTMLDocument {
      *
      * Strip out HTML whitespace
      *
-     * @param _html
+     * @param _html html to be stripped of whitespace
      * @return HTML less any leading and newline whitespace
      */
     public static String stripWhitespace(String _html) {
@@ -82,7 +82,7 @@ public class HTMLDocument {
      *
      * Strip out HTML styles
      *
-     * @param _html
+     * @param _html html to be stripped of style tags
      * @return HTML less style tags
      */
     public static String stripStyles(String _html) {
@@ -109,7 +109,7 @@ public class HTMLDocument {
      *
      * Strip out HTML remarks
      *
-     * @param _html
+     * @param _html html to be stripped of script tags
      * @return HTML less script tags
      */
     public static String stripScripts(String _html) {
@@ -137,7 +137,7 @@ public class HTMLDocument {
      *
      * Strip out HTML remarks
      *
-     * @param _html
+     * @param _html html to be stripped of XML comments
      * @return HTML less remark tags
      */
     public static String stripRemarks(String _html) {
@@ -165,7 +165,7 @@ public class HTMLDocument {
      *
      * Returns the HTML between <body> & </body>
      *
-     * @param _html
+     * @param _html html to extract body content from
      * @return HTML between the two body tags
      */
     public static String getBody(String _html) {
@@ -184,7 +184,7 @@ public class HTMLDocument {
      * There could be multiple opening body tags, we are looking for the first
      * character of the first occurrence.
      *
-     * @param _html
+     * @param _html html to get the index from
      * @return first char index of first body tag
      */
     private static int getStartBodyIndex(String _html) {
@@ -212,7 +212,7 @@ public class HTMLDocument {
     /**
      * Get the index position of the first character of the </body> tag
      *
-     * @param _html
+     * @param _html html to get the index from
      * @return last char index of last body tag
      */
     private static int getEndBodyIndex(String _html) {
@@ -253,7 +253,7 @@ public class HTMLDocument {
      *
      * Separate out the given HTML into lines
      *
-     * @param _html
+     * @param _html html to split into lines
      * @return array of HTML lines
      */
     public static HTMLLine[] getLines(String _html) {
@@ -276,10 +276,10 @@ public class HTMLDocument {
      *
      * Smooths an array of HTMLLine objects, needs a kernel for the smoothing process.
      *
-     * @param lines
-     * @param kernel
+     * @param lines the array of HTMLLines to smooth
+     * @param kernel the kernel to smooth the lines ratio with
      * @return an array of HTMLLine objects with the smoothed ratio populated
-     * @throws Exception
+     * @exception InvalidKernelException if the kernel has an even number of elements
      */
     public static HTMLLine[] smooth(HTMLLine[] lines, double[] kernel) throws InvalidKernelException {
 

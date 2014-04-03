@@ -42,17 +42,19 @@ public class RelevancyGenerator {
     }
 
     /**
+     * Calculates the prevision, recall and f measure when using the upper and
+     * lower threshold on the given set of results.
      *
-     * @param start
-     * @param end
+     * @param lower the lower threshold
+     * @param upper the upper threshold
      */
-    public void generate(double start, double end) {
+    public void generate(double lower, double upper) {
 
         HTMLLine[] lines = document.getHtmlBodyLines();
 
         results = new LinkedHashMap<>();
 
-        for (double i = start; i < end; i++) {
+        for (double i = lower; i < upper; i++) {
 
             Set<Integer> returnedLines = new HashSet<>();
 
