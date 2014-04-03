@@ -1,6 +1,6 @@
-package com.cnewsbit;
+package es.cnewsbit;
 
-import com.cnewsbit.exceptions.InvalidKernelException;
+import es.cnewsbit.exceptions.InvalidKernelException;
 import lombok.*;
 
 import java.util.regex.Matcher;

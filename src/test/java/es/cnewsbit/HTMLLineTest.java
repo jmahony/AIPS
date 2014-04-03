@@ -1,4 +1,4 @@
-package com.cnewsbit;
+package es.cnewsbit;
 
 import org.junit.*;
 import static org.junit.Assert.*;

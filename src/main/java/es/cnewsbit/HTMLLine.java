@@ -1,4 +1,4 @@
-package com.cnewsbit;
+package es.cnewsbit;
 
 import lombok.*;
 

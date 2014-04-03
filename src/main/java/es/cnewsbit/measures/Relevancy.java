@@ -1,4 +1,4 @@
-package com.cnewsbit.measures;
+package es.cnewsbit.measures;
 
 import com.google.common.collect.Sets;
 

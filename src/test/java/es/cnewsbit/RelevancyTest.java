@@ -1,6 +1,6 @@
-package com.cnewsbit;
+package es.cnewsbit;
 
-import com.cnewsbit.measures.Relevancy;
+import es.cnewsbit.measures.Relevancy;
 import org.junit.*;
 
 import java.security.InvalidParameterException;

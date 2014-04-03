@@ -1,4 +1,4 @@
-package com.cnewsbit.exceptions;
+package es.cnewsbit.exceptions;
 
 /**
  * Created by josh on 28/02/14.

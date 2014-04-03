@@ -1,8 +1,8 @@
-package com.cnewsbit;
+package es.cnewsbit;
 
-import com.cnewsbit.measures.RelevancyGenerator;
-import com.cnewsbit.utility.CSV;
-import com.cnewsbit.utility.ResourceLoader;
+import es.cnewsbit.measures.RelevancyGenerator;
+import es.cnewsbit.utility.CSV;
+import es.cnewsbit.utility.ResourceLoader;
 
 import java.util.Set;
 
