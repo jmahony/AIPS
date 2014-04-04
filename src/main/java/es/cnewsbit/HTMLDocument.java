@@ -2,7 +2,15 @@ package es.cnewsbit;
 
 import es.cnewsbit.exceptions.InvalidKernelException;
 import lombok.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,33 +25,42 @@ public class HTMLDocument {
     private @Getter final String html;
 
     /**
+     * A Jsoup version of the HTML
+     */
+    private @Getter final Document dom;
+
+    /**
      * The HTML document split up into individual HTMLLine objects
      */
     private @Getter HTMLLine[] htmlBodyLines;
 
     /**
+     * The keywords contained in the meta tag of the HTML
+     */
+    private @Getter List<String> metaKeywords;
+
+    /**
+     * All of the H1 tags content on the page
+     */
+    private @Getter List<String> headingOnes;
+
+    /**
      * Takes the HTML line
      *
-     * @param _html
+     * @param html
      */
-    public HTMLDocument(String _html, double[] kernel) throws Exception {
+    public HTMLDocument(String html, double[] kernel) throws Exception {
 
-        html = _html.trim();
+        this.html = html.trim();
+
+        this.dom  = Jsoup.parse(this.html);
+
+        this.headingOnes = parseHOnes();
+
+        this.metaKeywords = parseKeywords();
 
         // TODO: Clean me!!
         htmlBodyLines = smooth(getLines(stripWhitespace(stripScripts(stripRemarks(stripStyles(getBody()))))), kernel);
-
-    }
-
-    /**
-     *
-     * Shortcut to strip whitespace
-     *
-     * @return HTML less any leading and newline whitespace
-     */
-    private String stripWhitespace() {
-
-        return HTMLDocument.stripWhitespace(html);
 
     }
 
@@ -68,18 +85,6 @@ public class HTMLDocument {
 
     /**
      *
-     * Shortcut to strip the instances styles
-     *
-     * @return HTML less style tags
-     */
-    private String stripStyles() {
-
-        return HTMLDocument.stripStyles(html);
-
-    }
-
-    /**
-     *
      * Strip out HTML styles
      *
      * @param _html html to be stripped of style tags
@@ -90,18 +95,6 @@ public class HTMLDocument {
         String cleaned = _html.replaceAll("<style\\b[^<]*(?:(?!<\\/style>)<[^<]*)*<\\/style>", "");
 
         return cleaned.trim();
-
-    }
-
-    /**
-     *
-     * Shortcut to strip the instances remarks
-     *
-     * @return HTML less script tags
-     */
-    private String stripScripts() {
-
-        return HTMLDocument.stripScripts(html);
 
     }
 
@@ -118,18 +111,6 @@ public class HTMLDocument {
         String cleaned = _html.replaceAll("<script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script>", "");
 
         return cleaned.trim();
-
-    }
-
-    /**
-     *
-     * Shortcut to strip the instances remarks
-     *
-     * @return HTML less remark tags
-     */
-    private String stripRemarks() {
-
-        return HTMLDocument.stripRemarks(html);
 
     }
 
@@ -171,7 +152,7 @@ public class HTMLDocument {
     public static String getBody(String _html) {
 
         int firstPos = HTMLDocument.getStartBodyIndex(_html),
-                lastPos  = HTMLDocument.getEndBodyIndex(_html);
+            lastPos  = HTMLDocument.getEndBodyIndex(_html);
 
         // Return the string between these two indices, and trim leading and trailing whitespace
         return _html.substring(firstPos, lastPos).trim();
@@ -189,7 +170,7 @@ public class HTMLDocument {
      */
     private static int getStartBodyIndex(String _html) {
 
-        Pattern openingBody = Pattern.compile("<body.*>");
+        Pattern openingBody = Pattern.compile("<body[^>]*>");
 
         Matcher openingBodyMatcher = openingBody.matcher(_html);
 
@@ -239,13 +220,47 @@ public class HTMLDocument {
 
     /**
      *
-     * Shortcut to get the instances lines
+     * Pareses all H1 tags
      *
-     * @return array of HTML lines
+     * @return
      */
-    public HTMLLine[] getLines() {
+    public ArrayList<String> parseHOnes() {
 
-        return HTMLDocument.getLines(html);
+        ArrayList<String> headings = new ArrayList<>();
+
+        Elements elements = dom.select("h1");
+
+        for(Element element : elements) {
+
+            headings.add(element.html());
+
+        }
+
+        return headings;
+
+    }
+
+    /**
+     *
+     * Parses the meta keywords
+     *
+     * @return a set of keywords
+     */
+    private ArrayList<String> parseKeywords() {
+
+        Element elem = dom.select("meta[name=keywords], META[name=keywords]").first();
+
+        ArrayList<String> keywords = new ArrayList<>();
+
+        if (elem != null) {
+
+            String[] words = elem.attr("content").split(", *");
+
+            keywords.addAll(Arrays.asList(words));
+
+        }
+
+        return keywords;
 
     }
 

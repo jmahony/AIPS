@@ -1,4 +1,4 @@
-package es.cnewsbit.utility;
+package es.cnewsbit.utilities;
 
 import org.apache.commons.io.IOUtils;
 

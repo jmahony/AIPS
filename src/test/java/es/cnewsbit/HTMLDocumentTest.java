@@ -1,8 +1,8 @@
 package es.cnewsbit;
 
 import es.cnewsbit.exceptions.InvalidKernelException;
-import es.cnewsbit.utility.CSV;
-import es.cnewsbit.utility.ResourceLoader;
+import es.cnewsbit.utilities.CSV;
+import es.cnewsbit.utilities.ResourceLoader;
 import org.junit.*;
 import static org.junit.Assert.*;
 
