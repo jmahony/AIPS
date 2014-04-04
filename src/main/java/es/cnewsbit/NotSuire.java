@@ -13,11 +13,13 @@ import java.net.UnknownHostException;
 public class NotSuire {
     public static void test() {
 
-        log.info("Initialising MongoDB connection connection... ");
+        log.info("Initialising MongoDB connection... ");
 
         try {
 
             MongoClient client = new MongoClient("localhost", 27017);
+
+            log.info("Obtained MongoDB connection... ");
 
             DB db = client.getDB("bigc");
 
@@ -27,12 +29,14 @@ public class NotSuire {
 
             int i = 0;
 
+            log.info("Processing... ");
+
             while(cursor.hasNext()) {
 
                 DBObject document = cursor.next();
 
                 log.debug("Processing " + document.get("url"));
-
+                System.out.println("processing");
                 try {
 
                     NewsArticle na = NewsArticleFactory.buildNewsArticle(document);
