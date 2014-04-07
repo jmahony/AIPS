@@ -1,6 +1,7 @@
 package es.cnewsbit;
 
 import lombok.Getter;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.List;
 import java.net.URL;
@@ -62,7 +63,7 @@ public class NewsArticle implements Indexable {
 
         }
 
-        return null;
+        return "";
 
     }
 
@@ -103,7 +104,7 @@ public class NewsArticle implements Indexable {
      */
     @Override public String getHandle() {
 
-        return Integer.toString(0);
+        return DigestUtils.sha256Hex(url.toString());
 
     }
 
@@ -117,5 +118,15 @@ public class NewsArticle implements Indexable {
 
         return getHeading() + " " + getMetaKeywords() + " " + getContent();
 
+    }
+
+    public String getSummarisation() {
+
+        return "";
+
+    }
+
+    public long getDate() {
+        return 1000000000;
     }
 }

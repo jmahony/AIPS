@@ -1,189 +1,130 @@
 package es.cnewsbit;
 
 import java.io.*;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.googlecode.flyway.core.Flyway;
+import com.mongodb.DBObject;
+import es.cnewsbit.indexers.Indexer;
+import es.cnewsbit.indexers.LuceneIndexer;
+import es.cnewsbit.queriers.LuceneQuerier;
+import es.cnewsbit.utilities.NewsArticleFactory;
+import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.*;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopScoreDocCollector;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 /**
  * Hello world!
  *
  */
+@Log4j2
 public class App {
 
-    private static final String PATH_TO_INDEX = "/home/josh/Desktop/lucene/index/";
-    private static final String PATH_TO_FILES = "/home/josh/Desktop/lucene/files/";
-
+    private static Analyzer ANALYSER;
 
     public static void main(String[] args) {
 
-        /*try {
+        Flyway flyway = new Flyway();
+        flyway.setDataSource("jdbc:mysql://localhost:3306/cnewsbites", "piles", "12101210");
+        flyway.migrate();
 
-            createIndex();
+        ANALYSER = new StandardAnalyzer(Version.LUCENE_47);
+
+        createIndex();
+
+        //queryIndex();
+
+    }
+
+    public static void queryIndex() {
+
+        try {
+            LuceneQuerier lq = new LuceneQuerier(C.PATH_TO_INDEX, ANALYSER);
+
+            lq.query("bbc", 10);
 
         } catch (IOException e) {
 
             e.printStackTrace();
 
         } catch (ParseException e) {
+
             e.printStackTrace();
-        }*/
 
-        NotSuire.test();
+        }
 
-        //new App();
 
     }
 
-    public static void createIndex() throws IOException, ParseException {
+    public static void createIndex() {
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
+        ExecutorService pool = Executors.newFixedThreadPool(5);
 
-        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
+        HTMLStore store = HTMLStore.getInstance();
 
-        Directory dir = FSDirectory.open(new File(PATH_TO_INDEX));
-        File docDir = new File(PATH_TO_FILES);
-        IndexWriter indexWriter = new IndexWriter(dir, iwc);
+        try {
 
-        boolean create = true;
+            final Indexer indexer = new LuceneIndexer(C.PATH_TO_INDEX, ANALYSER);
 
-        if (!docDir.exists() || !docDir.canRead()) {
-            System.out.println("Document directory '" +docDir.getAbsolutePath()+ "' does not exist or is not readable, please check the path");
-            System.exit(1);
-        }
+            Database db = new Database();
 
-        if (create) {
-            // Create a new index in the directory, removing any
-            // previously indexed documents:
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-        } else {
-            // Add new documents to an existing index:
-            iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        }
+            while(store.hasNext()) {
 
+                pool.execute(()-> {
 
-        indexDocs(indexWriter, docDir);
+                    try {
 
-        indexWriter.close();
+                        List<DBObject> list = store.nextBatch(500);
 
-        String query = "steak";
+                        log.info("Started Processing Articles");
 
-        Query q = new QueryParser(Version.LUCENE_47, "contents", analyzer).parse(query);
+                        if (list == null) throw new CollectionEmptyExeception("Collection is empty");
 
-        int hitsPerPage = 100;
+                        for (DBObject object : list) {
 
-        // TODO: Whats this do?
-        IndexReader reader = DirectoryReader.open(dir);
+                            try {
 
-        // TODO: Whats this do?
-        IndexSearcher searcher = new IndexSearcher(reader);
+                                NewsArticle na = NewsArticleFactory.build(object);
 
-        // TODO: Whats this do?
-        TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+                                indexer.addToIndex(na);
 
-        searcher.search(q, collector);
+                                db.insert(na);
 
-        ScoreDoc[] hits = collector.topDocs().scoreDocs;
+                                na = null;
 
-        System.out.println("Found " + hits.length + " hits.");
+                            } catch (StackOverflowError e) {
 
-        for (int i = 0; i < hits.length; i++) {
+                                log.error(e.getMessage());
 
-            int docId = hits[i].doc;
+                            }
 
-            Document d = searcher.doc(docId);
+                        }
 
-            System.out.println((i+1) + ". " + d.getField("path"));
+                        log.info("Finished Processing Articles");
 
-        }
+                    } catch (Exception e) {
 
-        reader.close();
-
-    }
-
-    private static void indexDocs(IndexWriter indexWriter, File file) {
-
-        if (file.canRead()) {
-
-            if (file.isDirectory()) {
-
-                String[] files = file.list();
-
-                if (files != null) {
-
-                    for (String f : files) {
-
-                        indexDocs(indexWriter, new File(App.PATH_TO_FILES + f));
+                        log.error(e.getMessage());
 
                     }
 
-                }
-
-            } else {
-
-                FileInputStream fis;
-
-                try {
-
-                    fis = new FileInputStream(file);
-
-                    Document doc = new Document();
-
-                    doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
-
-                    doc.add(new StringField("path", file.getPath(), Field.Store.YES));
-
-                    if (indexWriter.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {
-
-                        // New Index
-
-                        System.out.println("Adding file " + file);
-
-                        indexWriter.addDocument(doc);
-
-                    } else {
-
-                        // Update file
-
-                        System.out.println("Updating file " + file);
-
-                        indexWriter.updateDocument(new Term("path", file.getPath()), doc);
-
-                    }
-
-                } catch (FileNotFoundException e) {
-
-                    e.printStackTrace();
-
-                    return;
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-
-                    return;
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                    return;
-
-                }
+                });
 
             }
+
+            indexer.close();
+
+            System.exit(-1);
+
+        } catch (Exception e) {
+
+            log.fatal(e.getMessage());
+
+            System.exit(-1);
 
         }
 

@@ -17,4 +17,7 @@ public class C {
     public static final int UPPER_BOUND_EXTRACTION_THRESHOLD = 100;
 
     public static final double[] SMOOTHING_KERNEL = new double[] {0.25, 0.50, 0.25};
+
+    public static final String PATH_TO_INDEX = "/home/josh/Desktop/lucene/index/";
+
 }

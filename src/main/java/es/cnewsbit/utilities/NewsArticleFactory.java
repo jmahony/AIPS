@@ -23,7 +23,7 @@ public class NewsArticleFactory {
      * @return the news article
      * @throws Exception
      */
-    public static NewsArticle buildNewsArticle(DBObject dbObject) throws Exception {
+    public static NewsArticle build(DBObject dbObject) throws Exception {
 
         BasicDBList docs = (BasicDBList) dbObject.get("html");
 

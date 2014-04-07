@@ -2,6 +2,8 @@ package es.cnewsbit.indexers;
 
 import es.cnewsbit.Indexable;
 import es.cnewsbit.NewsArticle;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -21,57 +23,79 @@ import java.util.List;
 /**
  * Created by josh on 03/04/14.
  */
+@Log4j2
 public class LuceneIndexer implements Indexer {
 
     /**
-     * Directory the Lucene index will be written to
+     * Index Writer, this actually creates the index
      */
-    public static final String INDEX_PATH = "/home/josh/lucene/";
+    private @Getter final IndexWriter INDEX_WRITER;
 
-    public static void createIndex(List<Indexable> indexables) {
+    /**
+     *
+     * Constructor
+     *
+     * @param indexPath where to save the lucene index
+     * @param analyzer analyses the documents
+     * @throws IOException if the indexPath directory does not exist
+     */
+    public LuceneIndexer(String indexPath, Analyzer analyzer) throws IOException {
 
-        // Create an analyser, this is used to process the articles content
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
-
-        // Configuration for the index writer
-        IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
+        IndexWriterConfig indexWriterConfig =
+                new IndexWriterConfig(Version.LUCENE_47, analyzer);
 
         // Overwrite any existing indices
-        iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
-        try {
+        Directory indexDirectory = FSDirectory.open(new File(indexPath));
 
-            // Open the directory to write the index to
-            Directory dir = FSDirectory.open(new File(INDEX_PATH));
+        INDEX_WRITER = new IndexWriter(indexDirectory, indexWriterConfig);
 
-            IndexWriter indexWriter = new IndexWriter(dir, iwc);
+    }
 
-            // Go through each article adding it to the
-            for (Indexable indexable : indexables) {
+    /**
+     *
+     * Adds a document to the index
+     *
+     * @param indexable the document to add
+     * @throws IOException if the index directory does not exit
+     */
+    @Override
+    public synchronized void addToIndex(Indexable indexable) throws IOException {
 
-                Document doc = new Document();
+        Document doc = new Document();
 
-                doc.add(new TextField("content", indexable.getIndexString(), Field.Store.NO));
-                doc.add(new StringField("handle", indexable.getHandle(), Field.Store.YES));
+        doc.add(new TextField("content", indexable.getIndexString(), Field.Store.NO));
+        doc.add(new StringField("handle", indexable.getHandle(), Field.Store.YES));
 
-                if (indexWriter.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {
+        if (INDEX_WRITER.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {
 
-                    indexWriter.addDocument(doc);
+            log.debug("Adding " + indexable.getHandle() + " to index");
 
-                } else {
+            INDEX_WRITER.addDocument(doc);
 
-                    indexWriter.updateDocument(new Term("path", indexable.getHandle()), doc);
+        } else {
 
-                }
+            log.debug("Updating " + indexable.getHandle() + " to index");
 
-            }
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+            INDEX_WRITER.updateDocument(new Term("handle", indexable.getHandle()), doc);
 
         }
 
     }
 
+    /**
+     *
+     * Closes the index writer
+     *
+     * @throws IOException
+     */
+    @Override
+    public void close() throws IOException {
+
+        log.info("Indexer closing");
+
+        INDEX_WRITER.close();
+
+    }
 }
