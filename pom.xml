@@ -122,7 +122,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/cnewsbites</url>
+                    <url>jdbc:mysql://localhost:3306/cnewsbites_v2</url>
                     <user>piles</user>
                     <password>12101210</password>
                 </configuration>

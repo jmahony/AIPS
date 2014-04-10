@@ -1,10 +1,5 @@
 package es.cnewsbit;
 
-import java.io.*;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.googlecode.flyway.core.Flyway;
 import com.mongodb.DBObject;
 import es.cnewsbit.indexers.Indexer;
@@ -12,10 +7,17 @@ import es.cnewsbit.indexers.LuceneIndexer;
 import es.cnewsbit.queriers.LuceneQuerier;
 import es.cnewsbit.utilities.NewsArticleFactory;
 import lombok.extern.log4j.Log4j2;
-import org.apache.lucene.analysis.*;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.util.Version;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Hello world!
@@ -26,15 +28,22 @@ public class App {
 
     private static Analyzer ANALYSER;
 
+    private static AtomicInteger count = new AtomicInteger(0);
+
+    private static long startTime = System.currentTimeMillis();
+
     public static void main(String[] args) {
 
         Flyway flyway = new Flyway();
-        flyway.setDataSource("jdbc:mysql://localhost:3306/cnewsbites", "piles", "12101210");
+        flyway.setDataSource(C.DB_NAME, C.DB_USER, C.DB_PASSWORD);
         flyway.migrate();
 
         ANALYSER = new StandardAnalyzer(Version.LUCENE_47);
 
         createIndex();
+
+
+
 
         //queryIndex();
 
@@ -43,9 +52,10 @@ public class App {
     public static void queryIndex() {
 
         try {
+
             LuceneQuerier lq = new LuceneQuerier(C.PATH_TO_INDEX, ANALYSER);
 
-            lq.query("bbc", 10);
+            lq.query("rugby", 100);
 
         } catch (IOException e) {
 
@@ -62,7 +72,7 @@ public class App {
 
     public static void createIndex() {
 
-        ExecutorService pool = Executors.newFixedThreadPool(5);
+        ExecutorService pool = Executors.newFixedThreadPool(4);
 
         HTMLStore store = HTMLStore.getInstance();
 
@@ -78,7 +88,7 @@ public class App {
 
                     try {
 
-                        List<DBObject> list = store.nextBatch(500);
+                        List<DBObject> list = store.nextBatch(250);
 
                         log.info("Started Processing Articles");
 
@@ -88,6 +98,8 @@ public class App {
 
                             try {
 
+                                log.debug("Processing " + object.get("url"));
+
                                 NewsArticle na = NewsArticleFactory.build(object);
 
                                 indexer.addToIndex(na);
@@ -96,15 +108,17 @@ public class App {
 
                                 na = null;
 
+                                count.getAndIncrement();
+
                             } catch (StackOverflowError e) {
 
-                                log.error(e.getMessage());
+                                log.error("Stackoverflow");
 
                             }
 
                         }
 
-                        log.info("Finished Processing Articles");
+                        log.info("Finished Processing Articles, current rate is: " + (count.get() / TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis() - App.startTime))));
 
                     } catch (Exception e) {
 
@@ -115,6 +129,8 @@ public class App {
                 });
 
             }
+
+            Thread.sleep(60000);
 
             indexer.close();
 

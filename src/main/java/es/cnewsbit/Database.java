@@ -1,13 +1,13 @@
 package es.cnewsbit;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 /**
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @Log4j2
 public class Database {
 
-    private final BasicDataSource ds;
+    private @Getter final BasicDataSource ds;
 
     public Database() {
 
@@ -25,9 +25,9 @@ public class Database {
         ds = new BasicDataSource();
 
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUsername("piles");
-        ds.setPassword("12101210");
-        ds.setUrl("jdbc:mysql://localhost:3306/cnewsbites");
+        ds.setUsername(C.DB_USER);
+        ds.setPassword(C.DB_PASSWORD);
+        ds.setUrl(C.DB_NAME);
         ds.setInitialSize(4);
 
         try {
@@ -66,7 +66,7 @@ public class Database {
             s.setString(6, newsArticle.getSummarisation());
 
             log.debug("Storing " + newsArticle.getHandle());
-            log.debug("Number connections active: " + ds.getNumActive());
+
             s.execute();
 
         } catch (SQLException e) {

@@ -8,6 +8,7 @@ import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.NewsArticle;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.Map;
 
 /**
@@ -55,6 +56,22 @@ public class NewsArticleFactory {
         }
 
         return null;
+
+    }
+
+    public static NewsArticle build(ResultSet rs) throws Exception {
+
+        HTMLDocument htmlDocument = new HTMLDocument(
+                rs.getString("html"),
+                C.SMOOTHING_KERNEL
+        );
+
+        URL url = new URL(rs.getString("url"));
+
+        NewsArticle newsArticle = new NewsArticle(htmlDocument, url);
+
+        return newsArticle;
+
 
     }
 

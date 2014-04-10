@@ -18,6 +18,9 @@ public class C {
 
     public static final double[] SMOOTHING_KERNEL = new double[] {0.25, 0.50, 0.25};
 
-    public static final String PATH_TO_INDEX = "/home/josh/Desktop/lucene/index/";
+    public static final String PATH_TO_INDEX = "/home/josh/Desktop/lucene/index_v2/";
 
+    public static final String DB_NAME = "jdbc:mysql://localhost:3306/cnewsbites_v2";
+    public static final String DB_USER = "piles";
+    public static final String DB_PASSWORD = "12101210";
 }

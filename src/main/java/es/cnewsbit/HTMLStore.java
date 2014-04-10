@@ -1,7 +1,6 @@
 package es.cnewsbit;
 
 import com.mongodb.*;
-import es.cnewsbit.utilities.NewsArticleFactory;
 import lombok.extern.log4j.Log4j2;
 
 import java.net.UnknownHostException;
@@ -16,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class HTMLStore {
 
     private static MongoClient client;
+
     private static DB db;
 
     private static HTMLStore instance = null;
@@ -37,6 +37,8 @@ public class HTMLStore {
         } catch (UnknownHostException e) {
 
             log.fatal(e.getMessage());
+
+            System.exit(-1);
 
         }
 
@@ -69,6 +71,8 @@ public class HTMLStore {
 
     public static synchronized List<DBObject> nextBatch(int batchSize) throws Exception {
 
+        Thread.sleep(10000);
+
         int c = count.getAndIncrement();
 
         int skip = c * batchSize;
@@ -76,6 +80,8 @@ public class HTMLStore {
         log.info("Fetching documents from " + (skip + 1) + " to " + (skip + batchSize));
 
         DBCursor cursor = collection.find().skip(skip);
+
+        cursor.batchSize(batchSize);
 
         if (!cursor.hasNext()) {
 
@@ -96,6 +102,8 @@ public class HTMLStore {
         }
 
         log.info("Finished fetching documents from " + (skip + 1) + " to " + (skip + batchSize));
+
+        cursor = null;
 
         return list;
 

@@ -2,9 +2,10 @@ package es.cnewsbit;
 
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jsoup.nodes.Element;
 
-import java.util.List;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by josh on 03/04/14.
@@ -55,15 +56,31 @@ public class NewsArticle implements Indexable {
      */
     public String getHeading() {
 
-        List<String> headings = document.getHeadingOnes();
+        Element elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
 
-        if (!headings.isEmpty()) {
+        if (elem != null) {
 
-            return headings.get(0);
+            return elem.attr("content");
 
         }
 
-        return "";
+        elem = document.getDom().getElementsByTag("title").first();
+
+        if (elem != null) {
+
+            return elem.html();
+
+        }
+
+        elem = document.getDom().select("h1").first();
+
+        if (elem != null) {
+
+            return elem.html();
+
+        }
+
+        return null;
 
     }
 
@@ -126,7 +143,11 @@ public class NewsArticle implements Indexable {
 
     }
 
+
+
     public long getDate() {
+
         return 1000000000;
+
     }
 }
