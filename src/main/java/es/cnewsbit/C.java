@@ -20,12 +20,12 @@ public class C {
 
     public static final String PATH_TO_INDEX = "/home/josh/Desktop/lucene/index_v2/";
 
-    public static final String DB_NAME = "jdbc:mysql://localhost:3306/cnewsbites_v2?rewriteBatchedStatements=true";
+    /*public static final String DB_NAME = "jdbc:mysql://localhost:3306/cnewsbites_v2?rewriteBatchedStatements=true";
     public static final String DB_USER = "piles";
-    public static final String DB_PASSWORD = "12101210";
-    /*public static final String DB_NAME = "jdbc:mysql://cnewsbites-prod.crsa1yeccgr5.eu-west-1.rds.amazonaws.com:3306/cnewsbites_prod?rewriteBatchedStatements=true";
+    public static final String DB_PASSWORD = "12101210";*/
+    public static final String DB_NAME = "jdbc:mysql://cnewsbites-prod.crsa1yeccgr5.eu-west-1.rds.amazonaws.com:3306/cnewsbites_prod?rewriteBatchedStatements=true";
 
     public static final String DB_USER = "cnewsbites";
-    public static final String DB_PASSWORD = "&6&g2DI9i0A%";*/
+    public static final String DB_PASSWORD = "&6&g2DI9i0A%";
 
 }
