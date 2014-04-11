@@ -7,7 +7,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -16,66 +17,57 @@ import java.sql.Statement;
 @Log4j2
 public class Database {
 
-    private @Getter final BasicDataSource ds;
+    private @Getter final BasicDataSource dataSource;
 
-    public Database() {
+    private int batchSizeLimit = 1000;
+    private AtomicInteger currentBatchSize = new AtomicInteger(0);
+
+    private @Getter PreparedStatement s;
+
+    public Database(String user, String pass, String name, int size) throws SQLException {
 
         log.info("Setting up database connection");
 
-        ds = new BasicDataSource();
+        dataSource = new BasicDataSource();
 
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUsername(C.DB_USER);
-        ds.setPassword(C.DB_PASSWORD);
-        ds.setUrl(C.DB_NAME);
-        ds.setInitialSize(4);
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUsername(user);
+        dataSource.setPassword(pass);
+        dataSource.setUrl(name);
+        dataSource.setInitialSize(size);
 
-        try {
+        Connection c = dataSource.getConnection();
 
-            Connection c = ds.getConnection();
-
-            Statement s = c.createStatement();
-
-            s.execute("TRUNCATE article");
-
-            c.close();
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-
-        }
+        s = c.prepareStatement("INSERT INTO article VALUES (?, ?, ?, ?, ?, ?)");
 
     }
 
-    public void insert(NewsArticle newsArticle) throws SQLException {
-
-        Connection c = ds.getConnection();
+    public synchronized void insert(NewsArticle newsArticle) throws SQLException {
 
         try {
-
-            PreparedStatement s = null;
-
-            s = c.prepareStatement("INSERT INTO article VALUES (?, ?, ?, ?, ?, ?)");
 
             s.setString(1, newsArticle.getHandle());
             s.setString(2, newsArticle.getUrl().toString());
             s.setString(3, newsArticle.getHeading());
-            s.setLong(4, newsArticle.getDate());
+            s.setTimestamp(4, new Timestamp(newsArticle.getDate().getMillis()));
             s.setString(5, newsArticle.getContent());
             s.setString(6, newsArticle.getSummarisation());
 
-            log.debug("Storing " + newsArticle.getHandle());
+            s.addBatch();
 
-            s.execute();
+            int current = currentBatchSize.incrementAndGet();
+
+            if (current >= batchSizeLimit) {
+                currentBatchSize.set(0);
+                log.info("Sending batch to DB");
+                s.executeBatch();
+                s.clearBatch();
+
+            }
 
         } catch (SQLException e) {
 
             log.info(e.getMessage());
-
-        } finally {
-
-            c.close();
 
         }
 

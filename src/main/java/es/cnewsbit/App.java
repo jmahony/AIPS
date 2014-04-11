@@ -1,22 +1,13 @@
 package es.cnewsbit;
 
 import com.googlecode.flyway.core.Flyway;
-import com.mongodb.DBObject;
-import es.cnewsbit.indexers.Indexer;
-import es.cnewsbit.indexers.LuceneIndexer;
 import es.cnewsbit.queriers.LuceneQuerier;
-import es.cnewsbit.utilities.NewsArticleFactory;
 import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.util.Version;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -34,18 +25,27 @@ public class App {
 
     public static void main(String[] args) {
 
+        // Perform database migrations
         Flyway flyway = new Flyway();
         flyway.setDataSource(C.DB_NAME, C.DB_USER, C.DB_PASSWORD);
         flyway.migrate();
 
-        ANALYSER = new StandardAnalyzer(Version.LUCENE_47);
 
-        createIndex();
+        try {
 
+            DocumentProcessor dp = new DocumentProcessor();
 
+            dp.rebuild();
 
+        } catch (IOException e) {
 
-        //queryIndex();
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 
@@ -67,82 +67,6 @@ public class App {
 
         }
 
-
-    }
-
-    public static void createIndex() {
-
-        ExecutorService pool = Executors.newFixedThreadPool(4);
-
-        HTMLStore store = HTMLStore.getInstance();
-
-        try {
-
-            final Indexer indexer = new LuceneIndexer(C.PATH_TO_INDEX, ANALYSER);
-
-            Database db = new Database();
-
-            while(store.hasNext()) {
-
-                pool.execute(()-> {
-
-                    try {
-
-                        List<DBObject> list = store.nextBatch(250);
-
-                        log.info("Started Processing Articles");
-
-                        if (list == null) throw new CollectionEmptyExeception("Collection is empty");
-
-                        for (DBObject object : list) {
-
-                            try {
-
-                                log.debug("Processing " + object.get("url"));
-
-                                NewsArticle na = NewsArticleFactory.build(object);
-
-                                indexer.addToIndex(na);
-
-                                db.insert(na);
-
-                                na = null;
-
-                                count.getAndIncrement();
-
-                            } catch (StackOverflowError e) {
-
-                                log.error("Stackoverflow");
-
-                            }
-
-                        }
-
-                        log.info("Finished Processing Articles, current rate is: " + (count.get() / TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis() - App.startTime))));
-
-                    } catch (Exception e) {
-
-                        log.error(e.getMessage());
-
-                    }
-
-                });
-
-            }
-
-            Thread.sleep(60000);
-
-            indexer.close();
-
-            System.exit(-1);
-
-        } catch (Exception e) {
-
-            log.fatal(e.getMessage());
-
-            System.exit(-1);
-
-        }
 
     }
 

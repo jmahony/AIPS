@@ -71,7 +71,6 @@ public class HTMLStore {
 
     public static synchronized List<DBObject> nextBatch(int batchSize) throws Exception {
 
-        Thread.sleep(10000);
 
         int c = count.getAndIncrement();
 

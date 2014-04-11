@@ -2,6 +2,9 @@ package es.cnewsbit;
 
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Element;
 
 import java.net.URL;
@@ -145,9 +148,26 @@ public class NewsArticle implements Indexable {
 
 
 
-    public long getDate() {
+    public DateTime getDate() {
 
-        return 1000000000;
+        if (url.getHost().toString().equals("www.bbc.co.uk")) {
+
+            Element elem = document.getDom().select("meta[property=rnews:datePublished]").first();
+
+            if (elem != null) {
+
+                DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:SS");
+
+                DateTime dt = DateTime.parse(elem.attr("content").toString(), dtf);
+
+                return dt;
+
+            }
+
+
+        }
+
+        return new DateTime();
 
     }
 }
