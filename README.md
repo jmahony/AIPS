@@ -9,3 +9,5 @@ Run with logging:
 To send the lucene index to the API
 
 ```scp * ubuntu@api.cnewsbit.es:/lucene/index```
+
+```~/utils/mongodb-linux-x86_64-2.6.0/bin/mongod --dbpath ~/data/db```
