@@ -23,8 +23,9 @@ public class C {
     public static final String PATH_TO_INDEX = "/lucene/index/";
 
     public static final HashMap<String, String> ARTICLE_CLASS_MAP= new HashMap() {{
-        put("www.bbc.co.uk", "BBCNewsArticle");
+        put("www.bbc.co.uk",  "BBCNewsArticle");
         put("uk.reuters.com", "UKReutersNewsArticle");
+        put("news.sky.com",   "SkyNewsArticle");
     }};
 /*
     public static final String DB_NAME = "jdbc:mysql://localhost:3306/cnewsbites_v2?rewriteBatchedStatements=true";

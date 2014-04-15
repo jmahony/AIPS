@@ -22,7 +22,8 @@ public class NewsArticleFactory {
 
     private static String[] whitelist = new String[] {
             "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+",
-            "http://www.bbc.co.uk/news/.+"
+            "http://www.bbc.co.uk/news/.+",
+            "http://news.sky.com/story/.+"
     };
 
     /**
