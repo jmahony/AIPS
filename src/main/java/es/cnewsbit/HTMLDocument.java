@@ -1,7 +1,7 @@
 package es.cnewsbit;
 
 import es.cnewsbit.exceptions.InvalidKernelException;
-import lombok.*;
+import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,7 +9,6 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +48,7 @@ public class HTMLDocument {
      *
      * @param html
      */
-    public HTMLDocument(String html, double[] kernel) throws Exception {
+    public HTMLDocument(String html, double[] kernel) {
 
         this.html = html.trim();
 

@@ -1,5 +1,6 @@
 package es.cnewsbit;
 
+import es.cnewsbit.articles.NewsArticle;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp.BasicDataSource;

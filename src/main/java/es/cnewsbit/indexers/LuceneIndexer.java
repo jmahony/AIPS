@@ -1,11 +1,9 @@
 package es.cnewsbit.indexers;
 
 import es.cnewsbit.Indexable;
-import es.cnewsbit.NewsArticle;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -18,7 +16,6 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * Created by josh on 03/04/14.

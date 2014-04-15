@@ -1,10 +1,12 @@
-package es.cnewsbit;
+package es.cnewsbit.articles;
 
+import es.cnewsbit.C;
+import es.cnewsbit.HTMLDocument;
+import es.cnewsbit.HTMLLine;
+import es.cnewsbit.Indexable;
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Element;
 
 import java.net.URL;
@@ -18,12 +20,12 @@ public class NewsArticle implements Indexable {
     /**
      * The HTML of the news article
      */
-    private final @Getter HTMLDocument document;
+    protected final @Getter HTMLDocument document;
 
     /**
      * The original URL of the article
      */
-    private final @Getter URL url;
+    protected final @Getter URL url;
 
     /**
      *
@@ -53,37 +55,30 @@ public class NewsArticle implements Indexable {
 
     /**
      *
-     * Get the content of the first h1 tag
+     * Attempt to get a title from the article
      *
      * @return content of first h1
      */
     public String getHeading() {
 
-        Element elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+        Element elem;
 
-        if (elem != null) {
+        // Attempt getting the title from open graph tags
+        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
 
-            return elem.attr("content");
+        if (elem != null) return elem.attr("content");
 
-        }
-
+        // Attempt to get title from title tag
         elem = document.getDom().getElementsByTag("title").first();
 
-        if (elem != null) {
+        if (elem != null) return elem.html();
 
-            return elem.html();
-
-        }
-
+        // Atempt to get title from the first h1 tag on the page
         elem = document.getDom().select("h1").first();
 
-        if (elem != null) {
+        if (elem != null) return elem.html();
 
-            return elem.html();
-
-        }
-
-        return null;
+        return "COULD NOT FIND TITLE";
 
     }
 
@@ -146,28 +141,16 @@ public class NewsArticle implements Indexable {
 
     }
 
-
-
-    public DateTime getDate() {
-
-        if (url.getHost().toString().equals("www.bbc.co.uk")) {
-
-            Element elem = document.getDom().select("meta[property=rnews:datePublished]").first();
-
-            if (elem != null) {
-
-                DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:SS");
-
-                DateTime dt = DateTime.parse(elem.attr("content").toString(), dtf);
-
-                return dt;
-
-            }
-
-
-        }
+    /**
+     *
+     * Gets the date of the news article
+     *
+     * @return
+     */
+    public  DateTime getDate() {
 
         return new DateTime();
 
     }
+
 }

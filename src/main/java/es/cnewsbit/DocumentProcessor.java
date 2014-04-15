@@ -1,6 +1,9 @@
 package es.cnewsbit;
 
 import com.mongodb.DBObject;
+import es.cnewsbit.articles.CollectionEmptyExeception;
+import es.cnewsbit.articles.NewsArticle;
+import es.cnewsbit.exceptions.NotNewsArticleException;
 import es.cnewsbit.indexers.Indexer;
 import es.cnewsbit.indexers.LuceneIndexer;
 import es.cnewsbit.utilities.NewsArticleFactory;
@@ -29,7 +32,6 @@ public class DocumentProcessor {
      */
     private final AtomicInteger noProcessedInBatch;
 
-
     /**
      * The database
      */
@@ -45,8 +47,7 @@ public class DocumentProcessor {
      */
     private final Indexer indexer;
 
-    private @Getter
-    final long processStartTimeMillis;
+    private @Getter final long processStartTimeMillis;
 
     public DocumentProcessor() throws IOException, SQLException {
 
@@ -184,8 +185,11 @@ class DocumentProcessorWorker implements Runnable {
 
                         noProcessed.getAndIncrement();
 
-                    } catch (StackOverflowError e) {
+                    } catch (NotNewsArticleException e) {
 
+                        log.debug(e.getMessage());
+
+                    } catch (StackOverflowError e) {
 
                         log.error("Stackoverflow: " + object.get("url"));
 
