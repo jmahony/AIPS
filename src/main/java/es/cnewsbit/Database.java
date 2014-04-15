@@ -19,7 +19,7 @@ public class Database {
 
     private @Getter final BasicDataSource dataSource;
 
-    private int batchSizeLimit = 1000;
+    private int batchSizeLimit = 50;
     private AtomicInteger currentBatchSize = new AtomicInteger(0);
 
     private @Getter PreparedStatement s;
