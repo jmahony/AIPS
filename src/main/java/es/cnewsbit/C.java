@@ -23,7 +23,7 @@ public class C {
     public static final String PATH_TO_INDEX = "/lucene/index/";
 
     public static final HashMap<String, String> ARTICLE_CLASS_MAP= new HashMap() {{
-        put("bbc.co.uk", "BBCNewsArticle");
+        put("www.bbc.co.uk", "BBCNewsArticle");
         put("uk.reuters.com", "UKReutersNewsArticle");
     }};
 /*
