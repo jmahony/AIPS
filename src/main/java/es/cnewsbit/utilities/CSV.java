@@ -1,4 +1,4 @@
-package es.cnewsbit.utility;
+package es.cnewsbit.utilities;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import es.cnewsbit.HTMLDocument;

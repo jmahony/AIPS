@@ -1,25 +1,82 @@
 package es.cnewsbit;
 
-import es.cnewsbit.measures.RelevancyGenerator;
-import es.cnewsbit.utility.CSV;
-import es.cnewsbit.utility.ResourceLoader;
+import com.googlecode.flyway.core.Flyway;
+import es.cnewsbit.queriers.LuceneQuerier;
+import lombok.extern.log4j.Log4j2;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.queryparser.classic.ParseException;
 
-import java.util.Set;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Hello world!
  *
  */
+@Log4j2
 public class App {
+
+    private static Analyzer ANALYSER;
+
+    private static AtomicInteger count = new AtomicInteger(0);
+
+    private static long startTime = System.currentTimeMillis();
 
     public static void main(String[] args) {
 
-        new App();
+        // Perform database migrations
+        Flyway flyway = new Flyway();
+        flyway.setDataSource(C.DB_NAME, C.DB_USER, C.DB_PASSWORD);
+        flyway.migrate();
+
+
+        try {
+
+            DocumentProcessor dp = new DocumentProcessor();
+
+            dp.rebuild();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void queryIndex() {
+
+        try {
+
+            LuceneQuerier lq = new LuceneQuerier(C.PATH_TO_INDEX, ANALYSER);
+
+            lq.query("rugby", 100);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+
+        }
+
 
     }
 
     public App() {
 
+
+
+
+
+        /**
         try {
 
             String html = ResourceLoader.asString(this, "/external/documents/uk-scotland-independence-devolution-idUKBREA1H1JM20140218");
@@ -40,7 +97,7 @@ public class App {
             e.printStackTrace();
 
         }
-
+*/
 
 
     }

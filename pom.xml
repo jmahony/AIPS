@@ -70,6 +70,47 @@
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.0-beta9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.0-beta9</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.3</version>
+        </dependency>
+
     </dependencies>
     <reporting>
         <plugins>
@@ -87,7 +128,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/cnewsbites</url>
+                    <url>jdbc:mysql://localhost:3306/cnewsbites_v2</url>
                     <user>piles</user>
                     <password>12101210</password>
                 </configuration>
@@ -173,7 +214,7 @@
                             </artifactSet>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.cnewsbit.App</mainClass>
+                                    <mainClass>es.cnewsbit.App</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

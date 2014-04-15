@@ -56,6 +56,18 @@ public class HTMLLine {
 
     /**
      *
+     * Gets the text of the line with no HTML tags
+     *
+     * @return the line without HTML tags
+     */
+    public String getText() {
+
+        return line.replaceAll("\\<.*?>", "");
+
+    }
+
+    /**
+     *
      * Count text on the line
      *
      * @return amount of text
