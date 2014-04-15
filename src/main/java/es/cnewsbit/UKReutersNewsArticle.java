@@ -1,12 +1,9 @@
 package es.cnewsbit;
 
-import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.NewsArticle;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Element;
 
 import java.net.URL;
@@ -17,7 +14,7 @@ import java.net.URL;
 @Log4j2
 public class UKReutersNewsArticle extends NewsArticle {
 
-    private static final String dateFormat = "yyyy/MM/dd HH:mm:SS";
+    private static final String dateFormat = "EE MMM d H:m:s z y";
 
     /**
      * Constructor
@@ -33,29 +30,15 @@ public class UKReutersNewsArticle extends NewsArticle {
 
     public DateTime getDate() {
 
-        Element elem = document.getDom().select("META[name=parsely-page]").first();
+        Element elem = document.getDom().select("META[name=REVISION_DATE]").first();
 
         if (elem != null) {
 
-            //DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormat);
+            DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormat);
 
-            JSONParser parser = new JSONParser();
+            DateTime dt = DateTime.parse(elem.attr("content").toString(), dtf);
 
-            try {
-
-                JSONObject json = (JSONObject) parser.parse(elem.attr("content").toString());
-
-                String dateString = json.get("pub_date").toString();
-
-                DateTime dt = DateTime.parse(dateString);
-
-                return dt;
-
-            } catch (ParseException e) {
-
-                log.error("Could not parse date from article");
-
-            }
+            return dt;
 
         }
 
