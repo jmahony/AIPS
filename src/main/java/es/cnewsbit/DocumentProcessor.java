@@ -93,7 +93,7 @@ public class DocumentProcessor {
                 indexer,
                 database,
                 noProcessedInBatch,
-                1000,
+                20000,
                 250
              )).start();
 
@@ -198,7 +198,7 @@ class DocumentProcessorWorker implements Runnable {
                 log.info("Finished Processing Articles, current rate is: " + rate + " per second");
 
             } catch (Exception e) {
-                e.printStackTrace();
+
                 log.error(e.getMessage());
 
             }
