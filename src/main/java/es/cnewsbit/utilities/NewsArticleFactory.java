@@ -6,9 +6,9 @@ import com.mongodb.DBObject;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.NewsArticle;
+import es.cnewsbit.exceptions.NotNewsArticleException;
 
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.Map;
 
 /**
@@ -26,6 +26,10 @@ public class NewsArticleFactory {
      */
     public static NewsArticle build(DBObject dbObject) throws Exception {
 
+        if(!isNewsArticle(dbObject))
+            throw new NotNewsArticleException("Document is not a whitelisted");
+
+        // Get the HTML list
         BasicDBList docs = (BasicDBList) dbObject.get("html");
 
         if(!docs.isEmpty()) {
@@ -59,19 +63,21 @@ public class NewsArticleFactory {
 
     }
 
-    public static NewsArticle build(ResultSet rs) throws Exception {
+    private static String[] whitelist = new String[] {
+        "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+"
+    };
 
-        HTMLDocument htmlDocument = new HTMLDocument(
-                rs.getString("html"),
-                C.SMOOTHING_KERNEL
-        );
+    public static boolean isNewsArticle(DBObject dbObject) {
 
-        URL url = new URL(rs.getString("url"));
+        String url = dbObject.get("url").toString();
 
-        NewsArticle newsArticle = new NewsArticle(htmlDocument, url);
+        for (String regex : whitelist) {
 
-        return newsArticle;
+            if (url.matches(regex)) return true;
 
+        }
+
+        return false;
 
     }
 
