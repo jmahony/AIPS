@@ -20,8 +20,7 @@ public class NewsArticle implements Indexable {
     /**
      * The HTML of the news article
      */
-    protected final @Getter
-    HTMLDocument document;
+    protected final @Getter HTMLDocument document;
 
     /**
      * The original URL of the article
@@ -56,37 +55,30 @@ public class NewsArticle implements Indexable {
 
     /**
      *
-     * Get the content of the first h1 tag
+     * Attempt to get a title from the article
      *
      * @return content of first h1
      */
     public String getHeading() {
 
-        Element elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+        Element elem;
 
-        if (elem != null) {
+        // Attempt getting the title from open graph tags
+        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
 
-            return elem.attr("content");
+        if (elem != null) return elem.attr("content");
 
-        }
-
+        // Attempt to get title from title tag
         elem = document.getDom().getElementsByTag("title").first();
 
-        if (elem != null) {
+        if (elem != null) return elem.html();
 
-            return elem.html();
-
-        }
-
+        // Atempt to get title from the first h1 tag on the page
         elem = document.getDom().select("h1").first();
 
-        if (elem != null) {
+        if (elem != null) return elem.html();
 
-            return elem.html();
-
-        }
-
-        return null;
+        return "COULD NOT FIND TITLE";
 
     }
 
