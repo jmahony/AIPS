@@ -1,5 +1,9 @@
-package es.cnewsbit;
+package es.cnewsbit.articles;
 
+import es.cnewsbit.C;
+import es.cnewsbit.HTMLDocument;
+import es.cnewsbit.HTMLLine;
+import es.cnewsbit.Indexable;
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
@@ -16,7 +20,8 @@ public class NewsArticle implements Indexable {
     /**
      * The HTML of the news article
      */
-    protected final @Getter HTMLDocument document;
+    protected final @Getter
+    HTMLDocument document;
 
     /**
      * The original URL of the article
@@ -144,7 +149,13 @@ public class NewsArticle implements Indexable {
 
     }
 
-    public DateTime getDate() {
+    /**
+     *
+     * Gets the date of the news article
+     *
+     * @return
+     */
+    public  DateTime getDate() {
 
         return new DateTime();
 

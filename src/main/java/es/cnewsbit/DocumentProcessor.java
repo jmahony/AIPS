@@ -1,6 +1,8 @@
 package es.cnewsbit;
 
 import com.mongodb.DBObject;
+import es.cnewsbit.articles.CollectionEmptyExeception;
+import es.cnewsbit.articles.NewsArticle;
 import es.cnewsbit.exceptions.NotNewsArticleException;
 import es.cnewsbit.indexers.Indexer;
 import es.cnewsbit.indexers.LuceneIndexer;

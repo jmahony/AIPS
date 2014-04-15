@@ -5,16 +5,25 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.NewsArticle;
+import es.cnewsbit.articles.NewsArticle;
 import es.cnewsbit.exceptions.NotNewsArticleException;
+import lombok.extern.log4j.Log4j2;
 
+import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
 /**
  * Created by josh on 04/04/14.
  */
+@Log4j2
 public class NewsArticleFactory {
+
+    private static String[] whitelist = new String[] {
+            "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+",
+            "http://www.bbc.co.uk/news/.+"
+    };
 
     /**
      *
@@ -24,19 +33,61 @@ public class NewsArticleFactory {
      * @return the news article
      * @throws Exception
      */
-    public static NewsArticle build(DBObject dbObject) throws Exception {
+    public static NewsArticle build(DBObject dbObject) throws NotNewsArticleException, MalformedURLException {
 
-        if(!isNewsArticle(dbObject))
-            throw new NotNewsArticleException("Document is not a whitelisted");
+        URL url = new URL(dbObject.get("url").toString());
 
-        // Get the HTML list
+        if (!isInWhitelist(url))
+            throw new NotNewsArticleException("Articles URL is not white listed");
+
+        // Create a HTML document representation
+        HTMLDocument htmlDocument = new HTMLDocument(
+                getHTML(dbObject),
+                C.SMOOTHING_KERNEL
+        );
+
+        NewsArticle newsArticle;
+
+        try {
+
+            // Attempt to dynamically instantiate the correct class
+            Class instanceClass = getInstanceClass(url);
+
+            Constructor<NewsArticle> con = instanceClass.getDeclaredConstructor(
+                    HTMLDocument.class, URL.class);
+
+            newsArticle = con.newInstance(htmlDocument, url);
+
+        } catch (Exception e) {
+
+            log.debug("Could not find class");
+
+            // If we cant dynamically instantiate, just create the base article
+            newsArticle = new NewsArticle(htmlDocument, url);
+
+        }
+
+        return newsArticle;
+
+    }
+
+    /**
+     *
+     * Extracts the newest HTML document from the crawled object.
+     *
+     * @param dbObject
+     * @return
+     */
+    private static String getHTML(DBObject dbObject) {
+
         BasicDBList docs = (BasicDBList) dbObject.get("html");
+
+        String html = null;
 
         if(!docs.isEmpty()) {
 
             BasicDBObject object = (BasicDBObject) docs.get(0);
 
-            String html = null;
 
             for (Map.Entry<String, Object> entry : object.entrySet()) {
 
@@ -46,38 +97,55 @@ public class NewsArticleFactory {
 
             }
 
-            HTMLDocument htmlDocument = new HTMLDocument(
-                    html,
-                    C.SMOOTHING_KERNEL
-            );
-
-            URL url = new URL(dbObject.get("url").toString());
-
-            NewsArticle newsArticle = new NewsArticle(htmlDocument, url);
-
-            return newsArticle;
-
         }
 
-        return null;
+        return html;
 
     }
 
-    private static String[] whitelist = new String[] {
-        "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+"
-    };
+    /**
+     *
+     * Gets the class to instantiate for a URL
+     *
+     * @param url the url
+     * @return the class
+     * @throws ClassNotFoundException
+     */
+    private static Class getInstanceClass(URL url) throws ClassNotFoundException {
 
-    public static boolean isNewsArticle(DBObject dbObject) {
+        // Get the class name we are going to instantiate
+        String className ="es.cnewsbit.articles." +
+                C.ARTICLE_CLASS_MAP.get(url.getHost());
 
-        String url = dbObject.get("url").toString();
+        Class c = Class.forName(className);
+
+        return c;
+
+    }
+
+    /**
+     *
+     * Returns true if the given URL is white listed, false if not.
+     *
+     * @param url the url
+     * @return whether the url is white listed or not
+     */
+    private static boolean isInWhitelist(URL url) {
+
+        boolean whitelisted = false;
 
         for (String regex : whitelist) {
 
-            if (url.matches(regex)) return true;
+            if (url.toString().matches(regex)) {
+
+                whitelisted = true;
+
+                break;
+            }
 
         }
 
-        return false;
+        return whitelisted;
 
     }
 

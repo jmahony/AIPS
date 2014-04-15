@@ -1,4 +1,4 @@
-package es.cnewsbit;
+package es.cnewsbit.articles;
 
 /**
  * Created by josh on 07/04/14.

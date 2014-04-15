@@ -4,7 +4,6 @@ import au.com.bytecode.opencsv.CSVWriter;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.HTMLLine;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -94,10 +93,6 @@ public class CSV {
                 System.out.println(i++ + ", " + line.getLine());
 
             }
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
 
         } catch (Exception e) {
 

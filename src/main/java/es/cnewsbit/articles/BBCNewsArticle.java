@@ -1,5 +1,6 @@
-package es.cnewsbit;
+package es.cnewsbit.articles;
 
+import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.exceptions.NotNewsArticleException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -15,6 +16,10 @@ public class BBCNewsArticle extends NewsArticle {
 
     private static final String dateFormat = "yyyy/MM/dd HH:mm:SS";
 
+    private static String[] headlineBlacklist = new String[] {
+            "INDEX"
+    };
+
     /**
      * Constructor
      *
@@ -24,6 +29,14 @@ public class BBCNewsArticle extends NewsArticle {
     public BBCNewsArticle(HTMLDocument document, URL url) throws NotNewsArticleException {
 
         super(document, url);
+
+        for (String regex : headlineBlacklist) {
+
+            if (getHeading().contains(regex))
+                throw new NotNewsArticleException("Document title is blacklisted");
+
+        }
+
 
         Element elem = document.getDom().select("meta[property=og:type]").first();
 

@@ -1,5 +1,6 @@
-package es.cnewsbit;
+package es.cnewsbit.articles;
 
+import es.cnewsbit.HTMLDocument;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
