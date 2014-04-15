@@ -185,7 +185,7 @@ class DocumentProcessorWorker implements Runnable {
 
                     } catch (NotNewsArticleException e) {
 
-                        log.info(e.getMessage());
+                        log.debug(e.getMessage());
 
                     } catch (StackOverflowError e) {
 
