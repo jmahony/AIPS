@@ -178,9 +178,9 @@ class DocumentProcessorWorker implements Runnable {
 
                         if (na != null) {
 
-                            indexer.addToIndex(na);
-
                             na.getDate();
+
+                            indexer.addToIndex(na);
 
                             database.insert(na);
 
