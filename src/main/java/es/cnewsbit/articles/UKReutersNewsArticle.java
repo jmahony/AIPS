@@ -29,6 +29,35 @@ public class UKReutersNewsArticle extends NewsArticle {
 
     }
 
+    /**
+     *
+     * Attempt to get a title from the article
+     *
+     * @return content of first h1
+     */
+    public String getHeading() {
+
+        Element elem;
+
+        // Attempt getting the title from open graph tags
+        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+
+        if (elem != null) return elem.attr("content");
+
+        // Attempt to get title from title tag
+        elem = document.getDom().getElementsByTag("title").first();
+
+        if (elem != null) return elem.html();
+
+        // Atempt to get title from the first h1 tag on the page
+        elem = document.getDom().select("h1").first();
+
+        if (elem != null) return elem.html();
+
+        return "COULD NOT FIND TITLE";
+
+    }
+
     public DateTime getDate() {
 
         Element elem = document.getDom().select("META[name=REVISION_DATE]").first();

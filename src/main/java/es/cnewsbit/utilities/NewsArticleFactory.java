@@ -10,6 +10,7 @@ import es.cnewsbit.exceptions.NotNewsArticleException;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class NewsArticleFactory {
                 C.SMOOTHING_KERNEL
         );
 
-        NewsArticle newsArticle;
+        NewsArticle newsArticle = null;
 
         try {
 
@@ -59,12 +60,28 @@ public class NewsArticleFactory {
 
             newsArticle = con.newInstance(htmlDocument, url);
 
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
 
             log.debug("Could not find class");
 
             // If we cant dynamically instantiate, just create the base article
             newsArticle = new NewsArticle(htmlDocument, url);
+
+        } catch (InvocationTargetException e) {
+
+            log.debug(e.getMessage());
+
+        } catch (NoSuchMethodException e) {
+
+            log.debug(e.getMessage());
+
+        } catch (InstantiationException e) {
+
+            log.debug(e.getMessage());
+
+        } catch (IllegalAccessException e) {
+
+            log.debug(e.getMessage());
 
         }
 

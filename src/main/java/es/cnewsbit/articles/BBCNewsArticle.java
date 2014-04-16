@@ -17,7 +17,13 @@ public class BBCNewsArticle extends NewsArticle {
     private static final String dateFormat = "yyyy/MM/dd HH:mm:SS";
 
     private static String[] headlineBlacklist = new String[] {
-            "INDEX"
+            "INDEX",
+            "BBC NEWS | Marketwatch"
+    };
+
+    private static String[] urlBlacklist = new String[] {
+            "print=trueprint=true",
+            "/news/correspondents/"
     };
 
     /**
@@ -30,13 +36,19 @@ public class BBCNewsArticle extends NewsArticle {
 
         super(document, url);
 
-        for (String regex : headlineBlacklist) {
+        for (String regex : urlBlacklist) {
 
-            if (getHeading().contains(regex))
-                throw new NotNewsArticleException("Document title is blacklisted");
+            if (url.toString().contains(regex))
+                throw new NotNewsArticleException("URL is black listed");
 
         }
 
+        for (String regex : headlineBlacklist) {
+
+            if (getHeading().contains(regex))
+                throw new NotNewsArticleException("Document title is black listed");
+
+        }
 
         Element elem = document.getDom().select("meta[property=og:type]").first();
 

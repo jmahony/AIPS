@@ -1,5 +1,7 @@
 package es.cnewsbit.articles;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleSentencesExtractor;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.HTMLLine;
@@ -90,24 +92,44 @@ public class NewsArticle implements Indexable {
      */
     public String getContent() {
 
-        HTMLLine[] lines = document.getHtmlBodyLines();
+        String content = null;
 
-        StringBuffer sb = new StringBuffer();
+        if (C.BOILERPIPE) {
 
-        for (int i = 0; i < lines.length; i++) {
+            try {
 
-            double ratio = lines[i].getSmoothedTextTagRatio();
+                content = ArticleSentencesExtractor.INSTANCE.getText(document.getHtml());
 
-            if (ratio >= C.LOWER_BOUND_EXTRACTION_THRESHOLD &&
-                ratio <= C.UPPER_BOUND_EXTRACTION_THRESHOLD) {
+            } catch (BoilerpipeProcessingException e) {
 
-                sb.append(lines[i].getText());
+                e.printStackTrace();
 
             }
 
+        } else {
+
+            HTMLLine[] lines = document.getHtmlBodyLines();
+
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < lines.length; i++) {
+
+                double ratio = lines[i].getSmoothedTextTagRatio();
+
+                if (ratio >= C.LOWER_BOUND_EXTRACTION_THRESHOLD &&
+                        ratio <= C.UPPER_BOUND_EXTRACTION_THRESHOLD) {
+
+                    sb.append(lines[i].getText());
+
+                }
+
+            }
+
+            content = sb.toString();
+
         }
 
-        return sb.toString();
+        return content;
 
     }
 
