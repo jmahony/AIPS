@@ -9,23 +9,46 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by josh on 03/04/14.
+ * Used to retrieve documents from the HTML store
  */
 @Log4j2
 public class HTMLStore {
 
+    /**
+     * MongoDB connection pool
+     */
     private static MongoClient client;
 
+    /**
+     * Reference to the database
+     */
     private static DB db;
 
+    /**
+     * This is a singleton, so keep one instance
+     */
     private static HTMLStore instance = null;
 
+    /**
+     * How many document we have retrieved from monogodb
+     */
     private static AtomicInteger count = new AtomicInteger(0);
 
+    /**
+     * Reference to the collection
+     */
     private static DBCollection collection;
 
+    /**
+     * Whether the cursor has reached the end of the collection
+     */
     public static boolean isEmpty = false;
 
+    /**
+     *
+     * Constructor
+     *
+     */
     protected HTMLStore() {
 
         log.info("Initialising MongoDB connection... ");
@@ -51,6 +74,12 @@ public class HTMLStore {
 
     }
 
+    /**
+     *
+     * This is a singleton, so return an instance
+     *
+     * @return
+     */
     public static HTMLStore getInstance() {
 
         if (instance == null) {
@@ -63,14 +92,7 @@ public class HTMLStore {
 
     }
 
-    public static synchronized boolean hasNext() {
-
-        return !isEmpty;
-
-    }
-
-    public static synchronized List<DBObject> nextBatch(int batchSize) throws Exception {
-
+    public synchronized List<DBObject> nextBatch(int batchSize) {
 
         int c = count.getAndIncrement();
 

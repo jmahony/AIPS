@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by josh on 25/02/14.
+ * Represents a HTML document
  */
 public class HTMLDocument {
 
@@ -221,7 +221,7 @@ public class HTMLDocument {
      *
      * Pareses all H1 tags
      *
-     * @return
+     * @return a list of h1 tags HTML
      */
     public ArrayList<String> parseHOnes() {
 

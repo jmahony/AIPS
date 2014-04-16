@@ -1,9 +1,8 @@
 package es.cnewsbit;
 
 import com.mongodb.DBObject;
-import es.cnewsbit.articles.CollectionEmptyExeception;
+import es.cnewsbit.exceptions.CollectionEmptyException;
 import es.cnewsbit.articles.NewsArticle;
-import es.cnewsbit.exceptions.NotNewsArticleException;
 import es.cnewsbit.indexers.Indexer;
 import es.cnewsbit.indexers.LuceneIndexer;
 import es.cnewsbit.utilities.NewsArticleFactory;
@@ -30,47 +29,61 @@ public class DocumentProcessor {
     /**
      * How many documents have been processed in this instance
      */
-    private final AtomicInteger noProcessedInBatch;
+    private final AtomicInteger NO_PROCESSED;
 
     /**
      * The database
      */
-    private final Database database;
+    private final Database DATABASE;
 
     /**
      * The html to process
      */
-    private final HTMLStore store;
+    private final HTMLStore STORE;
 
     /**
-     *
+     * Used to build the index
      */
-    private final Indexer indexer;
+    private final Indexer INDEXER;
 
-    private @Getter final long processStartTimeMillis;
+    /**
+     * When we started processing, so we can calculate how many articles
+     * we are processing per second
+     */
+    private @Getter final long START_TIME;
 
     public DocumentProcessor() throws IOException, SQLException {
 
-        this.noProcessedInBatch = new AtomicInteger(0);
+        this.NO_PROCESSED = new AtomicInteger(0);
 
-        this.database = new Database(C.DB_USER, C.DB_PASSWORD, C.DB_NAME, 4);
+        this.DATABASE = new Database(
+                C.DB_USER,
+                C.DB_PASSWORD,
+                C.DB_NAME,
+                C.DB_POOL_SIZE,
+                C.DB_BATCH_SIZE);
 
-        this.store = HTMLStore.getInstance();
+        this.STORE = HTMLStore.getInstance();
 
         Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
 
-        this.indexer = new LuceneIndexer(C.PATH_TO_INDEX, analyzer);
+        this.INDEXER = new LuceneIndexer(C.PATH_TO_INDEX, analyzer);
 
-        this.processStartTimeMillis = System.currentTimeMillis();
+        this.START_TIME = System.currentTimeMillis();
 
     }
 
+
     /**
-     * This will clear the article database
+     *
+     * We are rebuilding the index, so clear the DB table before
+     * starting processing
+     *
+     * @throws SQLException if the sql is invalid
      */
     public void rebuild() throws SQLException {
 
-        Connection c = database.getDataSource().getConnection();
+        Connection c = DATABASE.getDataSource().getConnection();
 
         Statement s = c.createStatement();
 
@@ -82,18 +95,20 @@ public class DocumentProcessor {
 
     }
 
+    /**
+     *
+     * Spawn a number of workers
+     *
+     */
     public void process() {
 
-        int noWorkers = 4;
-
-        for(int i = 0; i < noWorkers; i++) {
+        for(int i = 0; i < C.NO_OF_PROCESSORS; i++) {
 
             new Thread(new DocumentProcessorWorker(
                 this,
-                store,
-                indexer,
-                database,
-                noProcessedInBatch,
+                INDEXER,
+                DATABASE,
+                    NO_PROCESSED,
                 20000,
                 250
              )).start();
@@ -102,14 +117,23 @@ public class DocumentProcessor {
 
     }
 
+    /**
+     *
+     * Closes down the indexer when all document processor workers are finished
+     *
+     */
     public void workersDone() {
 
-        log.info("Shutting down indexed");
+        log.info("Shutting down indexer");
 
         try {
-            indexer.close();
+
+            INDEXER.close();
+
         } catch (IOException e) {
+
             e.printStackTrace();
+
         }
 
         log.info("Processing batch complete");
@@ -118,27 +142,78 @@ public class DocumentProcessor {
 
 }
 
+/**
+ * Carries out the actual processing of news articles
+ */
 @Log4j2
 class DocumentProcessorWorker implements Runnable {
 
+    /**
+     * Reference to the HTML store
+     */
     private static HTMLStore store;
+
+    /**
+     * Reference to the indexer
+     */
     private static Indexer indexer;
+
+    /**
+     * Reference to the database
+     */
     private static Database database;
+
+    /**
+     * How many the class has processed
+     */
     private static AtomicInteger noProcessed;
+
+    /**
+     * How many articles the thread should retreive from the store at a time
+     */
     private static int batchSize;
+
+    /**
+     * How many iterations are needed to process everything
+     */
     private static int iterations;
+
+    /**
+     * How many instances of this class
+     */
     private static AtomicInteger noOfWorkers = new AtomicInteger(0);
+
+    /**
+     * How many instances of this class have finished their work
+     */
     private static AtomicInteger noOfWorkersFinished = new AtomicInteger(0);
+
+    /**
+     * Reference to the document processor
+     */
     private static DocumentProcessor dp;
 
-    public DocumentProcessorWorker(DocumentProcessor dp, HTMLStore store, Indexer indexer,
-                                   Database database, AtomicInteger noProcessed,
+    /**
+     *
+     * Constructor
+     *
+     * @param dp the calling document processor
+     * @param indexer the indexer to add terms to
+     * @param database the database to store the articles to
+     * @param noProcessed to keep track of how many have been processed
+     * @param noToProcess total number to process by this instance
+     * @param batchSize how many batches to process in
+     */
+    public DocumentProcessorWorker(DocumentProcessor dp,
+                                   Indexer indexer,
+                                   Database database,
+                                   AtomicInteger noProcessed,
                                    int noToProcess,
                                    int batchSize) {
 
         if (DocumentProcessorWorker.store == null) {
 
-            DocumentProcessorWorker.store = store;
+            DocumentProcessorWorker.store = HTMLStore.getInstance();
             DocumentProcessorWorker.indexer = indexer;
             DocumentProcessorWorker.database = database;
             DocumentProcessorWorker.noProcessed = noProcessed;
@@ -155,7 +230,9 @@ class DocumentProcessorWorker implements Runnable {
 
     }
 
-
+    /**
+     * Starts the thread
+     */
     @Override
     public void run() {
 
@@ -163,11 +240,14 @@ class DocumentProcessorWorker implements Runnable {
 
             try {
 
+                // Get a batch of document to process
                 List<DBObject> list = store.nextBatch(batchSize);
 
                 log.info("Started Processing Articles");
 
-                if (list == null) throw new CollectionEmptyExeception("Collection is empty");
+                // If the batch is empty, throw an exception
+                if (list == null)
+                    throw new CollectionEmptyException("Collection is empty");
 
                 for (DBObject object : list) {
 
@@ -175,55 +255,80 @@ class DocumentProcessorWorker implements Runnable {
 
                         log.debug("Processing " + object.get("url"));
 
+                        // Build a news article
                         NewsArticle na = NewsArticleFactory.build(object);
 
-                        indexer.addToIndex(na);
+                        if (na != null) {
 
-                        database.insert(na);
+                            na.getDate();
 
-                        na = null;
+                            indexer.addToIndex(na);
 
+                            database.insert(na);
+
+                            na = null;
+
+                        }
+
+                        // Even if no article is returned by the builder,
+                        // We still need to keep track of how many have been
+                        // taken from the collection
                         noProcessed.getAndIncrement();
-
-                    } catch (NotNewsArticleException e) {
-
-                        log.debug(e.getMessage());
 
                     } catch (StackOverflowError e) {
 
                         log.error("Stackoverflow: " + object.get("url"));
 
+                    } catch (Exception e) {
+
+                        log.debug(e.getMessage());
+
                     }
 
                 }
 
-                long rate = (noProcessed.get() / TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis() - dp.getProcessStartTimeMillis())));
+                // Calculate the rate we are processing articles
+                long rate = (noProcessed.get() / TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis() - dp.getSTART_TIME())));
 
                 log.info("Finished Processing Articles, current rate is: " + rate + " per second");
 
-            } catch (Exception e) {
+            } catch (CollectionEmptyException e) {
 
-                log.error(e.getMessage());
+                log.debug(e);
 
             }
 
         }
 
         try {
+
+            // If this is the last thread finishing, there may be articles left over
+            // in the database batch, so send these to the database
             database.getS().executeBatch();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            log.info(e.getMessage());
+
         }
 
-        noOfWorkersFinished.incrementAndGet();
-
+        // Register as done
         DocumentProcessorWorker.done();
 
     }
 
+    /**
+     *
+     * Each thread calls this when it has finished processing.
+     * When all threads have finished, the document processor will be notified
+     * so it can close down properly
+     *
+     */
     public static void done() {
 
         log.info("Done");
+
+        noOfWorkersFinished.incrementAndGet();
 
         if(noOfWorkers.get() == noOfWorkersFinished.get()) {
 

@@ -1,10 +1,14 @@
 package es.cnewsbit.articles;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleSentencesExtractor;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.HTMLLine;
 import es.cnewsbit.Indexable;
+import es.cnewsbit.exceptions.NoDateException;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
 import org.jsoup.nodes.Element;
@@ -13,9 +17,10 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by josh on 03/04/14.
+ * Generic base extractor class
  */
-public class NewsArticle implements Indexable {
+@Log4j2
+public abstract class NewsArticle implements Indexable {
 
     /**
      * The HTML of the news article
@@ -55,11 +60,11 @@ public class NewsArticle implements Indexable {
 
     /**
      *
-     * Attempt to get a title from the article
+     * Attempt to get the headline from the article
      *
-     * @return content of first h1
+     * @return the headline
      */
-    public String getHeading() {
+    public String getHeadline() {
 
         Element elem;
 
@@ -90,24 +95,44 @@ public class NewsArticle implements Indexable {
      */
     public String getContent() {
 
-        HTMLLine[] lines = document.getHtmlBodyLines();
+        String content = null;
 
-        StringBuffer sb = new StringBuffer();
+        if (C.BOILERPIPE) {
 
-        for (int i = 0; i < lines.length; i++) {
+            try {
 
-            double ratio = lines[i].getSmoothedTextTagRatio();
+                content = ArticleSentencesExtractor.INSTANCE.getText(document.getHtml());
 
-            if (ratio >= C.LOWER_BOUND_EXTRACTION_THRESHOLD &&
-                ratio <= C.UPPER_BOUND_EXTRACTION_THRESHOLD) {
+            } catch (BoilerpipeProcessingException e) {
 
-                sb.append(lines[i].getText());
+                e.printStackTrace();
 
             }
 
+        } else {
+
+            HTMLLine[] lines = document.getHtmlBodyLines();
+
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < lines.length; i++) {
+
+                double ratio = lines[i].getSmoothedTextTagRatio();
+
+                if (ratio >= C.LOWER_BOUND_EXTRACTION_THRESHOLD &&
+                    ratio <= C.UPPER_BOUND_EXTRACTION_THRESHOLD) {
+
+                    sb.append(lines[i].getText());
+
+                }
+
+            }
+
+            content = sb.toString();
+
         }
 
-        return sb.toString();
+        return content;
 
     }
 
@@ -131,10 +156,16 @@ public class NewsArticle implements Indexable {
      */
     @Override public String getIndexString() {
 
-        return getHeading() + " " + getMetaKeywords() + " " + getContent();
+        return getHeadline() + " " + getMetaKeywords() + " " + getContent();
 
     }
 
+    /**
+     *
+     * The summarisation of the news article
+     *
+     * @return content summarisation
+     */
     public String getSummarisation() {
 
         return "";
@@ -143,13 +174,13 @@ public class NewsArticle implements Indexable {
 
     /**
      *
-     * Gets the date of the news article
+     * Gets the date of the article
      *
-     * @return
+     * @return the date of the article
      */
-    public  DateTime getDate() {
+    public DateTime getDate() throws NoDateException {
 
-        return new DateTime();
+        throw new NoDateException("No date found in article");
 
     }
 

@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by josh on 02/03/14.
+ * Bunch of utility functions for handling CSV files
  */
 public class CSV {
 
     /**
      *
-     * Returns a csv file as a hashmap
+     * Turns a CSV string into a hashmap table
      *
-     * @param csvRaw
+     * @param csvRaw the csv string
      * @return a hasmap of
      */
     public static LinkedHashMap[] toTable(String csvRaw) {
@@ -53,9 +53,11 @@ public class CSV {
 
     /**
      *
-     * @param csv
-     * @param lineColumn
-     * @param relevancyColumn
+     * Formats a CSV string so we can perform relevant measure on it
+     *
+     * @param csv the CSV string
+     * @param lineColumn the column the line number is in
+     * @param relevancyColumn the column the relevancy bit is in
      * @return a set of integer that relate to lines that have been marked as relevant
      */
     public static Set<Integer> toRelevancySet(String csv, int lineColumn, int relevancyColumn) {

@@ -3,7 +3,7 @@ package es.cnewsbit.utilities;
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by josh on 02/03/14.
+ * Loads resources
  */
 public class ResourceLoader {
 

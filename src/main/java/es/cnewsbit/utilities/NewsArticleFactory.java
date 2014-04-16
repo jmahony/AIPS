@@ -10,31 +10,42 @@ import es.cnewsbit.exceptions.NotNewsArticleException;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
 /**
- * Created by josh on 04/04/14.
+ * Builds the correct news article object for the domain
  */
 @Log4j2
 public class NewsArticleFactory {
 
+    /**
+     * If a URL pattern exists here, it will be index, otherwise it will be
+     * ignored
+     */
     private static String[] whitelist = new String[] {
             "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+",
             "http://www.bbc.co.uk/news/.+",
-            "http://news.sky.com/story/.+"
+            "http://news.sky.com/story/.+",
+            "http://www.nbcnews.com/.+"
     };
 
     /**
      *
      * Turns a DBObject into a NewsArticle
      *
-     * @param dbObject the database object
+     * @param dbObject the MongoDB object
      * @return the news article
-     * @throws Exception
+     * @throws NotNewsArticleException if the document is not white listed
+     * @throws MalformedURLException if the URL is malformed
+     * @throws ClassNotFoundException if a news article parser class does not exist
      */
-    public static NewsArticle build(DBObject dbObject) throws NotNewsArticleException, MalformedURLException {
+    @SuppressWarnings("unchecked")
+    public static NewsArticle build(DBObject dbObject) throws
+            NotNewsArticleException, MalformedURLException,
+            ClassNotFoundException {
 
         URL url = new URL(dbObject.get("url").toString());
 
@@ -47,7 +58,7 @@ public class NewsArticleFactory {
                 C.SMOOTHING_KERNEL
         );
 
-        NewsArticle newsArticle;
+        NewsArticle newsArticle = null;
 
         try {
 
@@ -55,16 +66,18 @@ public class NewsArticleFactory {
             Class instanceClass = getInstanceClass(url);
 
             Constructor<NewsArticle> con = instanceClass.getDeclaredConstructor(
-                    HTMLDocument.class, URL.class);
+                    HTMLDocument.class,
+                    URL.class
+            );
 
             newsArticle = con.newInstance(htmlDocument, url);
 
-        } catch (Exception e) {
+        } catch (InvocationTargetException
+                | NoSuchMethodException
+                | InstantiationException
+                | IllegalAccessException e) {
 
-            log.debug("Could not find class");
-
-            // If we cant dynamically instantiate, just create the base article
-            newsArticle = new NewsArticle(htmlDocument, url);
+            log.debug(e.getMessage());
 
         }
 
@@ -76,8 +89,8 @@ public class NewsArticleFactory {
      *
      * Extracts the newest HTML document from the crawled object.
      *
-     * @param dbObject
-     * @return
+     * @param dbObject the MongoDB object
+     * @return the HTML string
      */
     private static String getHTML(DBObject dbObject) {
 

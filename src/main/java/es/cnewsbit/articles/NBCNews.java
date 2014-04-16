@@ -12,30 +12,40 @@ import org.jsoup.nodes.Element;
 import java.net.URL;
 
 /**
- * News article parser for articles on the bbc.co.uk domain
+ * News article parser for articles on the nbcnews.com domain
  */
 @Log4j2
-public class BBCNewsArticle extends NewsArticle {
+public class NBCNews extends NewsArticle {
 
     /**
      * The format used for the published date
      */
-    private static final String dateFormat = "yyyy/MM/dd HH:mm:SS";
+    private static final String dateFormat = "yyyy-MM-dd'T'HH:mm:SS";
+
+    /**
+     * The alternative format used for the published date
+     */
+    private static final String dateFormatAlt = "yyyy-MM-dd'T'HH:mm:SSZ";
 
     /**
      * Any pages with these titles will be ignored
      */
     private static String[] headlineBlacklist = new String[] {
-            "INDEX",
-            "BBC NEWS | Marketwatch"
+            "Meet the Press",
+            "The Ed Show",
+            "Ed Show Transcripts",
+            "Hardball Transcripts",
+            "Dateline NBC: News stories about crime, celebrity and health",
+            "NBC News Social Directory"
     };
 
     /**
      * Any pages with these urls will be ignored
      */
     private static String[] urlBlacklist = new String[] {
-            "print=trueprint=true",
-            "/news/correspondents/"
+            "http://www.nbcnews.com/.*/tag/.*",
+            "http://www.nbcnews.com/html/msnbc/.*",
+            "http://www.nbcnews.com/id/3032123/ns/travel/"
     };
 
     /**
@@ -44,14 +54,14 @@ public class BBCNewsArticle extends NewsArticle {
      * @param document the document of the article
      * @param url the url of the article
      */
-    public BBCNewsArticle(HTMLDocument document, URL url) throws NotNewsArticleException {
+    public NBCNews(HTMLDocument document, URL url) throws NotNewsArticleException {
 
         super(document, url);
 
         // Check the URL isn't in the black list
         for (String regex : urlBlacklist) {
 
-            if (url.toString().contains(regex))
+            if (url.toString().matches(regex))
                 throw new NotNewsArticleException("URL is black listed");
 
         }
@@ -82,6 +92,43 @@ public class BBCNewsArticle extends NewsArticle {
 
     /**
      *
+     * Attempt to get a title from the article
+     *
+     * @return the title of the article
+     */
+    @Override
+    public String getHeadline() {
+
+        String headline = null;
+        Element elem;
+
+        // Attempt getting the title from open graph tags
+        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+
+        if (elem != null) headline = elem.attr("content");
+
+        // Attempt to get title from title tag
+        elem = document.getDom().getElementsByTag("title").first();
+
+        if (elem != null && headline == null) return elem.html();
+
+        // Attempt to get title from the first h1 tag on the page
+        elem = document.getDom().select("h1").first();
+
+        if (elem != null && headline == null) return elem.html();
+
+        if (headline != null) {
+
+            return headline.replace("- NBC News.com", "");
+
+        }
+
+        return "COULD NOT FIND TITLE";
+
+    }
+
+    /**
+     *
      * Attempts to return the date of the news article
      *
      * @return the date of the article
@@ -90,7 +137,7 @@ public class BBCNewsArticle extends NewsArticle {
     @Override
     public DateTime getDate() throws NoDateException {
 
-        Element elem = document.getDom().select("meta[property=rnews:datePublished]").first();
+        Element elem = document.getDom().select("meta[property=article:published_time]").first();
 
         if (elem != null) {
 
@@ -102,11 +149,11 @@ public class BBCNewsArticle extends NewsArticle {
 
         }
 
-        elem = document.getDom().select("meta[name=OriginalPublicationDate]").first();
+        elem = document.getDom().select("meta[name=DC.date.issued]").first();
 
         if (elem != null) {
 
-            DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormat);
+            DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormatAlt);
 
             DateTime dt = DateTime.parse(elem.attr("content"), dtf);
 
@@ -119,4 +166,3 @@ public class BBCNewsArticle extends NewsArticle {
     }
 
 }
-
