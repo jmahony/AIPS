@@ -24,7 +24,8 @@ public class NewsArticleFactory {
     private static String[] whitelist = new String[] {
             "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+",
             "http://www.bbc.co.uk/news/.+",
-            "http://news.sky.com/story/.+"
+            "http://news.sky.com/story/.+",
+            "http://www.nbcnews.com/.+"
     };
 
     /**
@@ -35,7 +36,10 @@ public class NewsArticleFactory {
      * @return the news article
      * @throws Exception
      */
-    public static NewsArticle build(DBObject dbObject) throws NotNewsArticleException, MalformedURLException {
+    @SuppressWarnings("unchecked")
+    public static NewsArticle build(DBObject dbObject) throws
+            NotNewsArticleException, MalformedURLException,
+            ClassNotFoundException {
 
         URL url = new URL(dbObject.get("url").toString());
 
@@ -56,30 +60,16 @@ public class NewsArticleFactory {
             Class instanceClass = getInstanceClass(url);
 
             Constructor<NewsArticle> con = instanceClass.getDeclaredConstructor(
-                    HTMLDocument.class, URL.class);
+                    HTMLDocument.class,
+                    URL.class
+            );
 
             newsArticle = con.newInstance(htmlDocument, url);
 
-        } catch (ClassNotFoundException e) {
-
-            log.debug("Could not find class");
-
-            // If we cant dynamically instantiate, just create the base article
-            newsArticle = new NewsArticle(htmlDocument, url);
-
-        } catch (InvocationTargetException e) {
-
-            log.debug(e.getMessage());
-
-        } catch (NoSuchMethodException e) {
-
-            log.debug(e.getMessage());
-
-        } catch (InstantiationException e) {
-
-            log.debug(e.getMessage());
-
-        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException
+                | NoSuchMethodException
+                | InstantiationException
+                | IllegalAccessException e) {
 
             log.debug(e.getMessage());
 

@@ -69,7 +69,7 @@ public class HTMLStore {
 
     }
 
-    public static synchronized List<DBObject> nextBatch(int batchSize) throws Exception {
+    public static synchronized List<DBObject> nextBatch(int batchSize) {
 
 
         int c = count.getAndIncrement();

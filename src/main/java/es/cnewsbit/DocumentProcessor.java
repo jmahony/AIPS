@@ -3,7 +3,6 @@ package es.cnewsbit;
 import com.mongodb.DBObject;
 import es.cnewsbit.articles.CollectionEmptyExeception;
 import es.cnewsbit.articles.NewsArticle;
-import es.cnewsbit.exceptions.NotNewsArticleException;
 import es.cnewsbit.indexers.Indexer;
 import es.cnewsbit.indexers.LuceneIndexer;
 import es.cnewsbit.utilities.NewsArticleFactory;
@@ -177,21 +176,27 @@ class DocumentProcessorWorker implements Runnable {
 
                         NewsArticle na = NewsArticleFactory.build(object);
 
-                        indexer.addToIndex(na);
+                        if (na != null) {
 
-                        database.insert(na);
+                            indexer.addToIndex(na);
 
-                        na = null;
+                            na.getDate();
+
+                            database.insert(na);
+
+                            na = null;
+
+                        }
 
                         noProcessed.getAndIncrement();
-
-                    } catch (NotNewsArticleException e) {
-
-                        log.debug(e.getMessage());
 
                     } catch (StackOverflowError e) {
 
                         log.error("Stackoverflow: " + object.get("url"));
+
+                    } catch (Exception e) {
+
+                        log.debug(e.getMessage());
 
                     }
 
@@ -201,18 +206,23 @@ class DocumentProcessorWorker implements Runnable {
 
                 log.info("Finished Processing Articles, current rate is: " + rate + " per second");
 
-            } catch (Exception e) {
 
-                log.error(e.getMessage());
+            } catch (CollectionEmptyExeception e) {
+
+                log.debug(e);
 
             }
 
         }
 
         try {
+
             database.getS().executeBatch();
+
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            log.info(e.getMessage());
+
         }
 
         noOfWorkersFinished.incrementAndGet();

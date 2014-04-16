@@ -1,6 +1,7 @@
 package es.cnewsbit.articles;
 
 import es.cnewsbit.HTMLDocument;
+import es.cnewsbit.exceptions.NoDateExeception;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -35,19 +36,10 @@ public class UKReutersNewsArticle extends NewsArticle {
      *
      * @return content of first h1
      */
+    @Override
     public String getHeading() {
 
         Element elem;
-
-        // Attempt getting the title from open graph tags
-        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
-
-        if (elem != null) return elem.attr("content");
-
-        // Attempt to get title from title tag
-        elem = document.getDom().getElementsByTag("title").first();
-
-        if (elem != null) return elem.html();
 
         // Atempt to get title from the first h1 tag on the page
         elem = document.getDom().select("h1").first();
@@ -58,7 +50,14 @@ public class UKReutersNewsArticle extends NewsArticle {
 
     }
 
-    public DateTime getDate() {
+    /**
+     *
+     * Extracts the date of the article
+     *
+     * @return the date of the article
+     */
+    @Override
+    public DateTime getDate() throws NoDateExeception {
 
         Element elem = document.getDom().select("META[name=REVISION_DATE]").first();
 
@@ -72,7 +71,7 @@ public class UKReutersNewsArticle extends NewsArticle {
 
         }
 
-        return new DateTime();
+        throw new NoDateExeception("No date found in article");
 
     }
 }

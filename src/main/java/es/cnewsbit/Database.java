@@ -1,6 +1,7 @@
 package es.cnewsbit;
 
 import es.cnewsbit.articles.NewsArticle;
+import es.cnewsbit.exceptions.NoDateExeception;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -48,11 +49,11 @@ public class Database {
         try {
 
             s.setString(1, newsArticle.getHandle());
-            s.setString(2, newsArticle.getUrl().toString());
-            s.setString(3, newsArticle.getHeading());
+            s.setString(2, newsArticle.getUrl().toString().trim());
+            s.setString(3, newsArticle.getHeading().trim());
             s.setTimestamp(4, new Timestamp(newsArticle.getDate().getMillis()));
-            s.setString(5, newsArticle.getContent());
-            s.setString(6, newsArticle.getSummarisation());
+            s.setString(5, newsArticle.getContent().trim());
+            s.setString(6, newsArticle.getSummarisation().trim());
 
             s.addBatch();
 
@@ -69,6 +70,10 @@ public class Database {
         } catch (SQLException e) {
 
             log.info(e.getMessage());
+
+        } catch (NoDateExeception e) {
+
+            log.debug("Could not extract date");
 
         }
 

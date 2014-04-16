@@ -1,6 +1,7 @@
 package es.cnewsbit.articles;
 
 import es.cnewsbit.HTMLDocument;
+import es.cnewsbit.exceptions.NoDateExeception;
 import es.cnewsbit.exceptions.NotNewsArticleException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -65,7 +66,7 @@ public class BBCNewsArticle extends NewsArticle {
 
     }
 
-    public DateTime getDate() {
+    public DateTime getDate() throws NoDateExeception {
 
         Element elem = document.getDom().select("meta[property=rnews:datePublished]").first();
 
@@ -91,7 +92,7 @@ public class BBCNewsArticle extends NewsArticle {
 
         }
 
-        return new DateTime();
+        throw new NoDateExeception("No date found in article");
 
     }
 

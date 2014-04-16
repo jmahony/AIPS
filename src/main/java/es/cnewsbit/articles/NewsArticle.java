@@ -6,6 +6,7 @@ import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.HTMLLine;
 import es.cnewsbit.Indexable;
+import es.cnewsbit.exceptions.NoDateExeception;
 import lombok.Getter;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
@@ -169,9 +170,9 @@ public class NewsArticle implements Indexable {
      *
      * @return
      */
-    public  DateTime getDate() {
+    public  DateTime getDate() throws NoDateExeception {
 
-        return new DateTime();
+        throw new NoDateExeception("No date found in article");
 
     }
 
