@@ -1,7 +1,7 @@
 package es.cnewsbit.articles;
 
 import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.exceptions.NoDateExeception;
+import es.cnewsbit.exceptions.NoDateException;
 import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -11,11 +11,14 @@ import org.jsoup.nodes.Element;
 import java.net.URL;
 
 /**
- * Created by josh on 15/04/14.
+ * News article parser for articles on the bbc.co.uk domain
  */
 @Log4j2
 public class UKReutersNewsArticle extends NewsArticle {
 
+    /**
+     * The format used for the published date
+     */
     private static final String dateFormat = "EE MMM d H:m:s z y";
 
     /**
@@ -37,11 +40,11 @@ public class UKReutersNewsArticle extends NewsArticle {
      * @return content of first h1
      */
     @Override
-    public String getHeading() {
+    public String getHeadline() {
 
         Element elem;
 
-        // Atempt to get title from the first h1 tag on the page
+        // Attempt to get title from the first h1 tag on the page
         elem = document.getDom().select("h1").first();
 
         if (elem != null) return elem.html();
@@ -57,7 +60,7 @@ public class UKReutersNewsArticle extends NewsArticle {
      * @return the date of the article
      */
     @Override
-    public DateTime getDate() throws NoDateExeception {
+    public DateTime getDate() throws NoDateException {
 
         Element elem = document.getDom().select("META[name=REVISION_DATE]").first();
 
@@ -71,7 +74,8 @@ public class UKReutersNewsArticle extends NewsArticle {
 
         }
 
-        throw new NoDateExeception("No date found in article");
+        throw new NoDateException("No date found in article");
 
     }
+
 }

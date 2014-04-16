@@ -5,11 +5,11 @@ import es.cnewsbit.Indexable;
 import java.io.IOException;
 
 /**
- * Created by josh on 03/04/14.
+ * Interface for indexers, so custom indexers can be used easily
  */
 public interface Indexer {
 
-    void addToIndex(Indexable indexable)  throws IOException;
+    void addToIndex(Indexable indexable) throws IOException;
 
     void close() throws IOException;
 

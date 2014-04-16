@@ -1,8 +1,9 @@
 package es.cnewsbit.articles;
 
 import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.exceptions.NoDateExeception;
+import es.cnewsbit.exceptions.NoDateException;
 import es.cnewsbit.exceptions.NotNewsArticleException;
+import lombok.extern.log4j.Log4j2;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -11,19 +12,24 @@ import org.jsoup.nodes.Element;
 import java.net.URL;
 
 /**
- * Created by josh on 16/04/14.
+ * News article parser for articles on the nbcnews.com domain
  */
+@Log4j2
 public class NBCNews extends NewsArticle {
 
+    /**
+     * The format used for the published date
+     */
     private static final String dateFormat = "yyyy-MM-dd'T'HH:mm:SS";
+
+    /**
+     * The alternative format used for the published date
+     */
     private static final String dateFormatAlt = "yyyy-MM-dd'T'HH:mm:SSZ";
 
-    private static String[] urlBlacklist = new String[] {
-            "http://www.nbcnews.com/.*/tag/.*",
-            "http://www.nbcnews.com/html/msnbc/.*",
-            "http://www.nbcnews.com/id/3032123/ns/travel/"
-    };
-
+    /**
+     * Any pages with these titles will be ignored
+     */
     private static String[] headlineBlacklist = new String[] {
             "Meet the Press",
             "The Ed Show",
@@ -33,17 +39,26 @@ public class NBCNews extends NewsArticle {
             "NBC News Social Directory"
     };
 
+    /**
+     * Any pages with these urls will be ignored
+     */
+    private static String[] urlBlacklist = new String[] {
+            "http://www.nbcnews.com/.*/tag/.*",
+            "http://www.nbcnews.com/html/msnbc/.*",
+            "http://www.nbcnews.com/id/3032123/ns/travel/"
+    };
 
     /**
      * Constructor
      *
-     * @param document the document of the news article
-     * @param url
+     * @param document the document of the article
+     * @param url the url of the article
      */
     public NBCNews(HTMLDocument document, URL url) throws NotNewsArticleException {
 
         super(document, url);
 
+        // Check the URL isn't in the black list
         for (String regex : urlBlacklist) {
 
             if (url.toString().matches(regex))
@@ -51,13 +66,15 @@ public class NBCNews extends NewsArticle {
 
         }
 
+        // Check the headline isn't in the black list
         for (String regex : headlineBlacklist) {
 
-            if (getHeading().contains(regex))
+            if (getHeadline().contains(regex))
                 throw new NotNewsArticleException("Document title is black listed");
 
         }
 
+        // Get open graph meta tag type
         Element elem = document.getDom().select("meta[property=og:type]").first();
 
         // If the OG type meta tag is not found, add the article anyway because
@@ -77,9 +94,10 @@ public class NBCNews extends NewsArticle {
      *
      * Attempt to get a title from the article
      *
-     * @return content of first h1
+     * @return the title of the article
      */
-    public String getHeading() {
+    @Override
+    public String getHeadline() {
 
         String headline = null;
         Element elem;
@@ -94,16 +112,14 @@ public class NBCNews extends NewsArticle {
 
         if (elem != null && headline == null) return elem.html();
 
-        // Atempt to get title from the first h1 tag on the page
+        // Attempt to get title from the first h1 tag on the page
         elem = document.getDom().select("h1").first();
 
         if (elem != null && headline == null) return elem.html();
 
         if (headline != null) {
 
-            String cleanHeadline = headline.replace("- NBC News.com", "");
-
-            return cleanHeadline;
+            return headline.replace("- NBC News.com", "");
 
         }
 
@@ -111,8 +127,15 @@ public class NBCNews extends NewsArticle {
 
     }
 
-
-    public DateTime getDate() throws NoDateExeception {
+    /**
+     *
+     * Attempts to return the date of the news article
+     *
+     * @return the date of the article
+     * @throws NoDateException if a date cant be found
+     */
+    @Override
+    public DateTime getDate() throws NoDateException {
 
         Element elem = document.getDom().select("meta[property=article:published_time]").first();
 
@@ -120,7 +143,7 @@ public class NBCNews extends NewsArticle {
 
             DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormat);
 
-            DateTime dt = DateTime.parse(elem.attr("content").toString(), dtf);
+            DateTime dt = DateTime.parse(elem.attr("content"), dtf);
 
             return dt;
 
@@ -132,13 +155,13 @@ public class NBCNews extends NewsArticle {
 
             DateTimeFormatter dtf = DateTimeFormat.forPattern(dateFormatAlt);
 
-            DateTime dt = DateTime.parse(elem.attr("content").toString(), dtf);
+            DateTime dt = DateTime.parse(elem.attr("content"), dtf);
 
             return dt;
 
         }
 
-        throw new NoDateExeception("No date found in article");
+        throw new NoDateException("No date found in article");
 
     }
 

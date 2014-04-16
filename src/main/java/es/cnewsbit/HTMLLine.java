@@ -38,13 +38,13 @@ public class HTMLLine {
 
     /**
      *
-     * Takes the HTML line
+     * Constructor
      *
-     * @param _line
+     * @param line the HTML line
      */
-    public HTMLLine(String _line) {
+    public HTMLLine(String line) {
 
-        line = _line.trim();
+        this.line = line.trim();
 
         textCount = countText();
 

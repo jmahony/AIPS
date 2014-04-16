@@ -16,8 +16,8 @@ public class Relevancy {
      *
      * @param precision 0.00 to 100.00
      * @param recall 0.00 to 100.00
-     * @exception InvalidParameterException precision or recall less than 0.00
-     * @exception InvalidParameterException precision or recall greater than 100.00
+     * @throws InvalidParameterException precision or recall less than 0.00
+     * @throws InvalidParameterException precision or recall greater than 100.00
      * @return 0.00 to 100.00
      */
     public static double fMeasure(double precision, double recall) {

@@ -18,7 +18,7 @@ import org.apache.lucene.util.Version;
 import java.io.*;
 
 /**
- * Created by josh on 03/04/14.
+ * Manage a lucene index
  */
 @Log4j2
 public class LuceneIndexer implements Indexer {
@@ -95,4 +95,5 @@ public class LuceneIndexer implements Indexer {
         INDEX_WRITER.close();
 
     }
+
 }
