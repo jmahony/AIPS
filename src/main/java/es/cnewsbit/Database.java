@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * Created by josh on 06/04/14.
  */
@@ -25,7 +24,7 @@ public class Database {
     private @Getter final BasicDataSource dataSource;
 
     /**
-     * How many items to send per batch to the CB
+     * How many items to send per batch to the DB
      */
     private int batchSize;
 
@@ -72,7 +71,7 @@ public class Database {
 
     /**
      *
-     * Inserts an entry into the batch, and if the batch size if reached,
+     * Inserts an entry into the batch, and if the batch size is reached,
      * it is sent to the DB
      *
      * @param newsArticle the article to insert
