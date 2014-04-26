@@ -3,10 +3,13 @@ package es.cnewsbit;
 import es.cnewsbit.exceptions.InvalidKernelException;
 import es.cnewsbit.utilities.CSV;
 import es.cnewsbit.utilities.ResourceLoader;
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by cnewsbit on 25/02/2014.
@@ -18,7 +21,7 @@ public class HTMLDocumentTest {
      * Make the right amount of lines are taken from the document, the test numbers are counted manually.
      *
      */
-    @Test public void testGetLines() {
+    @Test public void testGetLines() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -39,7 +42,7 @@ public class HTMLDocumentTest {
      * Test the simple HTML document to see if the body is correctly extracted
      *
      */
-    @Test public void testSimpleGetBody() {
+    @Test public void testSimpleGetBody() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -54,7 +57,7 @@ public class HTMLDocumentTest {
      * Test the complex HTML document to see if the body is correctly extracted
      *
      */
-    @Test public void testComplexGetBody() {
+    @Test public void testComplexGetBody() throws IOException {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
@@ -67,7 +70,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testSimpleStripRemarks() {
+    @Test public void testSimpleStripRemarks() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -80,7 +83,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testComplexStripRemarks() {
+    @Test public void testComplexStripRemarks() throws IOException {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
@@ -93,7 +96,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testSimpleStripScripts() {
+    @Test public void testSimpleStripScripts() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -106,7 +109,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testComplexStripScripts() {
+    @Test public void testComplexStripScripts() throws IOException {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
@@ -119,7 +122,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testSimpleStripStyles() {
+    @Test public void testSimpleStripStyles() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -132,7 +135,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testComplexStripStyles() {
+    @Test public void testComplexStripStyles() throws IOException {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
@@ -145,7 +148,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testSimpleStripWhitespace() {
+    @Test public void testSimpleStripWhitespace() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -158,7 +161,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test public void testComplexStripWhitespace() {
+    @Test public void testComplexStripWhitespace() throws IOException {
 
         String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
 
@@ -170,9 +173,8 @@ public class HTMLDocumentTest {
 
     /**
      *
-     * @throws Exception
      */
-    @Test public void testSmoothingKernelThree() throws Exception {
+    @Test public void testSmoothingKernelThree() throws IOException {
 
         String html = ResourceLoader.asString(this, "/simple.html");
 
@@ -195,7 +197,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() {
+    @Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() throws IOException {
 
         String html = ResourceLoader.asString(this, "/simple.html");
 

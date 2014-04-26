@@ -2,6 +2,8 @@ package es.cnewsbit.utilities;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+
 /**
  * Loads resources
  */
@@ -15,20 +17,13 @@ public class ResourceLoader {
      * @param resource the resources path
      * @return the resource
      */
-    public static String asString(Object obj, String resource) {
+    public static String asString(Object obj, String resource) throws IOException {
 
-        try {
+        return IOUtils.toString(
+            obj.getClass().getResourceAsStream(resource),
+            "UTF-8"
+        );
 
-            return IOUtils.toString(
-                    obj.getClass().getResourceAsStream(resource),
-                "UTF-8"
-            );
-
-        } catch (Exception e) {
-
-            return null;
-
-        }
 
     }
 
