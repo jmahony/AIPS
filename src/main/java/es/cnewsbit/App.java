@@ -1,8 +1,14 @@
 package es.cnewsbit;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.googlecode.flyway.core.Flyway;
 import lombok.extern.log4j.Log4j2;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -14,6 +20,30 @@ import java.sql.SQLException;
 public class App {
 
     public static void main(String[] args) {
+
+        // Load configuration
+        try {
+
+            String configString = Files.toString(new File("config.json"), Charsets.UTF_8);
+
+            JSONParser parser = new JSONParser();
+
+            JSONObject config = (JSONObject) parser.parse(configString);
+
+            // Load database configuration
+            JSONObject databaseConfig = (JSONObject) config.get("database");
+
+            C.DB_NAME     = databaseConfig.get("db_name").toString();
+            C.DB_USER     = databaseConfig.get("db_user").toString();
+            C.DB_PASSWORD = databaseConfig.get("db_pass").toString();
+
+        } catch (IOException | ParseException e) {
+
+            log.fatal(e.getMessage());
+
+            System.exit(-1);
+
+        }
 
         // Keep the MySQL database up to date and migrate the schema
         Flyway flyway = new Flyway();

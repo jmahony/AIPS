@@ -51,9 +51,9 @@ public class C {
     /**
      * Production database settings
      */
-    public static final String DB_NAME = "";
-    public static final String DB_USER = "";
-    public static final String DB_PASSWORD = "";
+    public static String DB_NAME = "";
+    public static String DB_USER = "";
+    public static String DB_PASSWORD = "";
 
     /**
      * How many connections in the pool
