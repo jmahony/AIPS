@@ -52,16 +52,11 @@ public class DocumentProcessor {
      */
     private @Getter final long START_TIME;
 
-    public DocumentProcessor() throws IOException, SQLException {
+    public DocumentProcessor(Database database) throws IOException, SQLException {
 
         this.NO_PROCESSED = new AtomicInteger(0);
 
-        this.DATABASE = new Database(
-                C.DB_USER,
-                C.DB_PASSWORD,
-                C.DB_NAME,
-                C.DB_POOL_SIZE,
-                C.DB_BATCH_SIZE);
+        this.DATABASE = database;
 
         this.STORE = HTMLStore.getInstance();
 

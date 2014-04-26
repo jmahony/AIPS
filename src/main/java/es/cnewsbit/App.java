@@ -21,6 +21,8 @@ public class App {
 
     public static void main(String[] args) {
 
+        final String DB_NAME, DB_USER, DB_PASS;
+
         // Load configuration
         try {
 
@@ -33,39 +35,29 @@ public class App {
             // Load database configuration
             JSONObject databaseConfig = (JSONObject) config.get("database");
 
-            C.DB_NAME     = databaseConfig.get("db_name").toString();
-            C.DB_USER     = databaseConfig.get("db_user").toString();
-            C.DB_PASSWORD = databaseConfig.get("db_pass").toString();
+            DB_NAME = databaseConfig.get("db_name").toString();
+            DB_USER = databaseConfig.get("db_user").toString();
+            DB_PASS = databaseConfig.get("db_pass").toString();
 
-        } catch (IOException | ParseException e) {
+            // Keep the MySQL database up to date and migrate the schema
+            Flyway flyway = new Flyway();
+            flyway.setDataSource(DB_NAME, DB_USER, DB_PASS);
+            flyway.migrate();
 
-            log.fatal(e.getMessage());
-
-            System.exit(-1);
-
-        }
-
-        // Keep the MySQL database up to date and migrate the schema
-        Flyway flyway = new Flyway();
-        flyway.setDataSource(C.DB_NAME, C.DB_USER, C.DB_PASSWORD);
-        flyway.migrate();
-
-        try {
+            Database database = new Database(DB_NAME,
+                                             DB_USER,
+                                             DB_PASS,
+                                             C.DB_POOL_SIZE,
+                                             C.DB_BATCH_SIZE);
 
             // Start the document processor
-            DocumentProcessor dp = new DocumentProcessor();
+            DocumentProcessor dp = new DocumentProcessor(database);
 
             // Rebuild truncate the current articles table and start from
             // scratch
             dp.rebuild();
 
-        } catch (IOException e) {
-
-            log.fatal(e.getMessage());
-
-            System.exit(-1);
-
-        } catch (SQLException e) {
+        } catch (IOException | SQLException | ParseException e) {
 
             log.fatal(e.getMessage());
 

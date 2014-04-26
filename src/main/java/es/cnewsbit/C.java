@@ -49,13 +49,6 @@ public class C {
     }};
 
     /**
-     * Production database settings
-     */
-    public static String DB_NAME = "";
-    public static String DB_USER = "";
-    public static String DB_PASSWORD = "";
-
-    /**
      * How many connections in the pool
      */
     public static final int DB_POOL_SIZE = 4;
