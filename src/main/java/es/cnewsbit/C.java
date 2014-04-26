@@ -49,20 +49,12 @@ public class C {
     }};
 
     /**
-     * Local database settings
-     */
-    public static final String DB_NAME = "jdbc:mysql://localhost:3306/cnewsbites_v2?rewriteBatchedStatements=true";
-    public static final String DB_USER = "piles";
-    public static final String DB_PASSWORD = "12101210";
-
-    /**
      * Production database settings
      */
-/*
-    public static final String DB_NAME = "jdbc:mysql://cnewsbites-prod.crsa1yeccgr5.eu-west-1.rds.amazonaws.com:3306/cnewsbites_prod?rewriteBatchedStatements=true";
-    public static final String DB_USER = "cnewsbites";
-    public static final String DB_PASSWORD = "&6&g2DI9i0A%";
-*/
+    public static final String DB_NAME = "";
+    public static final String DB_USER = "";
+    public static final String DB_PASSWORD = "";
+
     /**
      * How many connections in the pool
      */
