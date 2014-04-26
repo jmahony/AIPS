@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Application entry point, simply migrates the database and starts the document
  * processor
- * Make change for push
+ * Make another change for push
  */
 @Log4j2
 public class App {
