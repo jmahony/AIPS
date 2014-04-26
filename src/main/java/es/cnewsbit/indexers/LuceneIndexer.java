@@ -85,7 +85,7 @@ public class LuceneIndexer implements Indexer {
      *
      * Closes the index writer
      *
-     * @throws IOException
+     * @throws IOException if the writer cannot close the index file
      */
     @Override
     public void close() throws IOException {

@@ -78,7 +78,7 @@ public class HTMLStore {
      *
      * This is a singleton, so return an instance
      *
-     * @return
+     * @return singleton instance
      */
     public static HTMLStore getInstance() {
 
@@ -92,6 +92,13 @@ public class HTMLStore {
 
     }
 
+    /**
+     *
+     * Returns a set of db objects from the database
+     *
+     * @param batchSize the amount of db objects to fetch
+     * @return a list of db objects
+     */
     public synchronized List<DBObject> nextBatch(int batchSize) {
 
         int c = count.getAndIncrement();

@@ -38,6 +38,13 @@ public abstract class NewsArticle implements Indexable {
      *
      * @param document the document of the news article
      */
+    /**
+     *
+     * Constructor
+     *
+     * @param document the document of the news article
+     * @param url the URL of the article
+     */
     public NewsArticle(HTMLDocument document, URL url) {
 
         this.document = document;
@@ -176,7 +183,10 @@ public abstract class NewsArticle implements Indexable {
      *
      * Gets the date of the article
      *
+     * TODO: This needs rethinking
+     *
      * @return the date of the article
+     * @throws NoDateException if there is no overriding method
      */
     public DateTime getDate() throws NoDateException {
 

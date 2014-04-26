@@ -41,12 +41,11 @@ public class Database {
 
     /**
      *
-     * Constructor
-     *
      * @param user DB username
      * @param pass DB password
      * @param name DB name
      * @param size DB pool size
+     * @param batchSize how many objects to get a time
      * @throws SQLException if the prepared statement is invalid
      */
     public Database(String user, String pass, String name, int size, int batchSize) throws SQLException {
@@ -75,7 +74,7 @@ public class Database {
      * it is sent to the DB
      *
      * @param newsArticle the article to insert
-     * @throws SQLException
+     * @throws SQLException invalid SQL
      */
     public synchronized void insert(NewsArticle newsArticle) throws SQLException {
 

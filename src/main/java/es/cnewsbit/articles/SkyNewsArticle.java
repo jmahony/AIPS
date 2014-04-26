@@ -23,10 +23,13 @@ public class SkyNewsArticle extends NewsArticle {
     private static final String dateFormat = "yyyy-MM-dd'T'HH:mm:SSZ";
 
     /**
+     *
      * Constructor
      *
-     * @param document the document of the news article
+     * @param document the document of the article
      * @param url the url of the article
+     * @throws NotNewsArticleException if URL is blacklisted
+     * @throws NotNewsArticleException if the title is blacklisted
      */
     public SkyNewsArticle(HTMLDocument document, URL url) throws NotNewsArticleException {
 

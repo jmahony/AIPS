@@ -11,6 +11,7 @@ public class ResourceLoader {
      *
      * Returns a resource as a string
      *
+     * @param obj the object the path is relative from
      * @param resource the resources path
      * @return the resource
      */

@@ -39,10 +39,13 @@ public class BBCNewsArticle extends NewsArticle {
     };
 
     /**
+     *
      * Constructor
      *
      * @param document the document of the article
      * @param url the url of the article
+     * @throws NotNewsArticleException if URL is blacklisted
+     * @throws NotNewsArticleException if the title is blacklisted
      */
     public BBCNewsArticle(HTMLDocument document, URL url) throws NotNewsArticleException {
 

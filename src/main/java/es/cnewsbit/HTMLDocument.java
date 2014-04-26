@@ -44,9 +44,10 @@ public class HTMLDocument {
     private @Getter List<String> headingOnes;
 
     /**
-     * Takes the HTML line
+     * Takes the HTML
      *
-     * @param html
+     * @param html the HTML
+     * @param kernel the smoothing kernel
      */
     public HTMLDocument(String html, double[] kernel) {
 
@@ -143,7 +144,7 @@ public class HTMLDocument {
 
     /**
      *
-     * Returns the HTML between <body> & </body>
+     * Returns the HTML between opening and closing body tags
      *
      * @param _html html to extract body content from
      * @return HTML between the two body tags

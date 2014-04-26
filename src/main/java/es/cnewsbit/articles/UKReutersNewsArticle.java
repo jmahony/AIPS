@@ -22,10 +22,11 @@ public class UKReutersNewsArticle extends NewsArticle {
     private static final String dateFormat = "EE MMM d H:m:s z y";
 
     /**
+     *
      * Constructor
      *
-     * @param document the document of the news article
-     * @param url
+     * @param document the document of the article
+     * @param url the url of the article
      */
     public UKReutersNewsArticle(HTMLDocument document, URL url) {
 
