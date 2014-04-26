@@ -1,53 +1,68 @@
-package com.joshmahony;
+package es.cnewsbit;
+
+import lombok.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by joshmahony on 24/02/2014.
+ * Created by cnewsbit on 24/02/2014.
  */
 public class HTMLLine {
 
     /**
      * Original HTML line
      */
-    public final String line;
+    private @Getter final String line;
 
     /**
      * Count of text on line
      */
-    public int textCount = 0;
+    private @Getter int textCount = 0;
 
     /**
      * Count of tags on line
      */
-    public int tagsCount = 0;
+    private @Getter int tagsCount = 0;
 
     /**
      * The text to tag ratio of the line
      */
-    public double textTagRatio = 0;
+    private @Getter double textTagRatio = 0;
 
     /**
      * The text to tag ratio after smoothing has occurred
+     *
      */
-    public double smoothedtTextTagRatio = 0;
+    private @Getter @Setter double smoothedTextTagRatio = 0;
 
     /**
      *
-     * Takes the HTML line
+     * Constructor
      *
-     * @param _line
+     * @param line the HTML line
      */
-    public HTMLLine(String _line) {
+    public HTMLLine(String line) {
 
-        line = _line.trim();
+        this.line = line.trim();
 
         textCount = countText();
 
         tagsCount = countTags();
 
         textTagRatio = textToTagRatio();
+
+    }
+
+    /**
+     *
+     * Gets the text of the line with no HTML tags
+     *
+     * @return the line without HTML tags
+     */
+    public String getText() {
+
+        return line.replaceAll("\\<.*?>", "");
 
     }
 

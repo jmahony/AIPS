@@ -1,9 +1,9 @@
-package com.joshmahony.utility;
+package es.cnewsbit.utilities;
 
 import org.apache.commons.io.IOUtils;
 
 /**
- * Created by josh on 02/03/14.
+ * Loads resources
  */
 public class ResourceLoader {
 
@@ -11,9 +11,8 @@ public class ResourceLoader {
      *
      * Returns a resource as a string
      *
-     * @param resource
-     * @return
-     * @throws java.io.IOException
+     * @param resource the resources path
+     * @return the resource
      */
     public static String asString(Object obj, String resource) {
 
@@ -31,5 +30,5 @@ public class ResourceLoader {
         }
 
     }
-    
+
 }
