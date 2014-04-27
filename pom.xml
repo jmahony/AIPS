@@ -172,11 +172,6 @@
                 <groupId>com.googlecode.flyway</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>2.3</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/cnewsbites_v2</url>
-                    <user>piles</user>
-                    <password>12101210</password>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -217,6 +212,27 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>copy-config-file</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copy-config">
+                                <copy file="config.json" tofile="${project.build.directory}/build/config.json" />
+                                <copy file="log4j2.xml" tofile="${project.build.directory}/build/log4j2.xml" />
+                                <copy file="README.md" tofile="${project.build.directory}/build/README.md" />
+                            </target>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -323,6 +339,8 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+
+                            <outputFile>target/build/${project.artifactId}-${project.version}-uber.jar</outputFile>
                             <artifactSet>
                                 <excludes>
                                     <exclude>junit:junit</exclude>

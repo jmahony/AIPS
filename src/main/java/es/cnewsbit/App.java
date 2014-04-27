@@ -44,9 +44,9 @@ public class App {
             flyway.setDataSource(DB_NAME, DB_USER, DB_PASS);
             flyway.migrate();
 
-            Database database = new Database(DB_NAME,
-                                             DB_USER,
+            Database database = new Database(DB_USER,
                                              DB_PASS,
+                                             DB_NAME,
                                              C.DB_POOL_SIZE,
                                              C.DB_BATCH_SIZE);
 
