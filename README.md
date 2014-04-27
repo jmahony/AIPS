@@ -4,14 +4,21 @@ Article Indexing & Processing System
 # Building
 Clone the repository
 
-```git clone git@github.com:jmahony/AIPS.git```
+```
+git clone git@github.com:jmahony/AIPS.git
+```
 
 Build with maven
 
-```mvn package```
+```
+mvn package
+```
 
 The uber jar can be found in
-```target/build/AIPS-VERSION-uber.jar```
+
+```
+target/build/AIPS-VERSION-uber.jar
+```
 
 # Databases
 A MongoDB and MySQL instance will need to be running.
@@ -25,7 +32,8 @@ MySQL settings can be added to config.json
         "db_user" : "cnewsbites",
         "db_pass": "Q4eWahIpitP8"
     }
-}```
+}
+```
 
 It is advised to keep "?rewriteBatchedStatements=true" flag to minimise database round trips.
 
@@ -44,7 +52,11 @@ The lucene index will be creasted in lucene/index.
 # Misc
 To send the lucene index to the API
 
-```scp * ubuntu@api.cnewsbit.es:/lucene/index```
+```
+scp * ubuntu@api.cnewsbit.es:/lucene/index
+```
 
 Starting MongoDB instance
-```~/utils/mongodb-linux-x86_64-2.6.0/bin/mongod --dbpath ~/data/db```
+```
+~/utils/mongodb-linux-x86_64-2.6.0/bin/mongod --dbpath ~/data/db
+```
