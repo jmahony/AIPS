@@ -1,5 +1,8 @@
 package es.cnewsbit;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
  * Created by cnewsbit on 24/02/2014.
  */
@@ -7,8 +10,9 @@ public class HTMLLineTest {
 
     /**
      * Test line count
-     *//*
-    @Test public void testLineCount() {
+     */
+    @Test
+    public void testLineCount() {
 
         String s1 = "<p>The <a href=\"http://imberbus.wordpress.com/\" >23A service takes in other remote locations on the plain</a>, " +
                 "including New Zealand Farm Camp and Brazen Bottom and &quot;is a normal bus service and registered with the traffic commissioners&quot;, says Meilton.</p>";
@@ -20,7 +24,7 @@ public class HTMLLineTest {
 
         assertEquals(htmlLine1.getTagsCount(), s1tc);
         assertEquals(htmlLine1.getTextCount(), s1wc);
-        assertEquals(htmlLine1.getTextTagRatio(), s1ttr, 0);
+        assertEquals(htmlLine1.getValueToSmooth(), s1ttr, 0);
 
         String s2 = "<div class=\"livestats-web-bug\"><img alt=\"\" id=\"livestats\" src=\"http://stats.bbc.co.uk/o.gif?~RS~s~R" +
                 "S~News~RS~t~RS~HighWeb_Story~RS~i~RS~26222202~RS~p~RS~99277~RS~a~RS~Domestic~RS~u~RS~/news/entertainment-arts-26222202~RS~q~RS~~RS~z~RS~32~RS~\"/></div>";
@@ -32,7 +36,7 @@ public class HTMLLineTest {
 
         assertEquals(htmlLine2.getTagsCount(), s2tc);
         assertEquals(htmlLine2.getTextCount(), s2wc);
-        assertEquals(htmlLine2.getTextTagRatio(), s2ttr, 0);
+        assertEquals(htmlLine2.getValueToSmooth(), s2ttr, 0);
 
         String s3 = "<li><a href=\"/news/education/\">Education</a></li>";
 
@@ -43,7 +47,7 @@ public class HTMLLineTest {
 
         assertEquals(htmlLine3.getTagsCount(), s3tc);
         assertEquals(htmlLine3.getTextCount(), s3wc);
-        assertEquals(htmlLine3.getTextTagRatio(), s3ttr, 0);
+        assertEquals(htmlLine3.getValueToSmooth(), s3ttr, 0);
 
         String s4 = " <a title=\"Post this story to Delicious\" href=\"http://del.icio.us/post?url=http://www.bbc.co.uk/news/entertainment-arts-26222202&amp;title=BBC+News+-" +
                 "+Baftas+2014%3A+Certainties%2C+surprises+and+Oscar+predictions\">Delicious</a>";
@@ -55,8 +59,8 @@ public class HTMLLineTest {
 
         assertEquals(htmlLine4.getTagsCount(), s4tc);
         assertEquals(htmlLine4.getTextCount(), s4wc);
-        assertEquals(htmlLine4.getTextTagRatio(), s4ttr, 0);
+        assertEquals(htmlLine4.getValueToSmooth(), s4ttr, 0);
 
     }
-*/
+
 }
