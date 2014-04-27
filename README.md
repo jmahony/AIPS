@@ -41,11 +41,13 @@ TODO: Add MongoDB config to config.json
 
 # Running
 ## Normal
+```
 java -jar AIPS-1.0-SNAPSHOT-uber.jar
-
+```
 ## Logging
+```
 java -Dlog4j.configurationFile=log4j2.xml -jar AIPS-1.0-SNAPSHOT-uber.jar
-
+```
 # Lucene
 The lucene index will be creasted in lucene/index.
 
