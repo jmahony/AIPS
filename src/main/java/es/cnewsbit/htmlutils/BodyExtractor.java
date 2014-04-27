@@ -31,14 +31,14 @@ public class BodyExtractor {
      * There could be multiple opening body tags, we are looking for the first
      * character of the first occurrence.
      *
-     * @param _html html to get the index from
+     * @param html html to get the index from
      * @return first char index of first body tag
      */
-    private static int getStartBodyIndex(String _html) {
+    private static int getStartBodyIndex(String html) {
 
         Pattern openingBody = Pattern.compile("<body[^>]*>");
 
-        Matcher openingBodyMatcher = openingBody.matcher(_html);
+        Matcher openingBodyMatcher = openingBody.matcher(html);
 
         int firstPos = 0;
 
@@ -59,16 +59,16 @@ public class BodyExtractor {
     /**
      * Get the index position of the first character of the closing body tag
      *
-     * @param _html html to get the index from
+     * @param html html to get the index from
      * @return last char index of last body tag
      */
-    private static int getEndBodyIndex(String _html) {
+    private static int getEndBodyIndex(String html) {
 
-        int lastPos  = _html.length();
+        int lastPos  = html.length();
 
         Pattern closingBody = Pattern.compile("</body>");
 
-        Matcher closingBodyMatcher = closingBody.matcher(_html);
+        Matcher closingBodyMatcher = closingBody.matcher(html);
 
         while(closingBodyMatcher.find()) {
 
