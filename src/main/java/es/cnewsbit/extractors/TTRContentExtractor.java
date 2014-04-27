@@ -3,6 +3,7 @@ package es.cnewsbit.extractors;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLLine;
 import es.cnewsbit.htmlutils.*;
+import es.cnewsbit.utilities.HTMLLineFactory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,7 +67,7 @@ public class TTRContentExtractor implements ContentExtractor {
 
         html = BodyExtractor.extract(html);
 
-        populateHTMLLinesArray(html);
+        htmlBodyLines = HTMLLineFactory.build(html);
 
         smoother.smooth(htmlBodyLines);
 
@@ -86,27 +87,6 @@ public class TTRContentExtractor implements ContentExtractor {
         }
 
         return sb.toString();
-
-    }
-
-    /**
-     *
-     * Separate out the given HTML into lines
-     *
-     * @param html html to split into lines
-     * @return array of HTML lines
-     */
-    private void populateHTMLLinesArray(String html) {
-
-        String lines[] = html.split("\\r?\\n");
-
-        HTMLLine[] htmlLines = new HTMLLine[lines.length];
-
-        for(int i = 0; i < lines.length; i++) {
-
-            htmlBodyLines[i] = new HTMLLine(lines[i]);
-
-        }
 
     }
 
