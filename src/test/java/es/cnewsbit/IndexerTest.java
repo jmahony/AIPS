@@ -13,7 +13,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
@@ -40,17 +39,17 @@ public class IndexerTest {
      */
     private final String[] numbers = new String[] {"one", "two", "three", "four"};
 
-
     @Before
-    public void setup() throws URISyntaxException {
+    public void setup() {
 
-        indexPath = null + System.getProperty("java.io.tmpdir") + "lucene_test/" + System.currentTimeMillis();
+        indexPath = System.getProperty("java.io.tmpdir") + "lucene_test/" + System.currentTimeMillis();
 
         analyzer = new StandardAnalyzer(Version.LUCENE_47);
 
     }
+
     @Test
-    public void testAddToIndexLucene() throws IOException, URISyntaxException, ParseException {
+    public void testAddToIndexLucene() throws IOException, ParseException {
 
         LuceneIndexer indexer = new LuceneIndexer(indexPath, analyzer);
 
@@ -89,9 +88,8 @@ public class IndexerTest {
 
     }
 
-
     @Test
-    public void testAddMultipleToIndexLucene() throws IOException, URISyntaxException, ParseException {
+    public void testAddMultipleToIndexLucene() throws IOException, ParseException {
 
         LuceneIndexer indexer = new LuceneIndexer(indexPath, analyzer);
 
