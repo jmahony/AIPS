@@ -30,7 +30,7 @@ public class C {
     /**
      * The location of the Lucene index
      */
-    public static final String PATH_TO_INDEX = "/lucene/index/";
+    public static final String PATH_TO_INDEX = "lucene/index/";
 
     /**
      * Whether to use Boilerpipe for content extraction
