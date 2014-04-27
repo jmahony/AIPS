@@ -1,16 +1,5 @@
 package es.cnewsbit;
 
-import es.cnewsbit.exceptions.InvalidKernelException;
-import es.cnewsbit.utilities.CSV;
-import es.cnewsbit.utilities.ResourceLoader;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.LinkedHashMap;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
 /**
  * Created by cnewsbit on 25/02/2014.
  */
@@ -21,7 +10,7 @@ public class HTMLDocumentTest {
      * Make the right amount of lines are taken from the document, the test numbers are counted manually.
      *
      */
-    @Test public void testGetLines() throws IOException {
+    /*@Test public void testGetLines() throws IOException {
 
         String simpleHTML = ResourceLoader.asString(this, "/simple.html");
 
@@ -35,131 +24,12 @@ public class HTMLDocumentTest {
 
         assertEquals(lines2, HTMLDocument.getLines(complexHTML).length);
 
-    }
-
-    /**
-     *
-     * Test the simple HTML document to see if the body is correctly extracted
-     *
-     */
-    @Test public void testSimpleGetBody() throws IOException {
-
-        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
-
-        String simpleHTMLBody = ResourceLoader.asString(this, "/simpleBody.html");
-
-        assertEquals(simpleHTMLBody.trim(), HTMLDocument.getBody(simpleHTML));
-
-    }
+    }*/
 
     /**
      *
      */
-    @Test public void testSimpleStripRemarks() throws IOException {
-
-        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
-
-        String simpleHTMLRemark = ResourceLoader.asString(this, "/simpleRemarks.html");
-
-        assertEquals(simpleHTMLRemark.trim(), HTMLDocument.stripRemarks(simpleHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testComplexStripRemarks() throws IOException {
-
-        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
-
-        String complexHTMLRemark = ResourceLoader.asString(this, "/world-europe-26333587Remarks.html");
-
-        assertEquals(complexHTMLRemark.trim(), HTMLDocument.stripRemarks(complexHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testSimpleStripScripts() throws IOException {
-
-        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
-
-        String simpleHTMLScript = ResourceLoader.asString(this, "/simpleScripts.html");
-
-        assertEquals(simpleHTMLScript.trim(), HTMLDocument.stripScripts(simpleHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testComplexStripScripts() throws IOException {
-
-        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
-
-        String complexHTMLScript = ResourceLoader.asString(this, "/world-europe-26333587Scripts.html");
-
-        assertEquals(complexHTMLScript.trim(), HTMLDocument.stripScripts(complexHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testSimpleStripStyles() throws IOException {
-
-        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
-
-        String simpleHTMLStyles = ResourceLoader.asString(this, "/simpleStyles.html");
-
-        assertEquals(simpleHTMLStyles.trim(), HTMLDocument.stripStyles(simpleHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testComplexStripStyles() throws IOException {
-
-        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
-
-        String complexHTMLStyles = ResourceLoader.asString(this, "/world-europe-26333587Styles.html");
-
-        assertEquals(complexHTMLStyles.trim(), HTMLDocument.stripStyles(complexHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testSimpleStripWhitespace() throws IOException {
-
-        String simpleHTML = ResourceLoader.asString(this, "/simple.html");
-
-        String simpleHTMLWhitespace = ResourceLoader.asString(this, "/simpleWhitespace.html");
-
-        assertEquals(simpleHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(simpleHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testComplexStripWhitespace() throws IOException {
-
-        String complexHTML = ResourceLoader.asString(this, "/world-europe-26333587.html");
-
-        String complexHTMLWhitespace = ResourceLoader.asString(this, "/world-europe-26333587Whitespace.html");
-
-        assertEquals(complexHTMLWhitespace.trim(), HTMLDocument.stripWhitespace(complexHTML));
-
-    }
-
-    /**
-     *
-     */
-    @Test public void testSmoothingKernelThree() throws IOException {
+    /*@Test public void testSmoothingKernelThree() throws IOException {
 
         String html = ResourceLoader.asString(this, "/simple.html");
 
@@ -182,7 +52,7 @@ public class HTMLDocumentTest {
     /**
      *
      */
-    @Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() throws IOException {
+    /*@Test(expected = InvalidKernelException.class) public void testSmoothingEvenKernel() throws IOException {
 
         String html = ResourceLoader.asString(this, "/simple.html");
 
@@ -196,7 +66,7 @@ public class HTMLDocumentTest {
      *
      * @throws InvalidKernelException
      */
-    @Test public void testSmoothingEmptyArray() throws InvalidKernelException {
+    /*@Test public void testSmoothingEmptyArray() throws InvalidKernelException {
 
         HTMLLine[] lines = HTMLDocument.getLines("");
 
@@ -204,6 +74,6 @@ public class HTMLDocumentTest {
 
         assertArrayEquals(lines, linesSmoothed);
 
-    }
+    }*/
 
 }
