@@ -1,12 +1,13 @@
 AIPS
 =====
 Article Indexing & Processing System
-
 # Building
 Clone the repository
+
 ```git clone git@github.com:jmahony/AIPS.git```
 
 Build with maven
+
 ```mvn package```
 
 The uber jar can be found in
@@ -17,20 +18,14 @@ A MongoDB and MySQL instance will need to be running.
 
 MySQL settings can be added to config.json
 
-```
+```javascript
 {
     "database": {
-
         "db_name": "jdbc:mysql://localhost:3306/dbname?rewriteBatchedStatements=true",
-
         "db_user" : "cnewsbites",
-
         "db_pass": "Q4eWahIpitP8"
-
     }
-
-}
-```
+}```
 
 It is advised to keep "?rewriteBatchedStatements=true" flag to minimise database round trips.
 
