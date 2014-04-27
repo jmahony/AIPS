@@ -2,7 +2,6 @@ package es.cnewsbit.extractors;
 
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLLine;
-import es.cnewsbit.exceptions.InvalidKernelException;
 import es.cnewsbit.htmlutils.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +37,11 @@ public class TTRContentExtractor implements ContentExtractor {
     private HTMLLine[] htmlBodyLines;
 
     /**
+     * Smoother to smooth the smoothables
+     */
+    private @Getter @Setter Smoother smoother = new GaussianSmoother();
+
+    /**
      *
      * Attempts to remove clutter from around the actual body content of a HTML
      * Document
@@ -64,13 +68,13 @@ public class TTRContentExtractor implements ContentExtractor {
 
         populateHTMLLinesArray(html);
 
-        smooth();
+        smoother.smooth(htmlBodyLines);
 
         StringBuffer sb = new StringBuffer();
 
         for (int i = 0; i < htmlBodyLines.length; i++) {
 
-            double ratio = htmlBodyLines[i].getSmoothedTextTagRatio();
+            double ratio = htmlBodyLines[i].getSmoothedValue();
 
             if (ratio >= getLowerThreshold() &&
                     ratio <= getUpperThreshold()) {
@@ -101,42 +105,6 @@ public class TTRContentExtractor implements ContentExtractor {
         for(int i = 0; i < lines.length; i++) {
 
             htmlBodyLines[i] = new HTMLLine(lines[i]);
-
-        }
-
-    }
-
-    /**
-     *
-     * Smooths an array of HTMLLine objects, needs a kernel for the smoothing process.
-     *
-     * @return an array of HTMLLine objects with the smoothed ratio populated
-     * @exception es.cnewsbit.exceptions.InvalidKernelException if the kernel has an even number of elements
-     */
-    private void smooth() throws InvalidKernelException {
-
-        if (kernel.length % 2 == 0)
-            throw new InvalidKernelException("Kernel length must be odd");
-
-        int kernelOverlap = (int) Math.floor(kernel.length / 2);
-
-        for (int i = 0; i < htmlBodyLines.length; i++) {
-
-            double newRatio = 0;
-
-            for (int j = 0; j < kernel.length; j++) {
-
-                int lineIndex = i - kernelOverlap + j;
-
-                if (lineIndex >= 0 && lineIndex < htmlBodyLines.length) {
-
-                    newRatio += htmlBodyLines[lineIndex].getTextTagRatio() * kernel[j];
-
-                }
-
-            }
-
-            htmlBodyLines[i].setSmoothedTextTagRatio(newRatio);
 
         }
 

@@ -1,6 +1,8 @@
 package es.cnewsbit;
 
-import lombok.*;
+import es.cnewsbit.extractors.Smoothable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Created by cnewsbit on 24/02/2014.
  */
-public class HTMLLine {
+public class HTMLLine implements Smoothable {
 
     /**
      * Original HTML line
@@ -28,13 +30,13 @@ public class HTMLLine {
     /**
      * The text to tag ratio of the line
      */
-    private @Getter double textTagRatio = 0;
+    private @Getter Double valueToSmooth = 0d;
 
     /**
      * The text to tag ratio after smoothing has occurred
      *
      */
-    private @Getter @Setter double smoothedTextTagRatio = 0;
+    private @Getter @Setter Double smoothedValue = 0d;
 
     /**
      *
@@ -50,7 +52,7 @@ public class HTMLLine {
 
         tagsCount = countTags();
 
-        textTagRatio = textToTagRatio();
+        valueToSmooth = textToTagRatio();
 
     }
 

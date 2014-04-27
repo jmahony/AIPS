@@ -25,7 +25,7 @@ public class C {
     /**
      * Kernel used by the smoothing algorithm
      */
-    public static final double[] SMOOTHING_KERNEL = new double[] {0.25, 0.50, 0.25};
+    public static final Double[] SMOOTHING_KERNEL = new Double[] {0.25, 0.50, 0.25};
 
     /**
      * The location of the Lucene index
