@@ -7,6 +7,9 @@ import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.articles.NewsArticle;
 import es.cnewsbit.exceptions.NotNewsArticleException;
+import es.cnewsbit.extractors.BoilerpipeContentExtractor;
+import es.cnewsbit.extractors.EXTRACTOR_TYPES;
+import es.cnewsbit.extractors.TTRContentExtractor;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
@@ -68,6 +71,21 @@ public class NewsArticleFactory {
             );
 
             newsArticle = con.newInstance(htmlDocument, url);
+
+            // TODO: See which extractor works best on which site and switch
+            // TODO: based on the best.
+            EXTRACTOR_TYPES type = EXTRACTOR_TYPES.BOILER_PIPE;
+
+            switch(type) {
+                case BOILER_PIPE:
+                    newsArticle.setContentExtractor(new BoilerpipeContentExtractor());
+                    break;
+                case TEXT_TAG_RATIO:
+                    newsArticle.setContentExtractor(new TTRContentExtractor());
+                    break;
+                default:
+                    newsArticle.setContentExtractor(new TTRContentExtractor());
+            }
 
         } catch (InvocationTargetException
                 | NoSuchMethodException

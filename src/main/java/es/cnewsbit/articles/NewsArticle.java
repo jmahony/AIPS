@@ -1,13 +1,11 @@
 package es.cnewsbit.articles;
 
-import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.Indexable;
 import es.cnewsbit.exceptions.NoDateException;
-import es.cnewsbit.extractors.BoilerpipeContentExtractor;
 import es.cnewsbit.extractors.ContentExtractor;
-import es.cnewsbit.extractors.TTRContentExtractor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
@@ -33,11 +31,10 @@ public abstract class NewsArticle implements Indexable {
     protected final @Getter URL url;
 
     /**
-     *
-     * Constructor
-     *
-     * @param document the document of the news article
+     * To retrieve the articles actual content
      */
+    protected @Getter @Setter ContentExtractor contentExtractor;
+
     /**
      *
      * Constructor
@@ -102,23 +99,7 @@ public abstract class NewsArticle implements Indexable {
      */
     public String getContent() {
 
-        String content = null;
-
-        if (C.BOILERPIPE) {
-
-            ContentExtractor extractor = new BoilerpipeContentExtractor();
-
-            content = extractor.extract(document);
-
-        } else {
-
-            ContentExtractor extractor = new TTRContentExtractor();
-
-            content = extractor.extract(document);
-
-        }
-
-        return content;
+        return contentExtractor.extract(document);
 
     }
 
