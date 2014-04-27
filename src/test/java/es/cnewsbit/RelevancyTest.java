@@ -138,6 +138,96 @@ public class RelevancyTest {
     }
 
     /**
+     * Strong boundary analysis of FMeasure (invalid inputs)
+     */
+    @Test public void testFMeasureStrongBoundaryInvalid() {
+
+        double[][] pairs = new double[][] {
+                new double[] {-0.001,  100.001},
+                new double[] {-0.001,  100},
+                new double[] {-0.001,  99.999},
+                new double[] {-0.001,  50},
+                new double[] {-0.001,  0.001},
+                new double[] {-0.001,  0},
+                new double[] {-0.001,  -0.001},
+                new double[] {0,       100.001},
+                new double[] {0.001,   100.001},
+                new double[] {50,      100.001},
+                new double[] {99.999,  100.001},
+                new double[] {100,     100.001},
+                new double[] {100.001, 100.001},
+                new double[] {100.001, 100},
+                new double[] {100.001, 99.999},
+                new double[] {100.001, 50},
+                new double[] {100.001, 0.001},
+                new double[] {100.001, 0},
+                new double[] {100.001, -0.001},
+                new double[] {0,       -0.001},
+                new double[] {0.001,   -0.001},
+                new double[] {50,      -0.001},
+                new double[] {99.999,  -0.001},
+                new double[] {100,     -0.001}
+        };
+
+        for(double[] pair : pairs) {
+
+            try {
+
+                Relevancy.fMeasure(pair[0], pair[1]);
+
+                assertTrue(false);
+
+            } catch(InvalidParameterException e) {
+
+                assertTrue(true);
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Strong boundary analysis of FMeasure (valid inputs)
+     */
+    @Test public void testFMeasureStrongBoundaryValid() {
+
+        double[][] pairs = new double[][] {
+                new double[] {0.0,    100.0,  0.0},
+                new double[] {0.001,  100.0,  0.001},
+                new double[] {50.0,   100.0,  66.666},
+                new double[] {99.999, 100.0,  99.999},
+                new double[] {100.0,  100.0,  100.0},
+                new double[] {0.0,    99.999, 0.0},
+                new double[] {0.001,  99.999, 0.001},
+                new double[] {50.0,   99.999, 66.666},
+                new double[] {99.999, 99.999, 99.999},
+                new double[] {100.0,  99.999, 99.999},
+                new double[] {0.0,    50.0,   0.0},
+                new double[] {0.001,  50.0,   0.001},
+                new double[] {99.999, 50.0,   66.666},
+                new double[] {100.0,  50.0,   66.666},
+                new double[] {0.0,    0.001,  0.0},
+                new double[] {0.001,  0.001,  0.001},
+                new double[] {50.0,   0.001,  0.001},
+                new double[] {99.999, 0.001,  0.001},
+                new double[] {100.0,  0.001,  0.001},
+                new double[] {0.0,    0.0,    0.0},
+                new double[] {0.001,  0.0,    0.0},
+                new double[] {50.0,   0.0,    0.0},
+                new double[] {99.999, 0.0,    0.0},
+                new double[] {100.0,  0.0,    0.0}
+        };
+
+        for(double[] pair : pairs) {
+
+            assertEquals(Relevancy.fMeasure(pair[0], pair[1]), pair[2], C.DOUBLE_TEST_DELTA);
+
+        }
+
+    }
+
+    /**
      * Test precision and recall basic
      */
     @Test public void testPrecisionRecallBasic() {
@@ -394,4 +484,6 @@ public class RelevancyTest {
         assertEquals(expectedFMeasure, actualFMeasure, C.DOUBLE_TEST_DELTA);
 
     }
+
+
 }
