@@ -1,11 +1,10 @@
 package es.cnewsbit.articles;
 
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.extractors.ArticleSentencesExtractor;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.Indexable;
 import es.cnewsbit.exceptions.NoDateException;
+import es.cnewsbit.extractors.BoilerpipeContentExtractor;
 import es.cnewsbit.extractors.ContentExtractor;
 import es.cnewsbit.extractors.TTRContentExtractor;
 import lombok.Getter;
@@ -107,21 +106,15 @@ public abstract class NewsArticle implements Indexable {
 
         if (C.BOILERPIPE) {
 
-            try {
+            ContentExtractor extractor = new BoilerpipeContentExtractor();
 
-                content = ArticleSentencesExtractor.INSTANCE.getText(document.getHtml());
-
-            } catch (BoilerpipeProcessingException e) {
-
-                e.printStackTrace();
-
-            }
+            content = extractor.extract(document);
 
         } else {
 
             ContentExtractor extractor = new TTRContentExtractor();
 
-            extractor.extract(document);
+            content = extractor.extract(document);
 
         }
 
