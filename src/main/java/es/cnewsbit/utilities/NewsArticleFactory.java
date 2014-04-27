@@ -53,10 +53,7 @@ public class NewsArticleFactory {
             throw new NotNewsArticleException("Articles URL is not white listed");
 
         // Create a HTML document representation
-        HTMLDocument htmlDocument = new HTMLDocument(
-                getHTML(dbObject),
-                C.SMOOTHING_KERNEL
-        );
+        HTMLDocument htmlDocument = new HTMLDocument(getHTML(dbObject));
 
         NewsArticle newsArticle = null;
 
