@@ -23,8 +23,8 @@ MySQL settings can be added to config.json
 {
     "database": {
         "db_name": "jdbc:mysql://localhost:3306/dbname?rewriteBatchedStatements=true",
-        "db_user" : "cnewsbites",
-        "db_pass": "Q4eWahIpitP8"
+        "db_user": "username",
+        "db_pass": "password"
     }
 }
 ```
