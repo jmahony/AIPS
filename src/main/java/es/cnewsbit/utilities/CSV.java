@@ -1,9 +1,5 @@
 package es.cnewsbit.utilities;
 
-import au.com.bytecode.opencsv.CSVWriter;
-import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.HTMLLine;
-
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -77,30 +73,6 @@ public class CSV {
         }
 
         return relevancySet;
-
-    }
-
-    public static void docToCSV(String html) {
-
-        CSVWriter writer = null;
-
-        try {
-
-            HTMLDocument doc = new HTMLDocument(html, new double[] {0.25, 0.5, 0.25});
-
-            int i = 0;
-
-            for (HTMLLine line : doc.getHtmlBodyLines()) {
-
-                System.out.println(i++ + ", " + line.getLine());
-
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
 
     }
 
