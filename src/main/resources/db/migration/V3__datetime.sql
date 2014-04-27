@@ -1,0 +1,1 @@
+ALTER TABLE article CHANGE date date TIMESTAMP;
