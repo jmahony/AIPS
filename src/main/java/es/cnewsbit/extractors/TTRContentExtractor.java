@@ -38,10 +38,18 @@ public class TTRContentExtractor implements ContentExtractor {
      */
     private HTMLLine[] htmlBodyLines;
 
+    /**
+     *
+     * Attempts to remove clutter from around the actual body content of a HTML
+     * Document
+     *
+     * @param document the string to attempt content extraction
+     * @return the content
+     */
     @Override
-    public String extract(String s) {
+    public String extract(HTMLDocument document) {
 
-        document = new HTMLDocument(s);
+        this.document = document;
 
         String html = document.getHtml();
 

@@ -4,9 +4,10 @@ import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleSentencesExtractor;
 import es.cnewsbit.C;
 import es.cnewsbit.HTMLDocument;
-import es.cnewsbit.HTMLLine;
 import es.cnewsbit.Indexable;
 import es.cnewsbit.exceptions.NoDateException;
+import es.cnewsbit.extractors.ContentExtractor;
+import es.cnewsbit.extractors.TTRContentExtractor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -118,24 +119,9 @@ public abstract class NewsArticle implements Indexable {
 
         } else {
 
-            HTMLLine[] lines = document.getHtmlBodyLines();
+            ContentExtractor extractor = new TTRContentExtractor();
 
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < lines.length; i++) {
-
-                double ratio = lines[i].getSmoothedTextTagRatio();
-
-                if (ratio >= C.LOWER_BOUND_EXTRACTION_THRESHOLD &&
-                    ratio <= C.UPPER_BOUND_EXTRACTION_THRESHOLD) {
-
-                    sb.append(lines[i].getText());
-
-                }
-
-            }
-
-            content = sb.toString();
+            extractor.extract(document);
 
         }
 
