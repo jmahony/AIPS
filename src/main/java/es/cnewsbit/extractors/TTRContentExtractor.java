@@ -1,7 +1,6 @@
 package es.cnewsbit.extractors;
 
 import es.cnewsbit.C;
-import es.cnewsbit.HTMLDocument;
 import es.cnewsbit.HTMLLine;
 import es.cnewsbit.exceptions.InvalidKernelException;
 import es.cnewsbit.htmlutils.*;
@@ -16,7 +15,7 @@ public class TTRContentExtractor implements ContentExtractor {
     /**
      * The HTML Document
      */
-    private HTMLDocument document;
+    private Extractable extractable;
 
     /**
      * The kernel used for smoothing
@@ -43,15 +42,15 @@ public class TTRContentExtractor implements ContentExtractor {
      * Attempts to remove clutter from around the actual body content of a HTML
      * Document
      *
-     * @param document the string to attempt content extraction
+     * @param extractable extractable object
      * @return the content
      */
     @Override
-    public String extract(HTMLDocument document) {
+    public String extract(Extractable extractable) {
 
-        this.document = document;
+        this.extractable = extractable;
 
-        String html = document.getHtml();
+        String html = this.extractable.getHtml();
 
         html = WhitespaceStripper.strip(html);
 

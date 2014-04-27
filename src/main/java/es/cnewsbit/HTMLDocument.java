@@ -1,5 +1,6 @@
 package es.cnewsbit;
 
+import es.cnewsbit.extractors.Extractable;
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Represents a HTML document
  */
-public class HTMLDocument {
+public class HTMLDocument implements Extractable {
 
     /**
      * Original HTML line

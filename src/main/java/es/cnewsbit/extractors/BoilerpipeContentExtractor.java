@@ -1,14 +1,12 @@
 package es.cnewsbit.extractors;
 
-import es.cnewsbit.HTMLDocument;
-
 /**
  * Created by joshmahony on 27/04/2014.
  */
 public class BoilerpipeContentExtractor implements ContentExtractor {
 
     @Override
-    public String extract(HTMLDocument s) {
+    public String extract(Extractable extractable) {
         return null;
     }
 
