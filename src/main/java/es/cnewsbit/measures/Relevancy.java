@@ -20,7 +20,7 @@ public class Relevancy {
      * @throws InvalidParameterException precision or recall greater than 100.00
      * @return 0.00 to 100.00
      */
-    public static double fMeasure(double precision, double recall) {
+    public static double fMeasure(double precision, double recall) throws InvalidParameterException {
 
         if (precision < 0.00d || recall < 0.00d)
             throw new InvalidParameterException("Neither recall or precision can be less negative");
