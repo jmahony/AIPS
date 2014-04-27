@@ -42,7 +42,7 @@ public class IndexerTest {
     @Before
     public void setup() {
 
-        indexPath = System.getProperty("java.io.tmpdir") + "lucene_test/" + System.currentTimeMillis();
+        indexPath = System.getProperty("java.io.tmpdir") + "/lucene_test/" + System.currentTimeMillis();
 
         analyzer = new StandardAnalyzer(Version.LUCENE_47);
 
