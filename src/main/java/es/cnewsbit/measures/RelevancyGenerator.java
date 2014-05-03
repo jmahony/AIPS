@@ -60,7 +60,7 @@ public class RelevancyGenerator {
 
         for (double i = lower; i < upper; i++) {
 
-            Set<Integer> returnedLines = new HashSet<>();
+            Set<Integer> returnedLines = new HashSet<Integer>();
 
             for (int lineNumber = 0; lineNumber < lines.length; lineNumber++) {
 
