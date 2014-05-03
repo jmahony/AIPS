@@ -130,16 +130,6 @@
             <artifactId>mockito-all</artifactId>
             <version>1.8.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar-plugins</groupId>
-            <artifactId>sonar-runner</artifactId>
-            <version>2.0</version>
-        </dependency>
     </dependencies>
     <reporting>
         <plugins>
@@ -152,6 +142,23 @@
     </reporting>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <id>Sonar</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>sonar-runner</executable>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.googlecode.flyway</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
