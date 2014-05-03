@@ -1,7 +1,12 @@
 package es.cnewsbit;
 
+import com.pholser.junit.quickcheck.ForAll;
+import com.pholser.junit.quickcheck.generator.InRange;
 import es.cnewsbit.measures.Relevancy;
-import org.junit.*;
+import org.junit.Test;
+import org.junit.contrib.theories.Theories;
+import org.junit.contrib.theories.Theory;
+import org.junit.runner.RunWith;
 
 import java.security.InvalidParameterException;
 import java.util.HashSet;
@@ -12,7 +17,24 @@ import static org.junit.Assert.*;
 /**
  * Created by josh on 02/03/14.
  */
+@RunWith(Theories.class)
 public class RelevancyTest {
+
+    /**
+     * QuickCheck fmeasure test
+     * @param precision the precision
+     * @param recall the recall
+     */
+    @Theory public void testFMeasure(
+            @ForAll @InRange(minDouble = 0.00, maxDouble = 100.00) double precision,
+            @ForAll @InRange(minDouble = 0.00, maxDouble = 100.00) double recall) {
+
+        double fMeasure = Relevancy.fMeasure(precision, recall);
+
+        assertTrue(fMeasure <= 100.00);
+        assertTrue(fMeasure >= 0.00);
+
+    }
 
     /**
      * Test the f measure method
