@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Strips extra whitespace from a HTML document
  */
 public class WhitespaceStripper {
 

@@ -3,7 +3,7 @@ package es.cnewsbit.utilities;
 import es.cnewsbit.HTMLLine;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Produces HTMLLine objects from HTML lines
  */
 public class HTMLLineFactory {
 
@@ -11,6 +11,7 @@ public class HTMLLineFactory {
      *
      * Separate out the given HTML into lines
      *
+     * @param html the html to turn into an array of lines
      * @return array of HTML lines
      */
     public static HTMLLine[] build(String html) {

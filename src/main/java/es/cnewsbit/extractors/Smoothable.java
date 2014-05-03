@@ -1,7 +1,7 @@
 package es.cnewsbit.extractors;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Interface for Smoothable objects
  */
 public interface Smoothable {
 

@@ -16,6 +16,7 @@ public class ResourceLoader {
      * @param obj the object the path is relative from
      * @param resource the resources path
      * @return the resource
+     * @throws IOException if the resource doesn't exist
      */
     public static String asString(Object obj, String resource) throws IOException {
 
@@ -23,7 +24,6 @@ public class ResourceLoader {
             obj.getClass().getResourceAsStream(resource),
             "UTF-8"
         );
-
 
     }
 

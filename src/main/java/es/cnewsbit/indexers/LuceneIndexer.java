@@ -18,7 +18,7 @@ import org.apache.lucene.util.Version;
 import java.io.*;
 
 /**
- * Manage a lucene index
+ * Manages a lucene index
  */
 @Log4j2
 public class LuceneIndexer implements Indexer {

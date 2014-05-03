@@ -5,7 +5,7 @@ import de.l3s.boilerpipe.extractors.ArticleSentencesExtractor;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Facade for Boilerpipe content extraction
  */
 @Log4j2
 public class BoilerpipeContentExtractor implements ContentExtractor {

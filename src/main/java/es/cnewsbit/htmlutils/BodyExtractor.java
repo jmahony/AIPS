@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Extracts all the content between two body tags in a HTML document
  */
 public class BodyExtractor {
 

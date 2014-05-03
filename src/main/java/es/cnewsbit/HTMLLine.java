@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by cnewsbit on 24/02/2014.
+ * Represents a HTML line
  */
 public class HTMLLine implements Smoothable {
 

@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Uses the text to tag ratio to extract content from a HTML document
  */
 public class TTRContentExtractor implements ContentExtractor {
 

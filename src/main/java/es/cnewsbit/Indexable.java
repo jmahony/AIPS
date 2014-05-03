@@ -1,7 +1,7 @@
 package es.cnewsbit;
 
 /**
- * Created by josh on 03/04/14.
+ * Indexable interface
  */
 public interface Indexable {
 

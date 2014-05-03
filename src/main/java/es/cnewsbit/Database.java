@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by josh on 06/04/14.
+ * Used to insert news articls into the database
  */
 @Log4j2
 public class Database {

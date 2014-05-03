@@ -6,7 +6,8 @@ import java.security.InvalidParameterException;
 import java.util.Set;
 
 /**
- * Created by josh on 02/03/14.
+ * Various functions, this was used for me to measure how effect extraction algorithms
+ * were
  */
 public class Relevancy {
 

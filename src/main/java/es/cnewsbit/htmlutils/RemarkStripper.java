@@ -1,7 +1,7 @@
 package es.cnewsbit.htmlutils;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Strips all comment/remark tags from a HTML document
  */
 public class RemarkStripper {
 

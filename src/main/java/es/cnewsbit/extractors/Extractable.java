@@ -1,7 +1,8 @@
 package es.cnewsbit.extractors;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Interface for extractable objects
+ * TODO: Probably should rename getHtml to something more appropriate
  */
 public interface Extractable {
 

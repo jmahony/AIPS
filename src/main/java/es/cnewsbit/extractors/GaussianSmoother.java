@@ -4,16 +4,18 @@ import es.cnewsbit.C;
 import es.cnewsbit.exceptions.InvalidKernelException;
 
 /**
- * Created by joshmahony on 27/04/2014.
+ * Applies a Gaussian smooth to a 1d array
  */
 public class GaussianSmoother implements Smoother {
 
     /**
      *
-     * Smooths an array of HTMLLine objects, needs a kernel for the smoothing process.
+     * Smooths an array of Smoothables objects, needs a kernel for the smoothing process.
      *
-     * @return an array of HTMLLine objects with the smoothed ratio populated
-     * @exception es.cnewsbit.exceptions.InvalidKernelException if the kernel has an even number of elements
+     * @param items array of Smoothables
+     * @param kernel kernel to smooth by
+     * @return array of smoothed Smoothables
+     * @throws InvalidKernelException if the kernel is not odd
      */
     public Smoothable[] smooth(Smoothable[] items, Double[] kernel) throws InvalidKernelException {
 
@@ -48,6 +50,15 @@ public class GaussianSmoother implements Smoother {
 
     }
 
+    /**
+     *
+     * Uses the default kernel
+     * TODO: Move the default kernel to this class
+     *
+     * @param items array of Smoothables
+     * @return array of smoothed Smoothables
+     * @throws InvalidKernelException if the kernel is not odd
+     */
     public Smoothable[] smooth(Smoothable[] items) throws InvalidKernelException {
 
         return smooth(items, C.SMOOTHING_KERNEL);
