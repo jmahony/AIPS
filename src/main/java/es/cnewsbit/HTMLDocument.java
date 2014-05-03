@@ -63,7 +63,7 @@ public class HTMLDocument implements Extractable {
      */
     public ArrayList<String> parseHOnes() {
 
-        ArrayList<String> headings = new ArrayList<>();
+        ArrayList<String> headings = new ArrayList<String>();
 
         Elements elements = dom.select("h1");
 
@@ -87,7 +87,7 @@ public class HTMLDocument implements Extractable {
 
         Element elem = dom.select("meta[name=keywords], META[name=keywords]").first();
 
-        ArrayList<String> keywords = new ArrayList<>();
+        ArrayList<String> keywords = new ArrayList<String>();
 
         if (elem != null) {
 

@@ -60,7 +60,7 @@ public class CSV {
 
         Map<Integer, String>[] table = toTable(csv);
 
-        Set<Integer> relevancySet = new HashSet<>();
+        Set<Integer> relevancySet = new HashSet<Integer>();
 
         for (Map<Integer, String> row : table) {
 

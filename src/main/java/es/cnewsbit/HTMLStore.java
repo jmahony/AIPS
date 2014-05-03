@@ -119,7 +119,7 @@ public class HTMLStore {
 
         }
 
-        ArrayList<DBObject> list = new ArrayList<>();
+        ArrayList<DBObject> list = new ArrayList<DBObject>();
 
         int i = 0;
 

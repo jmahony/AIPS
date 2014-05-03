@@ -56,7 +56,7 @@ public class RelevancyGenerator {
 
         Smoothable[] smoothable = this.lines;
 
-        results = new LinkedHashMap<>();
+        results = new LinkedHashMap<Double, Map<String, Double>>();
 
         for (double i = lower; i < upper; i++) {
 
@@ -76,7 +76,7 @@ public class RelevancyGenerator {
             double recall    = Relevancy.recall(relevantLines, returnedLines);
             double fm        = Relevancy.fMeasure(precision, recall);
 
-            Map<String, Double> row = new LinkedHashMap<>();
+            Map<String, Double> row = new LinkedHashMap<String, Double>();
 
             row.put("precision", precision);
             row.put("recall",    recall);
