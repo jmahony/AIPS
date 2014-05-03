@@ -45,7 +45,7 @@ java -jar AIPS-1.0-SNAPSHOT-uber.jar
 java -Dlog4j.configurationFile=log4j2.xml -jar AIPS-1.0-SNAPSHOT-uber.jar
 ```
 # Lucene
-The lucene index will be creasted in lucene/index.
+The lucene index will be created in lucene/index.
 # Misc
 To send the lucene index to the API
 ```
