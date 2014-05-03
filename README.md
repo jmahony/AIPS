@@ -4,6 +4,9 @@ AIPS
 
 Article Indexing & Processing System
 
+# Documentation
+
+[This link](http://ci.joshmahony.com/job/AIPS/javadoc/)
 # Building
 Clone the repository
 ```
