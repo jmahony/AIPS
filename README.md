@@ -34,7 +34,6 @@ MySQL settings can be added to config.json
 
 It is advised to keep "?rewriteBatchedStatements=true" flag to minimise database round trips.
 
-TODO: Add MongoDB config to config.json
 # Running
 ## Normal
 ```
