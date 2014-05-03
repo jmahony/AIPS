@@ -1,6 +1,9 @@
 AIPS
 =====
+[![Build Status](http://ci.joshmahony.com/buildStatus/icon?job=AIPS)](http://ci.joshmahony.com/job/AIPS/)
+
 Article Indexing & Processing System
+
 # Building
 Clone the repository
 ```
