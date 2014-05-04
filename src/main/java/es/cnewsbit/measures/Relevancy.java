@@ -6,7 +6,7 @@ import java.security.InvalidParameterException;
 import java.util.Set;
 
 /**
- * Various functions, this was used for me to measure how effect extraction algorithms
+ * Various functions, this was used to measure how effect extraction algorithms
  * were
  */
 public class Relevancy {
@@ -38,8 +38,9 @@ public class Relevancy {
 
     /**
      *
-     * Returns the recall of the two sets. This simply intersects a result set and a known relevant set and returns the
-     * fraction of the number of relevant articles in the return set.
+     * Returns the recall of the two sets. This simply intersects a result set
+     * and a known relevant set and returns the fraction of the number of
+     * relevant articles in the return set.
      *
      * rr  = the relevant elements returned
      * nrr = the elements that were not relevant but were returned
@@ -72,8 +73,9 @@ public class Relevancy {
 
     /**
      *
-     * Returns the recall of the two sets. This simply intersects a result set and a known relevant set and returns the
-     * fraction of the number of relevant articles in the known relevant set.
+     * Returns the recall of the two sets. This simply intersects a result set
+     * and a known relevant set and returns the fraction of the number of
+     * relevant articles in the known relevant set.
      *
      * rr  = the relevant elements returned
      * rnr = the elements that are relevant but not returned

@@ -1,16 +1,11 @@
 package es.cnewsbit.htmlutils;
 
-/**
- * Strips all comment/remark tags from a HTML document
- */
 public class RemarkStripper {
 
     /**
      *
-     * Strip out HTML remarks
+     * Strip out HTML remarks (comments)
      *
-     * @param html html to be stripped of XML comments
-     * @return HTML less remark tags
      */
     public static String strip(String html) {
 

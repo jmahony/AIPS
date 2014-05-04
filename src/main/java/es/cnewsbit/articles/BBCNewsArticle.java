@@ -11,14 +11,11 @@ import org.jsoup.nodes.Element;
 
 import java.net.URL;
 
-/**
- * News article parser for articles on the bbc.co.uk domain
- */
 @Log4j2
 public class BBCNewsArticle extends NewsArticle {
 
     /**
-     * The format used for the published date
+     * The format of the published date
      */
     private static final String dateFormat = "yyyy/MM/dd HH:mm:SS";
 
@@ -31,7 +28,7 @@ public class BBCNewsArticle extends NewsArticle {
     };
 
     /**
-     * Any pages with these urls will be ignored
+     * Any pages with these URLs will be ignored
      */
     private static String[] urlBlacklist = new String[] {
             "print=trueprint=true",
@@ -42,8 +39,6 @@ public class BBCNewsArticle extends NewsArticle {
      *
      * Constructor
      *
-     * @param document the document of the article
-     * @param url the url of the article
      * @throws NotNewsArticleException if URL is blacklisted
      * @throws NotNewsArticleException if the title is blacklisted
      */
@@ -85,7 +80,7 @@ public class BBCNewsArticle extends NewsArticle {
 
     /**
      *
-     * Attempts to return the date of the news article
+     * Attempts to return the date of the news article by looking at meta tags.
      *
      * @return the date of the article
      * @throws NoDateException if a date cant be found

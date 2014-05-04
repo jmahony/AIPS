@@ -36,9 +36,9 @@ public class UKReutersNewsArticle extends NewsArticle {
 
     /**
      *
-     * Attempt to get a title from the article
+     * Returns the first h1 on the page.
      *
-     * @return content of first h1
+     * @return the articles headline
      */
     @Override
     public String getHeadline() {
@@ -56,9 +56,10 @@ public class UKReutersNewsArticle extends NewsArticle {
 
     /**
      *
-     * Extracts the date of the article
+     * Attempts to return the date of the news article by looking at meta tags.
      *
      * @return the date of the article
+     * @throws NoDateException if a date cant be found
      */
     @Override
     public DateTime getDate() throws NoDateException {

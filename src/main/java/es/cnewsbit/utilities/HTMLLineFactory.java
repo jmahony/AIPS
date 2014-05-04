@@ -2,17 +2,14 @@ package es.cnewsbit.utilities;
 
 import es.cnewsbit.HTMLLine;
 
-/**
- * Produces HTMLLine objects from HTML lines
- */
 public class HTMLLineFactory {
 
     /**
      *
-     * Separate out the given HTML into lines
+     * Turns HTML into an array of HTMLLine objects
      *
-     * @param html the html to turn into an array of lines
-     * @return array of HTML lines
+     * @param html the html
+     * @return array of HTMLLines
      */
     public static HTMLLine[] build(String html) {
 

@@ -12,9 +12,6 @@ import lombok.Setter;
  */
 public class TTRContentExtractor implements ContentExtractor {
 
-    /**
-     * The HTML Document
-     */
     private Extractable extractable;
 
     /**
@@ -23,29 +20,29 @@ public class TTRContentExtractor implements ContentExtractor {
     private @Getter @Setter double[] kernel;
 
     /**
-     * Upper bound ratio
+     * Ignore any ratios above the upper bound
      */
     private @Getter @Setter double upperThreshold = C.UPPER_BOUND_EXTRACTION_THRESHOLD;
 
     /**
-     * Lower bound ratio
+     * Ignore any ratios below the lower bound
      */
     private @Getter @Setter double lowerThreshold = C.LOWER_BOUND_EXTRACTION_THRESHOLD;
 
-    /**
-     * The HTML document split up into individual HTMLLine objects
-     */
     private HTMLLine[] htmlBodyLines;
 
-    /**
-     * Smoother to smooth the smoothables
-     */
     private @Getter @Setter Smoother smoother = new GaussianSmoother();
 
     /**
      *
-     * Attempts to remove clutter from around the actual body content of a HTML
-     * Document
+     * Applies the Text-to-Tag-Ratio algorithms as described by Tim Weninger &
+     * William H. Hsu in their paper Text Extraction from the Web via
+     * Text-to-Tag Ratio (http://www.cse.nd.edu/~tweninge/pubs/WH_TIR08.pdf).
+     *
+     * This works by stripping out various clutter from a HTML page, calculating
+     * a ratio of text to tags for each line, smoothing the ratio histogram and
+     * then everything in between the upper and lower bound will be considered
+     * content and return as a string.
      *
      * @param extractable extractable object
      * @return the content

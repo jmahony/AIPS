@@ -18,14 +18,12 @@ import org.apache.lucene.util.Version;
 import java.io.*;
 
 /**
- * Manages a lucene index
+ * Facade to hide some of the complexities of creating and adding to a Apache
+ * Lucene index.
  */
 @Log4j2
 public class LuceneIndexer implements Indexer {
 
-    /**
-     * Index Writer, this actually creates the index
-     */
     private @Getter final IndexWriter INDEX_WRITER;
 
     /**
@@ -33,7 +31,7 @@ public class LuceneIndexer implements Indexer {
      * Constructor
      *
      * @param indexPath where to save the lucene index
-     * @param analyzer analyses the documents
+     * @param analyzer analyses the documents, tokenising, stop words, stemming
      * @throws IOException if the indexPath directory does not exist
      */
     public LuceneIndexer(String indexPath, Analyzer analyzer) throws IOException {
@@ -50,19 +48,16 @@ public class LuceneIndexer implements Indexer {
 
     }
 
-    /**
-     *
-     * Adds a document to the index
-     *
-     * @param indexable the document to add
-     * @throws IOException if the index directory does not exit
-     */
     @Override
     public synchronized void addToIndex(Indexable indexable) throws IOException {
 
         Document doc = new Document();
 
+        // The content that the document will be indexed by
         doc.add(new TextField("content", indexable.getIndexString(), Field.Store.NO));
+
+        // We only store a handle to reference the document by, this handle can
+        // then be used as the key to store the actual document by
         doc.add(new StringField("handle", indexable.getHandle(), Field.Store.YES));
 
         if (INDEX_WRITER.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {
@@ -81,12 +76,6 @@ public class LuceneIndexer implements Indexer {
 
     }
 
-    /**
-     *
-     * Closes the index writer
-     *
-     * @throws IOException if the writer cannot close the index file
-     */
     @Override
     public void close() throws IOException {
 

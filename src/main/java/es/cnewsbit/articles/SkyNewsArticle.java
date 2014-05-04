@@ -26,8 +26,6 @@ public class SkyNewsArticle extends NewsArticle {
      *
      * Constructor
      *
-     * @param document the document of the article
-     * @param url the url of the article
      * @throws NotNewsArticleException if URL is blacklisted
      * @throws NotNewsArticleException if the title is blacklisted
      */
@@ -53,7 +51,7 @@ public class SkyNewsArticle extends NewsArticle {
 
     /**
      *
-     * Attempts to return the date of the news article
+     * Attempts to return the date of the news article by looking at meta tags.
      *
      * @return the date of the article
      * @throws NoDateException if a date cant be found

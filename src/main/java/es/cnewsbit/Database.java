@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Database {
 
     /**
-     * The connection pool
+     * MySQL connection pool
      */
     private @Getter final BasicDataSource dataSource;
 
@@ -39,15 +39,6 @@ public class Database {
      */
     private @Getter PreparedStatement s;
 
-    /**
-     *
-     * @param user DB username
-     * @param pass DB password
-     * @param name DB name
-     * @param size DB pool size
-     * @param batchSize how many objects to get a time
-     * @throws SQLException if the prepared statement is invalid
-     */
     public Database(String user, String pass, String name, int size, int batchSize) throws SQLException {
 
         this.batchSize = batchSize;
@@ -71,7 +62,7 @@ public class Database {
     /**
      *
      * Inserts an entry into the batch, and if the batch size is reached,
-     * it is sent to the DB
+     * it is sent to the DB.
      *
      * @param newsArticle the article to insert
      * @throws SQLException invalid SQL

@@ -8,10 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Used to calculate how relevant a result set is, used to compare
- * different algorithms
- */
 public class RelevancyGenerator {
 
     /**

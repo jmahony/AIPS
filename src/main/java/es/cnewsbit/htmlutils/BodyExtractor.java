@@ -3,9 +3,6 @@ package es.cnewsbit.htmlutils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Extracts all the content between two body tags in a HTML document
- */
 public class BodyExtractor {
 
     /**
@@ -27,9 +24,8 @@ public class BodyExtractor {
 
     /**
      *
-     * Get the index position of the last character of the opening body tag,
-     * There could be multiple opening body tags, we are looking for the first
-     * character of the first occurrence.
+     * Get the index position of the first character of the opening body tag.
+     * There could be multiple opening body tags, we want the last.
      *
      * @param html html to get the index from
      * @return first char index of first body tag
@@ -57,6 +53,7 @@ public class BodyExtractor {
     }
 
     /**
+     *
      * Get the index position of the first character of the closing body tag
      *
      * @param html html to get the index from

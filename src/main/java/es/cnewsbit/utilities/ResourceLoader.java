@@ -4,9 +4,6 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 
-/**
- * Loads resources
- */
 public class ResourceLoader {
 
     /**

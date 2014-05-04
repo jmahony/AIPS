@@ -1,8 +1,5 @@
 package es.cnewsbit.extractors;
 
-/**
- * Interface for Smoothable objects
- */
 public interface Smoothable {
 
     void setSmoothedValue(Double value);

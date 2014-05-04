@@ -14,34 +14,15 @@ import org.jsoup.nodes.Element;
 import java.net.URL;
 import java.util.List;
 
-/**
- * Generic base extractor class
- */
 @Log4j2
 public abstract class NewsArticle implements Indexable {
 
-    /**
-     * The HTML of the news article
-     */
     protected final @Getter HTMLDocument document;
 
-    /**
-     * The original URL of the article
-     */
     protected final @Getter URL url;
 
-    /**
-     * To retrieve the articles actual content
-     */
     protected @Getter @Setter ContentExtractor contentExtractor;
 
-    /**
-     *
-     * Constructor
-     *
-     * @param document the document of the news article
-     * @param url the URL of the article
-     */
     public NewsArticle(HTMLDocument document, URL url) {
 
         this.document = document;
@@ -50,12 +31,6 @@ public abstract class NewsArticle implements Indexable {
 
     }
 
-    /**
-     *
-     * Returns the meta keywords of the article
-     *
-     * @return a list of keywords
-     */
     public List<String> getMetaKeywords() {
 
         return document.getMetaKeywords();
@@ -64,7 +39,10 @@ public abstract class NewsArticle implements Indexable {
 
     /**
      *
-     * Attempt to get the headline from the article
+     * Attempt to get the headline from the article. It starts by trying to
+     * extract the open graph title, then the HTML page title and finally,
+     * if the other two don't exist it will try to return the first h1 HTML tag
+     * is can find.
      *
      * @return the headline
      */
@@ -93,9 +71,10 @@ public abstract class NewsArticle implements Indexable {
 
     /**
      *
-     * Returns the extracted content of the HTML
+     * Runs the content extractor over the HTML document and, hopefully, returns
+     * the HTML pages actual content.
      *
-     * @return the content string
+     * @return the content
      */
     public String getContent() {
 
@@ -105,7 +84,8 @@ public abstract class NewsArticle implements Indexable {
 
     /**
      *
-     * Gets a unique handle to identify the article by
+     * Gets a unique handle to identify the article by, this is used by the
+     * index.
      *
      * @return the handle to be used by the indexer
      */
@@ -117,7 +97,7 @@ public abstract class NewsArticle implements Indexable {
 
     /**
      *
-     * Get the actual content to base the index entry on
+     * Get the content that the article will be indexed by.
      *
      * @return the index base
      */
@@ -127,27 +107,13 @@ public abstract class NewsArticle implements Indexable {
 
     }
 
-    /**
-     *
-     * The summarisation of the news article
-     *
-     * @return content summarisation
-     */
     public String getSummarisation() {
 
         return "";
 
     }
 
-    /**
-     *
-     * Gets the date of the article
-     *
-     * TODO: This needs rethinking
-     *
-     * @return the date of the article
-     * @throws NoDateException if there is no overriding method
-     */
+    //TODO: This needs rethinking
     public DateTime getDate() throws NoDateException {
 
         throw new NoDateException("No date found in article");

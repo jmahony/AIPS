@@ -51,7 +51,7 @@ public class CSV {
 
     /**
      *
-     * Formats a CSV string so we can perform relevant measure on it
+     * Formats a CSV string so we can perform relevancy measurements on it
      *
      * @param csv the CSV string
      * @param lineColumn the column the line number is in

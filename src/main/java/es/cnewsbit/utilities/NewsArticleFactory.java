@@ -18,15 +18,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-/**
- * Builds the correct news article object for the domain
- */
 @Log4j2
 public class NewsArticleFactory {
 
     /**
-     * If a URL pattern exists here, it will be index, otherwise it will be
-     * ignored
+     *
+     * If a URL pattern exists here, it will be indexed, otherwise ignored
+     *
      */
     private static String[] whitelist = new String[] {
             "http://uk.reuters.com/article/\\d{4}/\\d+/\\d+/.+",
@@ -37,7 +35,9 @@ public class NewsArticleFactory {
 
     /**
      *
-     * Turns a DBObject into a NewsArticle
+     * Takes a MongoDB object and generates the correct object for the domain
+     * based on the url field. It then sets the content extractor to use
+     * TODO: This needs to be refactored, see todo in method
      *
      * @param dbObject the MongoDB object
      * @return the news article
@@ -52,7 +52,7 @@ public class NewsArticleFactory {
 
         URL url = new URL(dbObject.get("url").toString());
 
-        if (!isInWhitelist(url))
+        if (!isURLWhitelisted(url))
             throw new NotNewsArticleException("Articles URL is not white listed");
 
         // Create a HTML document representation
@@ -103,7 +103,7 @@ public class NewsArticleFactory {
     /**
      *
      * Extracts the newest HTML document from the crawled object.
-     *
+     *     *
      * @param dbObject the MongoDB object
      * @return the HTML string
      */
@@ -134,7 +134,7 @@ public class NewsArticleFactory {
 
     /**
      *
-     * Gets the class to instantiate for a URL
+     * Gets the class to instantiate for based on the URLs domain
      *
      * @param url the url
      * @return the class
@@ -152,14 +152,7 @@ public class NewsArticleFactory {
 
     }
 
-    /**
-     *
-     * Returns true if the given URL is white listed, false if not.
-     *
-     * @param url the url
-     * @return whether the url is white listed or not
-     */
-    private static boolean isInWhitelist(URL url) {
+    private static boolean isURLWhitelisted(URL url) {
 
         boolean whitelisted = false;
 

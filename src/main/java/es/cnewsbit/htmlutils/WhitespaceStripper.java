@@ -3,17 +3,12 @@ package es.cnewsbit.htmlutils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Strips extra whitespace from a HTML document
- */
 public class WhitespaceStripper {
 
     /**
      *
-     * Strip out HTML whitespace
+     * Strip out HTML extra whitespace, for example multiple newlines or spaces.
      *
-     * @param html html to be stripped of whitespace
-     * @return HTML less any leading and newline whitespace
      */
     public static String strip(String html) {
 
