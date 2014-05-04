@@ -31,19 +31,10 @@ public class DocumentProcessor {
      */
     private final AtomicInteger NO_PROCESSED;
 
-    /**
-     * The database
-     */
     private final Database DATABASE;
 
-    /**
-     * The html to process
-     */
     private final HTMLStore STORE;
 
-    /**
-     * Used to build the index
-     */
     private final Indexer INDEXER;
 
     /**
@@ -103,7 +94,7 @@ public class DocumentProcessor {
                 this,
                 INDEXER,
                 DATABASE,
-                    NO_PROCESSED,
+                NO_PROCESSED,
                 20000,
                 250
              )).start();
@@ -143,28 +134,19 @@ public class DocumentProcessor {
 @Log4j2
 class DocumentProcessorWorker implements Runnable {
 
-    /**
-     * Reference to the HTML store
-     */
     private static HTMLStore store;
 
-    /**
-     * Reference to the indexer
-     */
     private static Indexer indexer;
 
-    /**
-     * Reference to the database
-     */
     private static Database database;
 
     /**
-     * How many the class has processed
+     * How many articles the class has processed
      */
     private static AtomicInteger noProcessed;
 
     /**
-     * How many articles the thread should retreive from the store at a time
+     * How many articles the thread should retrieve from the store at a time
      */
     private static int batchSize;
 
@@ -174,18 +156,13 @@ class DocumentProcessorWorker implements Runnable {
     private static int iterations;
 
     /**
-     * How many instances of this class
+     * How many instances of this class exist, we need to know this so we can
+     * tell the DocumentProcessor when all workers as finished
      */
     private static AtomicInteger noOfWorkers = new AtomicInteger(0);
 
-    /**
-     * How many instances of this class have finished their work
-     */
     private static AtomicInteger noOfWorkersFinished = new AtomicInteger(0);
 
-    /**
-     * Reference to the document processor
-     */
     private static DocumentProcessor dp;
 
     /**
@@ -225,9 +202,6 @@ class DocumentProcessorWorker implements Runnable {
 
     }
 
-    /**
-     * Starts the thread
-     */
     @Override
     public void run() {
 
@@ -235,12 +209,10 @@ class DocumentProcessorWorker implements Runnable {
 
             try {
 
-                // Get a batch of document to process
                 List<DBObject> list = store.nextBatch(batchSize);
 
                 log.info("Started Processing Articles");
 
-                // If the batch is empty, throw an exception
                 if (list == null)
                     throw new CollectionEmptyException("Collection is empty");
 
@@ -266,8 +238,8 @@ class DocumentProcessorWorker implements Runnable {
                         }
 
                         // Even if no article is returned by the builder,
-                        // We still need to keep track of how many have been
-                        // taken from the collection
+                        // We still need to keep track of how many articles have
+                        // been taken from the collection
                         noProcessed.getAndIncrement();
 
                     } catch (StackOverflowError e) {
@@ -282,10 +254,12 @@ class DocumentProcessorWorker implements Runnable {
 
                 }
 
-                // Calculate the rate we are processing articles
-                long rate = (noProcessed.get() / TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis() - dp.getSTART_TIME())));
+                long articlesProcessedPerSecond = (noProcessed.get() /
+                        TimeUnit.MILLISECONDS.toSeconds((System.currentTimeMillis()
+                                - dp.getSTART_TIME())));
 
-                log.info("Finished Processing Articles, current rate is: " + rate + " per second");
+                log.info("Finished Processing Articles, current rate is: " +
+                        articlesProcessedPerSecond + " per second");
 
             } catch (CollectionEmptyException e) {
 
@@ -297,8 +271,8 @@ class DocumentProcessorWorker implements Runnable {
 
         try {
 
-            // If this is the last thread finishing, there may be articles left over
-            // in the database batch, so send these to the database
+            // If this is the last thread finishing, there may be articles left
+            // over in the database batch, so send these to the database.
             database.getS().executeBatch();
 
         } catch (SQLException e) {
@@ -316,7 +290,7 @@ class DocumentProcessorWorker implements Runnable {
      *
      * Each thread calls this when it has finished processing.
      * When all threads have finished, the document processor will be notified
-     * so it can close down properly
+     * so it can close down properly.
      *
      */
     public static void done() {
