@@ -11,57 +11,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Represents a HTML document
- */
 public class HTMLDocument implements Extractable {
 
-    /**
-     * Original HTML line
-     */
     private @Getter final String html;
 
-    /**
-     * A Jsoup version of the HTML
-     */
     private @Getter final Document dom;
 
-    /**
-     * The keywords contained in the meta tag of the HTML
-     */
     private @Getter List<String> metaKeywords;
 
-    /**
-     * All of the H1 tags content on the page
-     */
     private @Getter List<String> headingOnes;
 
-    /**
-     * Takes the HTML
-     *
-     * @param html the HTML
-     */
     public HTMLDocument(String html) {
 
         this.html = html.trim();
 
         this.dom  = Jsoup.parse(this.html);
 
-        this.headingOnes = parseHOnes();
+        this.headingOnes = populateH1List();
 
-        this.metaKeywords = parseKeywords();
+        this.metaKeywords = parseMetaKeywords();
 
         // TODO: Clean me!!
 
     }
 
-    /**
-     *
-     * Pareses all H1 tags
-     *
-     * @return a list of h1 tags HTML
-     */
-    public ArrayList<String> parseHOnes() {
+    public ArrayList<String> populateH1List() {
 
         ArrayList<String> headings = new ArrayList<String>();
 
@@ -77,13 +51,8 @@ public class HTMLDocument implements Extractable {
 
     }
 
-    /**
-     *
-     * Parses the meta keywords
-     *
-     * @return a set of keywords
-     */
-    private ArrayList<String> parseKeywords() {
+    //TODO: This can be moved out of this class
+    private ArrayList<String> parseMetaKeywords() {
 
         Element elem = dom.select("meta[name=keywords], META[name=keywords]").first();
 
