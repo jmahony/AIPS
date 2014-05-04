@@ -29,6 +29,8 @@ public class CSV {
 
         for (String row : rows) {
 
+            if (row.length() <= 0) continue;
+
             String[] columns = row.split(",");
 
             LinkedHashMap<Integer, String> newRow = new LinkedHashMap<Integer, String>();
