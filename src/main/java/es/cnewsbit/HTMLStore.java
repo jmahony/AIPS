@@ -1,6 +1,7 @@
 package es.cnewsbit;
 
 import com.mongodb.*;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 import java.net.UnknownHostException;
@@ -8,47 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Used to retrieve documents from the HTML store
- */
 @Log4j2
 public class HTMLStore {
 
-    /**
-     * MongoDB connection pool
-     */
     private static MongoClient client;
 
-    /**
-     * Reference to the database
-     */
     private static DB db;
 
-    /**
-     * This is a singleton, so keep one instance
-     */
     private static HTMLStore instance = null;
 
-    /**
-     * How many document we have retrieved from monogodb
-     */
-    private static AtomicInteger count = new AtomicInteger(0);
+    private static AtomicInteger retrievedDocumentCount = new AtomicInteger(0);
 
-    /**
-     * Reference to the collection
-     */
     private static DBCollection collection;
 
-    /**
-     * Whether the cursor has reached the end of the collection
-     */
-    public static boolean isEmpty = false;
+    private static @Getter boolean cursorHasReachedEnd = false;
 
-    /**
-     *
-     * Constructor
-     *
-     */
     protected HTMLStore() {
 
         log.info("Initialising MongoDB connection... ");
@@ -74,12 +49,6 @@ public class HTMLStore {
 
     }
 
-    /**
-     *
-     * This is a singleton, so return an instance
-     *
-     * @return singleton instance
-     */
     public static HTMLStore getInstance() {
 
         if (instance == null) {
@@ -101,7 +70,7 @@ public class HTMLStore {
      */
     public synchronized List<DBObject> nextBatch(int batchSize) {
 
-        int c = count.getAndIncrement();
+        int c = retrievedDocumentCount.getAndIncrement();
 
         int skip = c * batchSize;
 
@@ -113,7 +82,7 @@ public class HTMLStore {
 
         if (!cursor.hasNext()) {
 
-            isEmpty = true;
+            cursorHasReachedEnd = true;
 
             return null;
 
