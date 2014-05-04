@@ -55,7 +55,7 @@ public class App {
 
             // Rebuild truncate the current articles table and start from
             // scratch
-            dp.rebuild();
+            dp.rebuild(HTMLStore.getInstance());
 
         } catch (IOException | SQLException | ParseException e) {
 
