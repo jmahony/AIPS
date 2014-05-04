@@ -22,8 +22,8 @@ public class HTMLLineTest {
 
         HTMLLine htmlLine1 = new HTMLLine(s1);
 
-        assertEquals(htmlLine1.getTagsCount(), s1tc);
-        assertEquals(htmlLine1.getTextCount(), s1wc);
+        assertEquals(htmlLine1.getTags(), s1tc);
+        assertEquals(htmlLine1.getWords(), s1wc);
         assertEquals(htmlLine1.getValueToSmooth(), s1ttr, 0);
 
         String s2 = "<div class=\"livestats-web-bug\"><img alt=\"\" id=\"livestats\" src=\"http://stats.bbc.co.uk/o.gif?~RS~s~R" +
@@ -34,8 +34,8 @@ public class HTMLLineTest {
 
         HTMLLine htmlLine2 = new HTMLLine(s2);
 
-        assertEquals(htmlLine2.getTagsCount(), s2tc);
-        assertEquals(htmlLine2.getTextCount(), s2wc);
+        assertEquals(htmlLine2.getTags(), s2tc);
+        assertEquals(htmlLine2.getWords(), s2wc);
         assertEquals(htmlLine2.getValueToSmooth(), s2ttr, 0);
 
         String s3 = "<li><a href=\"/news/education/\">Education</a></li>";
@@ -45,8 +45,8 @@ public class HTMLLineTest {
 
         HTMLLine htmlLine3 = new HTMLLine(s3);
 
-        assertEquals(htmlLine3.getTagsCount(), s3tc);
-        assertEquals(htmlLine3.getTextCount(), s3wc);
+        assertEquals(htmlLine3.getTags(), s3tc);
+        assertEquals(htmlLine3.getWords(), s3wc);
         assertEquals(htmlLine3.getValueToSmooth(), s3ttr, 0);
 
         String s4 = " <a title=\"Post this story to Delicious\" href=\"http://del.icio.us/post?url=http://www.bbc.co.uk/news/entertainment-arts-26222202&amp;title=BBC+News+-" +
@@ -57,8 +57,8 @@ public class HTMLLineTest {
 
         HTMLLine htmlLine4 = new HTMLLine(s4);
 
-        assertEquals(htmlLine4.getTagsCount(), s4tc);
-        assertEquals(htmlLine4.getTextCount(), s4wc);
+        assertEquals(htmlLine4.getTags(), s4tc);
+        assertEquals(htmlLine4.getWords(), s4wc);
         assertEquals(htmlLine4.getValueToSmooth(), s4ttr, 0);
 
     }

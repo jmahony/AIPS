@@ -7,25 +7,16 @@ import lombok.Setter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Represents a HTML line
- */
 public class HTMLLine implements Smoothable {
 
-    /**
-     * Original HTML line
-     */
     private @Getter final String line;
 
-    /**
-     * Count of text on line
-     */
-    private @Getter int textCount = 0;
+    private @Getter int words = 0;
 
     /**
      * Count of tags on line
      */
-    private @Getter int tagsCount = 0;
+    private @Getter int tags = 0;
 
     /**
      * The text to tag ratio of the line
@@ -48,9 +39,9 @@ public class HTMLLine implements Smoothable {
 
         this.line = line.trim();
 
-        textCount = countText();
+        words = countWords();
 
-        tagsCount = countTags();
+        tags = countTags();
 
         valueToSmooth = textToTagRatio();
 
@@ -60,7 +51,6 @@ public class HTMLLine implements Smoothable {
      *
      * Gets the text of the line with no HTML tags
      *
-     * @return the line without HTML tags
      */
     public String getText() {
 
@@ -68,13 +58,7 @@ public class HTMLLine implements Smoothable {
 
     }
 
-    /**
-     *
-     * Count text on the line
-     *
-     * @return amount of text
-     */
-    private int countText() {
+    private int countWords() {
 
         String strippedLine = line.replaceAll("\\<.*?>", "");
 
@@ -86,12 +70,6 @@ public class HTMLLine implements Smoothable {
 
     }
 
-    /**
-     *
-     * Count tags on the line
-     *
-     * @return amount of tags
-     */
     private int countTags() {
 
         Pattern pattern = Pattern.compile("<\\b[^>]*>");
@@ -110,23 +88,22 @@ public class HTMLLine implements Smoothable {
 
     }
 
-
-    /**
-     *
-     * Gets the text to tags ratio
-     *
-     * @return text to tag ratio
-     */
     private double textToTagRatio() {
 
         double ratio = 0;
 
-        if (textCount == 0) {
+        if (words == 0) {
+
             ratio = 0;
-        } else if (tagsCount == 0) {
+
+        } else if (tags == 0) {
+
             ratio = 100;
+
         } else {
-            ratio = (double) textCount / (double) tagsCount;
+
+            ratio = (double) words / (double) tags;
+
         }
 
         return ratio;
