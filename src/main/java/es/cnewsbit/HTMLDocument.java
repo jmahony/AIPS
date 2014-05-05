@@ -35,7 +35,7 @@ public class HTMLDocument implements Extractable {
 
     }
 
-    public ArrayList<String> populateH1List() {
+    private ArrayList<String> populateH1List() {
 
         ArrayList<String> headings = new ArrayList<String>();
 
