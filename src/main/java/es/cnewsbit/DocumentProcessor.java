@@ -51,7 +51,7 @@ public class DocumentProcessor {
      */
     public void rebuild(HTMLStore store) throws SQLException {
 
-        Connection c = DATABASE.getDataSource().getConnection();
+        Connection c = DATABASE.getDATA_SOURCE().getConnection();
 
         Statement s = c.createStatement();
 

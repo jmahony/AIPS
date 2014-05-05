@@ -21,7 +21,7 @@ public class Database {
     /**
      * MySQL connection pool
      */
-    private @Getter final BasicDataSource dataSource;
+    private @Getter final BasicDataSource DATA_SOURCE;
 
     /**
      * How many items to send per batch to the DB
@@ -45,15 +45,15 @@ public class Database {
 
         log.info("Setting up database connection");
 
-        dataSource = new BasicDataSource();
+        DATA_SOURCE = new BasicDataSource();
 
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername(user);
-        dataSource.setPassword(pass);
-        dataSource.setUrl(name);
-        dataSource.setInitialSize(size);
+        DATA_SOURCE.setDriverClassName("com.mysql.jdbc.Driver");
+        DATA_SOURCE.setUsername(user);
+        DATA_SOURCE.setPassword(pass);
+        DATA_SOURCE.setUrl(name);
+        DATA_SOURCE.setInitialSize(size);
 
-        Connection c = dataSource.getConnection();
+        Connection c = DATA_SOURCE.getConnection();
 
         s = c.prepareStatement("INSERT INTO article VALUES (?, ?, ?, ?, ?, ?)");
 
