@@ -12,8 +12,6 @@ import lombok.Setter;
  */
 public class TTRContentExtractor implements ContentExtractor {
 
-    private Extractable extractable;
-
     /**
      * The kernel used for smoothing
      */
@@ -50,9 +48,7 @@ public class TTRContentExtractor implements ContentExtractor {
     @Override
     public String extract(Extractable extractable) {
 
-        this.extractable = extractable;
-
-        String html = this.extractable.getHTML();
+        String html = extractable.getHTML();
 
         html = WhitespaceStripper.strip(html);
 
