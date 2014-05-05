@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class HTMLLine implements Smoothable {
 
-    private @Getter final String line;
+    private @Getter final String LINE;
 
     private @Getter int words = 0;
 
@@ -37,7 +37,7 @@ public class HTMLLine implements Smoothable {
      */
     public HTMLLine(String line) {
 
-        this.line = line.trim();
+        this.LINE = line.trim();
 
         words = countWords();
 
@@ -54,13 +54,13 @@ public class HTMLLine implements Smoothable {
      */
     public String getText() {
 
-        return line.replaceAll("\\<.*?>", "");
+        return LINE.replaceAll("\\<.*?>", "");
 
     }
 
     private int countWords() {
 
-        String strippedLine = line.replaceAll("\\<.*?>", "");
+        String strippedLine = LINE.replaceAll("\\<.*?>", "");
 
         if (strippedLine.equals("")) return 0;
 
@@ -74,7 +74,7 @@ public class HTMLLine implements Smoothable {
 
         Pattern pattern = Pattern.compile("<\\b[^>]*>");
 
-        Matcher matcher = pattern.matcher(line);
+        Matcher matcher = pattern.matcher(LINE);
 
         int i = 0;
 
