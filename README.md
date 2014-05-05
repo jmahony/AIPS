@@ -9,7 +9,7 @@ Article Indexing & Processing System
 *    [MySQL 5.6.17](http://dev.mysql.com/downloads/mysql/)
 *    [Maven 3.2.1](http://maven.apache.org/)
 
-The versions aren't necessarily correct, but they are the only version I have used with BigC.
+The versions aren't necessarily correct, but they are the only version I have used with AIPS.
 
 # Documentation
 
