@@ -15,7 +15,7 @@ import java.net.URL;
  * News article parser for articles on the nbcnews.com domain
  */
 @Log4j2
-public class NBCNews extends NewsArticle {
+public class NBCNewsArticle extends NewsArticle {
 
     /**
      * The format used for the published date
@@ -57,7 +57,7 @@ public class NBCNews extends NewsArticle {
      * @throws NotNewsArticleException if URL is blacklisted
      * @throws NotNewsArticleException if the title is blacklisted
      */
-    public NBCNews(HTMLDocument document, URL url) throws NotNewsArticleException {
+    public NBCNewsArticle(HTMLDocument document, URL url) throws NotNewsArticleException {
 
         super(document, url);
 

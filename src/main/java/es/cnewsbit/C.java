@@ -45,7 +45,7 @@ public class C {
         put("www.bbc.co.uk",   "BBCNewsArticle");
         put("uk.reuters.com",  "UKReutersNewsArticle");
         put("news.sky.com",    "SkyNewsArticle");
-        put("www.nbcnews.com", "NBCNews");
+        put("www.nbcnews.com", "NBCNewsArticle");
     }};
 
     /**
