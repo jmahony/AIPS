@@ -133,33 +133,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>osxappbundle-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <configuration>
-                    <mainClass>es.cnewsbit.App</mainClass>
-                    <additionalResources>
-                        <fileSet>
-                            <directory>${basedir}</directory>
-                            <includes>
-                                <include>README.md</include>
-                                <include>config.json</include>
-                                <include>log4j2.xml</include>
-                            </includes>
-                        </fileSet>
-                    </additionalResources>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        <plugin>
                 <groupId>com.googlecode.flyway</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>2.3</version>
