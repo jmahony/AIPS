@@ -13,9 +13,9 @@ import java.util.List;
 
 public class HTMLDocument implements Extractable {
 
-    private @Getter final String html;
+    private @Getter final String HTML;
 
-    private @Getter final Document dom;
+    private @Getter final Document DOM;
 
     private @Getter List<String> metaKeywords;
 
@@ -23,9 +23,9 @@ public class HTMLDocument implements Extractable {
 
     public HTMLDocument(String html) {
 
-        this.html = html.trim();
+        this.HTML = html.trim();
 
-        this.dom  = Jsoup.parse(this.html);
+        this.DOM = Jsoup.parse(this.HTML);
 
         this.headingOnes = populateH1List();
 
@@ -39,7 +39,7 @@ public class HTMLDocument implements Extractable {
 
         ArrayList<String> headings = new ArrayList<String>();
 
-        Elements elements = dom.select("h1");
+        Elements elements = DOM.select("h1");
 
         for(Element element : elements) {
 
@@ -54,7 +54,7 @@ public class HTMLDocument implements Extractable {
     //TODO: This can be moved out of this class
     private ArrayList<String> parseMetaKeywords() {
 
-        Element elem = dom.select("meta[name=keywords], META[name=keywords]").first();
+        Element elem = DOM.select("meta[name=keywords], META[name=keywords]").first();
 
         ArrayList<String> keywords = new ArrayList<String>();
 

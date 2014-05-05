@@ -51,17 +51,17 @@ public abstract class NewsArticle implements Indexable {
         Element elem;
 
         // Attempt getting the title from open graph tags
-        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+        elem = document.getDOM().select("meta[property=og:title], META[property=og:title]").first();
 
         if (elem != null) return elem.attr("content");
 
         // Attempt to get title from title tag
-        elem = document.getDom().getElementsByTag("title").first();
+        elem = document.getDOM().getElementsByTag("title").first();
 
         if (elem != null) return elem.html();
 
         // Atempt to get title from the first h1 tag on the page
-        elem = document.getDom().select("h1").first();
+        elem = document.getDOM().select("h1").first();
 
         if (elem != null) return elem.html();
 

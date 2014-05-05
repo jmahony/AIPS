@@ -46,7 +46,7 @@ public class UKReutersNewsArticle extends NewsArticle {
         Element elem;
 
         // Attempt to get title from the first h1 tag on the page
-        elem = document.getDom().select("h1").first();
+        elem = document.getDOM().select("h1").first();
 
         if (elem != null) return elem.html();
 
@@ -64,7 +64,7 @@ public class UKReutersNewsArticle extends NewsArticle {
     @Override
     public DateTime getDate() throws NoDateException {
 
-        Element elem = document.getDom().select("META[name=REVISION_DATE]").first();
+        Element elem = document.getDOM().select("META[name=REVISION_DATE]").first();
 
         if (elem != null) {
 

@@ -52,7 +52,7 @@ public class TTRContentExtractor implements ContentExtractor {
 
         this.extractable = extractable;
 
-        String html = this.extractable.getHtml();
+        String html = this.extractable.getHTML();
 
         html = WhitespaceStripper.strip(html);
 

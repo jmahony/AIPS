@@ -48,7 +48,7 @@ public class NewsArticleTest {
 
         when(document.getMetaKeywords()).thenReturn(keywords);
 
-        when(document.getDom()).thenReturn(dom);
+        when(document.getDOM()).thenReturn(dom);
 
         NewsArticle newsArticle = new BBCNewsArticle(document, new URL("http://www.bbc.co.uk"));
 

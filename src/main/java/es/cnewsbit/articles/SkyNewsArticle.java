@@ -34,7 +34,7 @@ public class SkyNewsArticle extends NewsArticle {
         super(document, url);
 
         // Get open graph meta tag type
-        Element elem = document.getDom().select("meta[property=og:type]").first();
+        Element elem = document.getDOM().select("meta[property=og:type]").first();
 
         // If the OG type meta tag is not found, add the article anyway because
         // older articles may not have them.
@@ -59,7 +59,7 @@ public class SkyNewsArticle extends NewsArticle {
     @Override
     public DateTime getDate() throws NoDateException {
 
-        Element elem = document.getDom().select("meta[property=article:modified_time]").first();
+        Element elem = document.getDOM().select("meta[property=article:modified_time]").first();
 
         if (elem != null) {
 

@@ -17,7 +17,7 @@ public class BoilerpipeContentExtractor implements ContentExtractor {
 
         try {
 
-            content = ArticleSentencesExtractor.INSTANCE.getText(extractable.getHtml());
+            content = ArticleSentencesExtractor.INSTANCE.getText(extractable.getHTML());
 
         } catch (BoilerpipeProcessingException e) {
 

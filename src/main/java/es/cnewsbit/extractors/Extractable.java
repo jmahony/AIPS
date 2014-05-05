@@ -1,9 +1,9 @@
 package es.cnewsbit.extractors;
 
 
-// TODO: Probably should rename getHtml to something more appropriate
+// TODO: Probably should rename getHTML to something more appropriate
 public interface Extractable {
 
-    String getHtml();
+    String getHTML();
 
 }

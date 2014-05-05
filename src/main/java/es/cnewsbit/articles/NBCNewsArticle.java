@@ -78,7 +78,7 @@ public class NBCNewsArticle extends NewsArticle {
         }
 
         // Get open graph meta tag type
-        Element elem = document.getDom().select("meta[property=og:type]").first();
+        Element elem = document.getDOM().select("meta[property=og:type]").first();
 
         // If the OG type meta tag is not found, add the article anyway because
         // older articles may not have them.
@@ -106,17 +106,17 @@ public class NBCNewsArticle extends NewsArticle {
         Element elem;
 
         // Attempt getting the title from open graph tags
-        elem = document.getDom().select("meta[property=og:title], META[property=og:title]").first();
+        elem = document.getDOM().select("meta[property=og:title], META[property=og:title]").first();
 
         if (elem != null) headline = elem.attr("content");
 
         // Attempt to get title from title tag
-        elem = document.getDom().getElementsByTag("title").first();
+        elem = document.getDOM().getElementsByTag("title").first();
 
         if (elem != null && headline == null) return elem.html();
 
         // Attempt to get title from the first h1 tag on the page
-        elem = document.getDom().select("h1").first();
+        elem = document.getDOM().select("h1").first();
 
         if (elem != null && headline == null) return elem.html();
 
@@ -140,7 +140,7 @@ public class NBCNewsArticle extends NewsArticle {
     @Override
     public DateTime getDate() throws NoDateException {
 
-        Element elem = document.getDom().select("meta[property=article:published_time]").first();
+        Element elem = document.getDOM().select("meta[property=article:published_time]").first();
 
         if (elem != null) {
 
@@ -152,7 +152,7 @@ public class NBCNewsArticle extends NewsArticle {
 
         }
 
-        elem = document.getDom().select("meta[name=DC.date.issued]").first();
+        elem = document.getDOM().select("meta[name=DC.date.issued]").first();
 
         if (elem != null) {
 
