@@ -4,9 +4,16 @@ AIPS
 
 Article Indexing & Processing System
 
+# Dependencies
+*    [MongoDB 2.2.0](https://www.mongodb.org/downloads)
+*    [MySQL 5.6.17](http://dev.mysql.com/downloads/mysql/)
+*    [Maven 3.2.1](http://maven.apache.org/)
+
+The versions aren't necessarily correct, but they are the only version I have used with BigC.
+
 # Documentation
 
-[This link](http://ci.joshmahony.com/job/AIPS/javadoc/)
+[Javadocs](http://ci.joshmahony.com/job/AIPS/javadoc/)
 # Building
 Clone the repository
 ```
