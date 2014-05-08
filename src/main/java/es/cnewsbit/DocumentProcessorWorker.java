@@ -110,6 +110,9 @@ public class DocumentProcessorWorker implements Runnable {
 
                         if (na != null) {
 
+                            //TODO: This is a proper bodge, if there is no date
+                            //TODO: an exception will be thrown therefore
+                            //TODO: the article wont be indexed
                             na.getDate();
 
                             indexer.addToIndex(na);
